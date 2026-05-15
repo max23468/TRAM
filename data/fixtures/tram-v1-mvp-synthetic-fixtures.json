@@ -906,7 +906,7 @@
       "id": "time_fx_metro_site_visit",
       "tender_id": "tender_fx_cop_metro_om",
       "title": "Sopralluogo tecnico facoltativo",
-      "date_label": "Settimana 3",
+      "date_label": "02/06/2026",
       "status": "confirmed",
       "impact": "medium",
       "source_reference_id": "src_fx_001"
@@ -915,7 +915,7 @@
       "id": "time_fx_metro_qna_deadline",
       "tender_id": "tender_fx_cop_metro_om",
       "title": "Termine ricezione Q&A",
-      "date_label": "Settimana 5",
+      "date_label": "18/06/2026",
       "status": "confirmed",
       "impact": "high",
       "source_reference_id": "src_fx_005"
@@ -924,7 +924,7 @@
       "id": "time_fx_metro_submission",
       "tender_id": "tender_fx_cop_metro_om",
       "title": "Presentazione offerta",
-      "date_label": "Settimana 8",
+      "date_label": "09/07/2026, modificata da Q&A",
       "status": "changed_by_qna",
       "impact": "high",
       "source_reference_id": "src_fx_qna_correction_schedule"
@@ -933,7 +933,7 @@
       "id": "time_fx_luas_redline_effective",
       "tender_id": "tender_fx_luas_light_rail_om",
       "title": "Decorrenza addendum redline",
-      "date_label": "Settimana 6",
+      "date_label": "25/06/2026",
       "status": "confirmed",
       "impact": "medium",
       "source_reference_id": "src_fx_luas_redline_summary"

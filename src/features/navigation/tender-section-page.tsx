@@ -69,7 +69,7 @@ const privacyLabels: Record<string, string> = {
 
 const aiAnalysisLabels: Record<string, string> = {
   allowed_minimized: "Analisi minimizzata ammessa",
-  review_after_ai: "Review dopo analisi richiesta"
+  review_after_ai: "Validazione dopo analisi richiesta"
 };
 
 const aiGateDecisionLabels: Record<TramAiGateDecision["decision"], string> = {
@@ -131,9 +131,9 @@ const documentStateLabels: Record<string, string> = {
 };
 
 const ingestionStatusLabels: Record<string, string> = {
-  metadata_extracted: "Metadati estratti",
+  metadata_extracted: "Informazioni base disponibili",
   needs_ocr_check: "Verifica OCR",
-  needs_review: "Issue da review"
+  needs_review: "Da controllare"
 };
 
 const parserKindLabels: Record<string, string> = {
@@ -144,7 +144,7 @@ const parserKindLabels: Record<string, string> = {
 
 const parserIssueLabels: Record<string, string> = {
   parser_requires_ocr_check: "OCR da verificare",
-  parser_requires_review: "Review parser richiesta"
+  parser_requires_review: "Controllo richiesto"
 };
 
 const sensitivityLabels: Record<string, string> = {
@@ -186,6 +186,7 @@ const statusLabels: Record<string, string> = {
   ready: "Pronto",
   sent_to_authority: "Registrato su portale",
   structure_only: "Solo struttura",
+  unclear: "Da chiarire",
   watch: "Da monitorare"
 };
 
@@ -425,7 +426,7 @@ function DashboardView({ model }: { model: TenderOverviewModel }) {
           icon={Gauge}
           label="Stato dashboard"
           value={dashboardStateLabels[model.tender.dashboard_state] ?? model.tender.dashboard_state}
-          detail={dashboardState ? formatStatus(dashboardState.status) : "Derivato da review e fonti"}
+          detail={dashboardState ? formatStatus(dashboardState.status) : "Derivato da validazione e fonti"}
         />
         <MetricCard
           href={sectionHref(model.tender.id, "documents")}
@@ -443,7 +444,7 @@ function DashboardView({ model }: { model: TenderOverviewModel }) {
           icon={ClipboardCheck}
           label="Blocchi attivi"
           value={blockingCountValue}
-          detail={`${model.needsReviewCount} item in coda review`}
+          detail={`${model.needsReviewCount} elementi da validare`}
         />
         <MetricCard
           href={sectionHref(model.tender.id, "queries")}
@@ -500,7 +501,7 @@ function DashboardView({ model }: { model: TenderOverviewModel }) {
                 </p>
               </div>
               <Link className="text-sm font-medium text-primary hover:underline" href={sectionHref(model.tender.id, "review")}>
-                Apri review
+                Apri Da validare
               </Link>
             </div>
             <div className="grid gap-3">
@@ -586,7 +587,7 @@ function FullSectionView({
 
   if (section === "review") {
     return (
-      <SectionBlock id="review" title="Da validare" description="Coda prioritaria per validare, bloccare o correggere dati proposti.">
+      <SectionBlock id="review" title="Da validare" description="Elementi che richiedono una decisione prima di essere usati in dashboard.">
         <ReviewQueueView items={model.reviewItems} sourceReferences={model.sourceReferences} />
       </SectionBlock>
     );
@@ -701,12 +702,13 @@ function DocumentsList({ model }: { model: TenderOverviewModel }) {
     <div className="grid gap-3">
       <section className="rounded-lg border border-border bg-card p-4">
         <div className="grid gap-3 sm:grid-cols-3">
-          <InfoRow label="Metadati estratti" value={String(ingestionSummary.metadataCount)} />
-          <InfoRow label="Issue parser" value={String(ingestionSummary.issueCount)} />
-          <InfoRow label="Source reference" value={String(ingestionSummary.sourceReferenceCount)} />
+          <InfoRow label="Documenti letti" value={String(ingestionSummary.metadataCount)} />
+          <InfoRow label="Da controllare" value={String(ingestionSummary.issueCount)} />
+          <InfoRow label="Riferimenti fonte" value={String(ingestionSummary.sourceReferenceCount)} />
         </div>
         <p className="mt-3 text-xs leading-5 text-muted-foreground">
-          Stato ingestion demo: mostra metadati e issue, non contenuti integrali dei documenti.
+          Nel demo i file originali non sono apribili: usa i riferimenti fonte sintetici per
+          verificare documento, pagina ed estratto.
         </p>
       </section>
 
@@ -729,7 +731,7 @@ function DocumentsList({ model }: { model: TenderOverviewModel }) {
                   {documentStateLabels[document.currentness] ?? document.currentness}
                 </Badge>
                 {reviewItems.length > 0 ? (
-                  <Badge variant="risk">{reviewItems.length} review</Badge>
+                  <Badge variant="risk">{reviewItems.length} da validare</Badge>
                 ) : null}
                 {ingestionStatus ? (
                   <Badge
@@ -744,15 +746,15 @@ function DocumentsList({ model }: { model: TenderOverviewModel }) {
             {ingestionStatus ? (
               <div className="mt-4 grid gap-3 rounded-md border border-border bg-muted p-3 text-sm sm:grid-cols-3">
                 <InfoRow
-                  label="Parser"
+                  label="Formato"
                   value={parserKindLabels[ingestionStatus.parser_kind] ?? ingestionStatus.parser_kind}
                 />
                 <InfoRow
-                  label="Source ref."
+                  label="Riferimenti"
                   value={String(ingestionStatus.source_reference_count)}
                 />
                 <InfoRow
-                  label="Issue"
+                  label="Controlli"
                   value={
                     ingestionStatus.issue_codes.length === 0
                       ? "Nessuna"
@@ -766,7 +768,7 @@ function DocumentsList({ model }: { model: TenderOverviewModel }) {
 
             <details className="mt-4 rounded-md border border-border bg-muted px-3 py-2">
               <summary className="cursor-pointer text-sm font-medium">
-                Apri fonti ({sourceReferences.length})
+                Vedi riferimenti fonte ({sourceReferences.length})
               </summary>
               <div className="mt-3 grid gap-2">
                 {sourceReferences.map((sourceReference) => (
@@ -778,6 +780,7 @@ function DocumentsList({ model }: { model: TenderOverviewModel }) {
                       <p className="text-sm font-medium">
                         {sourceReference.label}, p. {sourceReference.page}
                       </p>
+                      <Badge variant="muted">Documento demo non apribile</Badge>
                       {reviewItems.some(
                         (item) => item.source_reference_id === sourceReference.id
                       ) ? (
@@ -785,7 +788,7 @@ function DocumentsList({ model }: { model: TenderOverviewModel }) {
                           className="text-sm font-medium text-primary hover:underline"
                           href={sectionHref(model.tender.id, "review")}
                         >
-                          Apri review
+                          Apri Da validare
                         </Link>
                       ) : null}
                     </div>
@@ -830,7 +833,7 @@ function SourceExcerpt({
             className="text-sm font-medium text-primary hover:underline"
             href={sectionHref(tenderId, "review")}
           >
-            Apri review
+            Apri Da validare
           </Link>
         ) : null}
       </div>
@@ -852,37 +855,81 @@ function SourceExcerpt({
 
 function TimelineView({ model }: { model: TenderOverviewModel }) {
   return (
-    <ol className="relative grid gap-4 before:absolute before:bottom-3 before:left-[9px] before:top-3 before:w-px before:bg-border">
-      {model.timelineEvents.map((event) => {
-        const source = getSourceReferenceById(event.source_reference_id);
-        const reviewItems = getReviewItemsForSource(model.reviewItems, event.source_reference_id);
+    <div className="grid gap-4">
+      <section className="rounded-lg border border-border bg-card p-4">
+        <h3 className="text-sm font-semibold">Cosa controllare nella timeline</h3>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">
+          Ogni evento deve mostrare data, stato, fonte documento e azione di validazione quando
+          una scadenza è stata modificata o resta dubbia.
+        </p>
+      </section>
 
-        return (
-          <li key={event.id} className="relative pl-8">
-            <span className="absolute left-0 top-4 h-[19px] w-[19px] rounded-full border border-primary bg-background ring-4 ring-background" />
-            <article className="rounded-lg border border-border bg-card p-4">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <p className="text-xs font-medium uppercase text-muted-foreground">
-                    {event.date_label}
-                  </p>
-                  <h3 className="mt-1 text-sm font-semibold leading-5">{event.title}</h3>
+      <ol className="grid gap-4">
+        {model.timelineEvents.map((event) => {
+          const source = getSourceReferenceById(event.source_reference_id);
+          const sourceDocument = model.documents.find(
+            (document) => document.id === source?.document_id
+          );
+          const reviewItems = getReviewItemsForSource(model.reviewItems, event.source_reference_id);
+          const hasConflict = event.status === "changed_by_qna" || event.status === "unclear";
+
+          return (
+            <li key={event.id}>
+              <article className="rounded-lg border border-border bg-card p-4">
+                <div className="grid gap-4 md:grid-cols-[150px_minmax(0,1fr)_auto]">
+                  <div className="rounded-md border border-border bg-muted p-3">
+                    <p className="text-xs font-medium text-muted-foreground">Data/scadenza</p>
+                    <p className="mt-1 text-lg font-semibold tracking-tight">
+                      {event.date_label}
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-base font-semibold leading-6">{event.title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                      {hasConflict
+                        ? "Scadenza da controllare: una fonte o una risposta Q&A modifica il calendario iniziale."
+                        : "Evento mappato da fonte documentale sintetica."}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2 md:justify-end">
+                    <Badge variant={riskVariant(event.impact)}>{formatRisk(event.impact)}</Badge>
+                    <Badge variant={statusVariant(event.status)}>{formatStatus(event.status)}</Badge>
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant={riskVariant(event.impact)}>{formatRisk(event.impact)}</Badge>
-                  <Badge variant={statusVariant(event.status)}>{formatStatus(event.status)}</Badge>
+
+                <div className="mt-4 grid gap-3 rounded-md border border-border bg-muted p-3 text-sm md:grid-cols-[minmax(0,1fr)_auto]">
+                  <div>
+                    <p className="text-xs font-medium text-muted-foreground">
+                      Documento da controllare
+                    </p>
+                    <p className="mt-1 font-medium">
+                      {sourceDocument?.title ?? source?.label ?? "Fonte demo non trovata"}
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {source ? `${source.label}, p. ${source.page}` : "Riferimento assente"}
+                    </p>
+                  </div>
+                  {reviewItems.length > 0 ? (
+                    <Link
+                      className="inline-flex items-center justify-center rounded-md border border-primary bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                      href={sectionHref(model.tender.id, "review")}
+                    >
+                      Valida scadenza
+                    </Link>
+                  ) : null}
                 </div>
-              </div>
-              <SourceExcerpt
-                reviewItems={reviewItems}
-                source={source}
-                tenderId={model.tender.id}
-              />
-            </article>
-          </li>
-        );
-      })}
-    </ol>
+
+                <SourceExcerpt
+                  reviewItems={reviewItems}
+                  source={source}
+                  tenderId={model.tender.id}
+                />
+              </article>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
   );
 }
 
@@ -933,7 +980,7 @@ function DeliverablesView({ model }: { model: TenderOverviewModel }) {
                         {formatStatus(deliverable.status)}
                       </Badge>
                       {reviewItems.length > 0 ? (
-                        <Badge variant="risk">{reviewItems.length} review</Badge>
+                        <Badge variant="risk">{reviewItems.length} da validare</Badge>
                       ) : null}
                     </div>
                   </div>
@@ -1027,7 +1074,7 @@ function FinancialsView({ model }: { model: TenderOverviewModel }) {
         <h3 className="text-sm font-semibold">Valori economici non consolidati</h3>
         <p className="mt-1 text-sm leading-6">
           Questa vista mostra struttura, stato, gate e fonte. Non espone importi o formule come
-          verità validata finché non passano da review umana.
+          verità validata finché non passano da validazione umana.
         </p>
       </div>
 
@@ -1143,7 +1190,7 @@ function ContradictionsView({ model }: { model: TenderOverviewModel }) {
               <div>
                 <h3 className="text-sm font-semibold leading-5">{contradiction.title}</h3>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  Candidata finché non viene validata o respinta in review.
+                  Candidata finché non viene validata o respinta nella sezione Da validare.
                 </p>
               </div>
               <div className="flex flex-wrap gap-2 md:justify-end">
@@ -1172,7 +1219,7 @@ function ContradictionsView({ model }: { model: TenderOverviewModel }) {
                 className="mt-3 inline-flex rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
                 href={sectionHref(model.tender.id, "review")}
               >
-                Apri review collegata
+                Apri Da validare
               </Link>
             ) : null}
           </article>
@@ -1432,7 +1479,7 @@ function AuditContent({ model }: { model: TenderOverviewModel }) {
             value={`${Math.round(model.pilotReadiness.metrics.sourceCoverageRatio * 100)}%`}
           />
           <InfoRow
-            label="Da review"
+            label="Da validare"
             value={String(model.pilotReadiness.metrics.reviewRequiredCount)}
           />
           <InfoRow

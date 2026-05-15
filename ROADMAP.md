@@ -190,9 +190,19 @@ Debiti non coperti:
 | Slice | Stato | Obiettivo | Verifica minima |
 | --- | --- | --- | --- |
 | F7-S1 - Piano pilot interno | completata | Definire scenario, checklist, classificazione feedback e criteri di uscita | Roadmap aggiornata |
-| F7-S2 - Sessioni con tre utenti | da fare | Eseguire scenario controllato e raccogliere feedback osservabile | Tre schede feedback classificate P0/P1/P2 senza dati riservati |
-| F7-S3 - Triage stabilizzazione | da fare | Decidere fix immediati, backlog MVP, backlog V1 e fuori perimetro | Tutti i P0/P1 hanno decisione owner/priorità |
-| F7-S4 - Fix e verifica post-pilot | da fare | Correggere problemi bloccanti e ripetere gate proporzionati | `npm run verify` e smoke UI se cambiano superfici applicative |
+| F7-S2 - Sessioni con tre utenti | in corso | Eseguire scenario controllato e raccogliere feedback osservabile | Tre schede feedback classificate P0/P1/P2 senza dati riservati |
+| F7-S3 - Triage stabilizzazione | in corso | Decidere fix immediati, backlog MVP, backlog V1 e fuori perimetro | Tutti i P0/P1 hanno decisione owner/priorità |
+| F7-S4 - Fix e verifica post-pilot | in corso | Correggere problemi bloccanti e ripetere gate proporzionati | `npm run verify` e smoke UI se cambiano superfici applicative |
+
+Feedback pilot già emerso:
+
+| Route | Feedback | Severità | Decisione |
+| --- | --- | --- | --- |
+| `/tenders` | Il badge `Criticità aperte` fa identificare correttamente Metro Nord come gara prioritaria | positiva | Mantenere badge come segnale primario |
+| `/overview` | La card Timeline comunica priorità, ma il bordo del riquadro risulta tagliato | P2 | Fix UI post-pilot |
+| `/timeline` | La vista non rende chiaro il conflitto e non mostra date/riferimenti documentali in modo sufficiente | P1 | Rendere espliciti data, documento fonte e azione di validazione |
+| `/documents` | La document map mostra lessico tecnico come parser/metadati e non rende chiaro l’accesso alla fonte | P1 | Tradurre la UI in linguaggio operativo e mostrare riferimenti fonte |
+| `/review` | La sezione Da validare manca di gerarchia, scopo e differenza tra azioni | P1 | Ridisegnare gerarchia, CTA, spiegazioni e significato delle azioni |
 
 ### Fase 8 - Robustezza T1/T2/T3
 

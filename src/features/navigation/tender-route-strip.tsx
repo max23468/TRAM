@@ -34,9 +34,9 @@ const edgeLabels: Record<string, string> = {
   criticality_blocks_dashboard: "Criticità",
   financials_links_cost_driver: "Financials",
   qna_updates_timeline: "Q&A",
-  review_updates_node: "Review",
-  review_validates_node: "Review",
-  source_to_review: "Fonte/review"
+  review_updates_node: "Da validare",
+  review_validates_node: "Da validare",
+  source_to_review: "Fonte/validazione"
 };
 
 const nodeCodes: Record<string, string> = {
@@ -113,7 +113,7 @@ function RouteNodeItem({
   node: RouteNode;
 }) {
   return (
-    <li className="relative flex min-w-0 flex-col items-center px-1" style={nodeStyle(node)}>
+    <li className="relative flex min-w-0 flex-col items-center px-2" style={nodeStyle(node)}>
       {!isLast ? (
         <span className="absolute left-1/2 right-[-50%] top-[18px] h-px bg-border" aria-hidden="true" />
       ) : null}
@@ -162,8 +162,8 @@ export function TenderRouteStrip({ network }: { network: TramRouteNetwork | unde
         </Badge>
       </div>
 
-      <div className="mt-5 overflow-x-auto pb-2">
-        <ol className="grid min-w-[760px] grid-cols-8 items-start">
+      <div className="mt-5 overflow-x-auto py-2">
+        <ol className="grid min-w-[780px] grid-cols-8 items-start py-1">
           {network.nodes.map((node, index) => (
             <RouteNodeItem key={node.id} isLast={index === network.nodes.length - 1} node={node} />
           ))}
