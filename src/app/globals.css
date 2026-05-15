@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-destructive: var(--destructive);
+  --color-ring: var(--ring);
+  --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+}
+
+:root {
+  --background: oklch(96.5% 0.01 112);
+  --foreground: oklch(19% 0.018 245);
+  --card: oklch(99.2% 0.004 112);
+  --card-foreground: oklch(19% 0.018 245);
+  --muted: oklch(97.2% 0.006 112);
+  --muted-foreground: oklch(54% 0.024 242);
+  --border: oklch(86% 0.012 112);
+  --primary: oklch(50% 0.085 188);
+  --primary-foreground: oklch(100% 0 0);
+  --secondary: oklch(90% 0.052 188);
+  --secondary-foreground: oklch(37% 0.026 245);
+  --destructive: oklch(45% 0.13 26);
+  --ring: oklch(50% 0.085 188);
+  --route-core: oklch(50% 0.085 188);
+  --route-document: oklch(45% 0.055 230);
+  --route-qna: oklch(56% 0.105 72);
+  --route-review: oklch(50% 0.075 148);
+  --route-financials: oklch(38% 0.045 255);
+  --route-risk: oklch(45% 0.13 26);
+  --radius: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: oklch(15.5% 0.02 244);
+    --foreground: oklch(93% 0.008 112);
+    --card: oklch(20.5% 0.022 244);
+    --card-foreground: oklch(93% 0.008 112);
+    --muted: oklch(24% 0.024 244);
+    --muted-foreground: oklch(63% 0.018 224);
+    --border: oklch(100% 0 0 / 0.1);
+    --primary: oklch(72% 0.09 188);
+    --primary-foreground: oklch(12.5% 0.018 244);
+    --secondary: oklch(31% 0.052 188);
+    --secondary-foreground: oklch(93% 0.008 112);
+    --destructive: oklch(72% 0.12 28);
+    --ring: oklch(72% 0.09 188);
+    --route-core: oklch(72% 0.09 188);
+    --route-document: oklch(69% 0.06 230);
+    --route-qna: oklch(78% 0.11 78);
+    --route-review: oklch(73% 0.09 148);
+    --route-financials: oklch(66% 0.045 255);
+    --route-risk: oklch(72% 0.12 28);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background);
+}
+
+body {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

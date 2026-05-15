@@ -1,0 +1,507 @@
+{
+  "$schema": "https://tram.local/schemas/tram-normalizer-config-v0-1.schema.json",
+  "config_id": "tram_v1_normalizer_config_t4_t8_v0_1",
+  "config_version": "0.1",
+  "created_at": "2026-05-13",
+  "status": "planning_fixture",
+  "scope": ["T4", "T6", "T7", "T8"],
+  "source_spec": "docs/planning/tram-v1-ai-normalizer-spec-t4-t8-v0-1.md",
+  "notes": [
+    "Planning config only: no application code consumes this yet.",
+    "T5 is intentionally excluded from external provider normalization.",
+    "All critical outputs remain review-first."
+  ],
+  "global": {
+    "normalizer_version": "tram_normalizer_core_v0_1",
+    "allowed_run_statuses": [
+      "normalized_pass",
+      "normalized_pass_with_warnings",
+      "partial_requires_review",
+      "blocked_privacy",
+      "blocked_schema",
+      "blocked_missing_items",
+      "blocked_sensitive"
+    ],
+    "blocked_external_privacy_levels": ["L2_sensitive"],
+    "default_review_required_for_sensitive_items": true,
+    "allow_paid_fallback": false,
+    "required_audit_fields": [
+      "task_id",
+      "normalizer_version",
+      "prompt_pack_id",
+      "schema_pack_id",
+      "provider",
+      "model",
+      "ai_call_id",
+      "input_hash",
+      "raw_output_hash",
+      "normalized_output_hash",
+      "dropped_fields",
+      "alias_mappings_applied",
+      "review_forces_applied",
+      "blocked_reason_codes",
+      "created_review_item_ids"
+    ],
+    "collection_aliases": {
+      "T4": {
+        "output": "items"
+      },
+      "T6": {
+        "output": "cost_drivers"
+      },
+      "T7": {
+        "output": "contradictions",
+        "issues": "contradictions"
+      },
+      "T8": {
+        "output": "query_drafts",
+        "queries": "query_drafts"
+      }
+    },
+    "common_forbidden_field_names": [
+      "amount",
+      "estimated_amount",
+      "cost_estimate",
+      "unit_rate",
+      "unit_price",
+      "margin",
+      "price_recommendation",
+      "pricing_strategy",
+      "final_value",
+      "winning_source",
+      "approved_by_ai",
+      "sent_by_ai"
+    ],
+    "common_warning_codes": [
+      "collection_alias_applied",
+      "forbidden_field_dropped",
+      "enum_alias_applied",
+      "rule_owned_field_restored",
+      "review_required_forced",
+      "risk_floor_applied",
+      "sensitive_status_forced",
+      "missing_expected_item",
+      "extra_item_dropped",
+      "external_provider_blocked"
+    ]
+  },
+  "tasks": {
+    "T4": {
+      "task_name": "requirements_kpi",
+      "input_collection": "input_items",
+      "output_collection": "items",
+      "id_field": "item_id",
+      "prompt_pack_id": "tram_free_ai_prompt_pack_t4_requirements_kpi_v0_1",
+      "schema_pack_id": "tram_free_ai_schema_pack_t4_requirements_kpi_v0_1",
+      "schema_version": "schema_t4_requirements_kpi_v0_1",
+      "allowed_output_fields": [
+        "item_id",
+        "item_type",
+        "text_or_name_normalized",
+        "requirement_family",
+        "kpi_family",
+        "o_and_m_domain",
+        "impact_tags",
+        "linked_deliverable_ids",
+        "criticality",
+        "review_required",
+        "confidence",
+        "cluster_label",
+        "uncertainties"
+      ],
+      "rule_owned_fields_to_restore": [
+        "requirement_text_raw",
+        "formula_raw",
+        "target_raw",
+        "threshold_raw",
+        "unit_raw",
+        "mandatory_candidate",
+        "measurement_period_raw",
+        "data_source_raw",
+        "linked_deliverable_ids",
+        "source_refs"
+      ],
+      "forbidden_output_fields": [
+        "requirement_text_raw",
+        "formula_raw",
+        "target_raw",
+        "threshold_raw",
+        "mandatory",
+        "bonus_malus",
+        "deductions",
+        "penalties",
+        "payment_mechanism",
+        "economic_value"
+      ],
+      "enum_aliases": {
+        "item_type": {
+          "requirement_kpi": "mixed_requirement_kpi",
+          "kpi_requirement": "mixed_requirement_kpi",
+          "financial": "escalate_to_t5"
+        },
+        "o_and_m_domain": {
+          "customer": "customer_experience",
+          "environment": "sustainability_environment",
+          "IT": "data_systems",
+          "finance": "pricing_financial"
+        }
+      },
+      "review_forces": [
+        {
+          "id": "t4_mandatory_or_mr",
+          "when_any": ["mandatory_candidate_true", "requirement_type_mr"],
+          "set": {
+            "review_required": true,
+            "minimum_criticality": "high",
+            "review_family": "requirements",
+            "blocking": true
+          }
+        },
+        {
+          "id": "t4_kpi_formula_or_target",
+          "when_any": ["formula_raw_present", "target_raw_present", "threshold_raw_present"],
+          "set": {
+            "review_required": true,
+            "minimum_criticality": "high",
+            "review_family": "KPI",
+            "blocking": true
+          }
+        },
+        {
+          "id": "t4_financial_escalation",
+          "when_any": ["financial_escalation_tag", "payment_keyword", "bonus_malus_keyword", "deduction_keyword", "penalty_keyword", "pricing_keyword"],
+          "set": {
+            "review_required": true,
+            "item_type": "escalate_to_t5",
+            "add_impact_tag": "financial_escalation",
+            "minimum_criticality": "critical",
+            "review_family": "financials",
+            "blocking": true
+          }
+        }
+      ],
+      "review_item_mapping": {
+        "default_family": "requirements",
+        "automation_source_for_rule_owned_values": "rule_based",
+        "automation_source_for_ai_text": "ai_reasoning"
+      }
+    },
+    "T6": {
+      "task_name": "cost_drivers",
+      "input_collection": "input_cost_drivers",
+      "output_collection": "cost_drivers",
+      "id_field": "cost_driver_id",
+      "prompt_pack_id": "tram_free_ai_prompt_pack_t6_cost_drivers_v0_1",
+      "schema_pack_id": "tram_free_ai_schema_pack_t6_cost_drivers_v0_1",
+      "schema_version": "schema_t6_cost_drivers_v0_1",
+      "allowed_output_fields": [
+        "cost_driver_id",
+        "driver_family",
+        "description_normalized",
+        "o_and_m_domain",
+        "cost_confidence",
+        "risk_level",
+        "linked_requirement_ids",
+        "linked_deliverable_ids",
+        "linked_kpi_ids",
+        "linked_financial_item_ids",
+        "review_required",
+        "confidence",
+        "uncertainties"
+      ],
+      "rule_owned_fields_to_restore": [
+        "linked_requirement_ids",
+        "linked_deliverable_ids",
+        "linked_kpi_ids",
+        "linked_financial_item_ids",
+        "source_refs",
+        "privacy_level_effective"
+      ],
+      "forbidden_output_fields": [
+        "amount",
+        "cost_estimate",
+        "unit_rate",
+        "margin",
+        "price",
+        "price_recommendation",
+        "pricing_strategy",
+        "economic_assumption"
+      ],
+      "enum_aliases": {
+        "driver_family": {
+          "it": "IT_systems",
+          "IT": "IT_systems",
+          "systems": "IT_systems",
+          "spares": "spares_tools",
+          "customer_experience": "customer_service"
+        },
+        "cost_confidence": {
+          "confirmed": "confirmed_activity",
+          "potential": "potential_cost_driver",
+          "risk": "risk_not_quantified",
+          "financial": "financial_linked_review"
+        }
+      },
+      "review_forces": [
+        {
+          "id": "t6_financial_linked",
+          "when_any": ["linked_financial_item_ids_present", "pricing_keyword", "payment_keyword", "penalty_keyword"],
+          "set": {
+            "review_required": true,
+            "cost_confidence": "financial_linked_review",
+            "minimum_risk_level": "critical",
+            "review_family": "financials",
+            "blocking": true
+          }
+        },
+        {
+          "id": "t6_high_risk_domains",
+          "when_any": ["workforce_domain", "mobilisation_domain", "safety_security_domain", "compliance_domain", "asset_condition_keyword", "critical_spares_keyword"],
+          "set": {
+            "review_required": true,
+            "minimum_risk_level": "high",
+            "review_family": "requirements",
+            "blocking_if_dashboard_headline": true
+          }
+        }
+      ],
+      "privacy_inheritance": {
+        "mode": "max_from_linked_sources",
+        "block_external_if": ["L2_sensitive"]
+      },
+      "review_item_mapping": {
+        "default_family": "requirements",
+        "financial_family": "financials",
+        "automation_source_for_rule_owned_values": "rule_based",
+        "automation_source_for_ai_text": "ai_reasoning"
+      }
+    },
+    "T7": {
+      "task_name": "contradictions",
+      "input_collection": "input_candidates",
+      "output_collection": "contradictions",
+      "id_field": "contradiction_id",
+      "prompt_pack_id": "tram_free_ai_prompt_pack_t7_contradictions_v0_1",
+      "schema_pack_id": "tram_free_ai_schema_pack_t7_contradictions_v0_1",
+      "schema_version": "schema_t7_contradictions_v0_1",
+      "allowed_output_fields": [
+        "contradiction_id",
+        "issue_title",
+        "issue_type",
+        "why_it_may_be_a_conflict",
+        "severity_candidate",
+        "recommended_action",
+        "review_required",
+        "confidence",
+        "uncertainties"
+      ],
+      "rule_owned_fields_to_restore": [
+        "conflicting_values",
+        "documents_involved",
+        "rule_reason",
+        "source_refs",
+        "privacy_level_effective"
+      ],
+      "forbidden_output_fields": [
+        "final_value",
+        "winning_source",
+        "source_to_prefer",
+        "resolved_value",
+        "definitive_resolution",
+        "query_body"
+      ],
+      "enum_aliases": {
+        "issue_type": {
+          "legal_reference": "legal_reference_mismatch",
+          "missing_evidence": "missing_document",
+          "documentation_gap": "missing_document"
+        },
+        "recommended_action": {
+          "query": "review_and_consider_query",
+          "ask_clarification": "review_and_consider_query",
+          "update": "review_and_update_value",
+          "parser": "mark_as_parser_issue",
+          "dismiss": "dismiss_candidate"
+        }
+      },
+      "severity_rules": [
+        {
+          "id": "t7_economic_or_payment",
+          "when_any": ["payment_keyword", "penalty_keyword", "guarantee_keyword", "economic_value_present"],
+          "minimum_severity": "critical"
+        },
+        {
+          "id": "t7_procurement_deadline",
+          "when_any": ["submission_deadline", "tender_opening", "bafo", "standstill_deadline"],
+          "minimum_severity": "critical"
+        },
+        {
+          "id": "t7_mandatory_or_compliance",
+          "when_any": ["mandatory_requirement", "mr_requirement", "critical_compliance"],
+          "minimum_severity": "high"
+        },
+        {
+          "id": "t7_kpi_formula",
+          "when_any": ["kpi_formula", "kpi_target", "deduction_keyword"],
+          "minimum_severity": "high"
+        },
+        {
+          "id": "t7_missing_essential_document",
+          "when_any": ["missing_document_essential", "document_list_mismatch"],
+          "minimum_severity": "high"
+        },
+        {
+          "id": "t7_parser_issue_low",
+          "when_all": ["parser_issue", "not_dashboard_headline", "not_critical_path"],
+          "maximum_severity": "low"
+        }
+      ],
+      "action_rules": [
+        {
+          "id": "t7_high_impact_query_candidate",
+          "when_any": ["severity_high", "severity_critical"],
+          "set_recommended_action": "review_and_consider_query"
+        },
+        {
+          "id": "t7_update_internal_value",
+          "when_all": ["internal_value_update_needed", "no_external_query_needed"],
+          "set_recommended_action": "review_and_update_value"
+        },
+        {
+          "id": "t7_missing_evidence",
+          "when_any": ["insufficient_evidence", "missing_source_ref"],
+          "set_recommended_action": "mark_as_missing_evidence"
+        },
+        {
+          "id": "t7_parser_issue",
+          "when_any": ["parser_issue"],
+          "set_recommended_action": "mark_as_parser_issue"
+        }
+      ],
+      "review_forces": [
+        {
+          "id": "t7_default_review",
+          "when_any": ["date_mismatch", "version_conflict", "obligation_conflict", "missing_document", "document_list_mismatch", "legal_reference_mismatch", "mandatory_ambiguity", "kpi_formula", "economic_case"],
+          "set": {
+            "review_required": true,
+            "review_family": "contradictions"
+          }
+        }
+      ],
+      "provider_decision": {
+        "external_ai_default": false,
+        "severity_from_ai_allowed": false,
+        "action_from_ai_allowed": false
+      },
+      "privacy_inheritance": {
+        "mode": "max_from_linked_sources",
+        "block_external_if": ["L2_sensitive"]
+      }
+    },
+    "T8": {
+      "task_name": "query_draft",
+      "input_collection": "input_query_candidates",
+      "output_collection": "query_drafts",
+      "id_field": "query_draft_id",
+      "prompt_pack_id": "tram_free_ai_prompt_pack_t8_query_draft_v0_1",
+      "schema_pack_id": "tram_free_ai_schema_pack_t8_query_draft_v0_1",
+      "schema_version": "schema_t8_query_draft_v0_1",
+      "allowed_output_fields": [
+        "query_draft_id",
+        "linked_contradiction_id",
+        "query_subject",
+        "query_body",
+        "facts_cited",
+        "requested_clarification",
+        "tone",
+        "human_approval_required",
+        "status",
+        "confidence",
+        "uncertainties"
+      ],
+      "rule_owned_fields_to_restore": [
+        "query_draft_id",
+        "linked_contradiction_id",
+        "facts_to_cite",
+        "source_refs",
+        "review_status",
+        "privacy_level_effective"
+      ],
+      "forbidden_output_fields": [
+        "approved",
+        "sent",
+        "approved_for_export",
+        "send_instruction",
+        "internal_strategy",
+        "pricing_strategy",
+        "private_comment",
+        "unsupported_accusation"
+      ],
+      "enum_aliases": {
+        "status": {
+          "ready_for_review": "draft_for_review",
+          "approved": "needs_more_review",
+          "sent": "needs_more_review",
+          "ready_to_send": "needs_more_review"
+        },
+        "tone": {
+          "professional": "neutral_professional",
+          "neutral": "neutral_professional",
+          "friendly": "collaborative"
+        }
+      },
+      "review_forces": [
+        {
+          "id": "t8_always_human_approval",
+          "when_any": ["any_item"],
+          "set": {
+            "human_approval_required": true,
+            "review_family": "query",
+            "blocking": true
+          }
+        },
+        {
+          "id": "t8_l2_or_strategy_block",
+          "when_any": ["L2_sensitive", "strategy_internal", "pricing_strategy", "payment_keyword", "penalty_keyword", "personal_data", "cyber_security"],
+          "set": {
+            "status": "blocked_sensitive",
+            "human_approval_required": true,
+            "review_family": "query",
+            "blocking": true
+          }
+        },
+        {
+          "id": "t8_weak_evidence",
+          "when_any": ["weak_source", "parser_issue", "superseded_by_addendum", "facts_to_cite_missing"],
+          "set": {
+            "status": "needs_more_review",
+            "human_approval_required": true,
+            "review_family": "query"
+          }
+        }
+      ],
+      "status_rules": [
+        {
+          "id": "t8_draft_allowed",
+          "when_all": ["plausible_issue", "facts_citable", "not_L2_sensitive", "no_internal_strategy"],
+          "set_status": "draft_for_review"
+        },
+        {
+          "id": "t8_do_not_send",
+          "when_any": ["probable_false_positive", "parser_issue_only", "already_resolved"],
+          "set_status": "do_not_send"
+        }
+      ],
+      "facts_policy": {
+        "facts_cited_must_derive_from": "facts_to_cite",
+        "unsupported_facts_policy": "drop_and_warn",
+        "if_no_facts_left": "needs_more_review"
+      },
+      "provider_decision": {
+        "external_ai_default": false,
+        "approved_or_sent_status_allowed": false,
+        "human_approval_required_for_all_outputs": true
+      }
+    }
+  }
+}

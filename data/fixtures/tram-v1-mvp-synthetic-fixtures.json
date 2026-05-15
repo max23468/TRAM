@@ -1,0 +1,2191 @@
+{
+  "manifest": {
+    "fixture_set_id": "tram_mvp_synthetic_v0_1",
+    "version": "0.2.0",
+    "generated_at": "2026-05-15T11:30:00+02:00",
+    "contains_real_tender_data": false,
+    "source_policy": "synthetic_only"
+  },
+  "tenders": [
+    {
+      "id": "tender_fx_cop_metro_om",
+      "name": "Metro Nord O&M 2030",
+      "stage": "Revised tender",
+      "transport_mode": "metro",
+      "privacy_level": "L1",
+      "dashboard_state": "open_critical_issues",
+      "owner_role": "owner",
+      "package_label": "Demo sanificata metropolitana O&M"
+    },
+    {
+      "id": "tender_fx_luas_light_rail_om",
+      "name": "Light Rail Est O&M",
+      "stage": "addendum",
+      "transport_mode": "light_rail",
+      "privacy_level": "L1",
+      "dashboard_state": "partially_validated",
+      "owner_role": "editor",
+      "package_label": "Archetipo tram/light rail"
+    },
+    {
+      "id": "tender_fx_milano_bus_lots",
+      "name": "Bus Lotti Extraurbani",
+      "stage": "negotiation",
+      "transport_mode": "bus",
+      "privacy_level": "L1",
+      "dashboard_state": "stale_due_to_new_docs",
+      "owner_role": "reviewer",
+      "package_label": "Archetipo lotti bus"
+    },
+    {
+      "id": "tender_fx_metrolink_ppp_pq",
+      "name": "MetroLink PPP PQ",
+      "stage": "prequalification",
+      "transport_mode": "metro",
+      "privacy_level": "L0",
+      "dashboard_state": "validated_internal",
+      "owner_role": "viewer",
+      "package_label": "Archetipo PPP prequalifica"
+    },
+    {
+      "id": "tender_fx_depot_ebus_om",
+      "name": "Deposito E-Bus O&M",
+      "stage": "draft package",
+      "transport_mode": "bus_depot",
+      "privacy_level": "L1",
+      "dashboard_state": "draft",
+      "owner_role": "owner",
+      "package_label": "Archetipo bozza iniziale deposito elettrico"
+    }
+  ],
+  "documents": [
+    {
+      "id": "doc_fx_itt",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Istruzioni ai concorrenti - revised tender",
+      "family": "instructions",
+      "version": "v1.0",
+      "currentness": "current",
+      "storage_key": "tenders/tender_fx_cop_metro_om/documents/doc_fx_itt/original.synthetic"
+    },
+    {
+      "id": "doc_fx_metro_contract",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Schema contratto O&M",
+      "family": "contract",
+      "version": "v1.1",
+      "currentness": "under_review",
+      "storage_key": "tenders/tender_fx_cop_metro_om/documents/doc_fx_metro_contract/original.synthetic"
+    },
+    {
+      "id": "doc_fx_metro_performance",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Regime performance e penali",
+      "family": "performance_regime",
+      "version": "v1.0",
+      "currentness": "current",
+      "storage_key": "tenders/tender_fx_cop_metro_om/documents/doc_fx_metro_performance/original.synthetic"
+    },
+    {
+      "id": "doc_fx_metro_mobilization",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Piano mobilizzazione e handover",
+      "family": "mobilization",
+      "version": "v1.0",
+      "currentness": "current",
+      "storage_key": "tenders/tender_fx_cop_metro_om/documents/doc_fx_metro_mobilization/original.synthetic"
+    },
+    {
+      "id": "doc_fx_metro_pricing",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Modello economico - struttura workbook",
+      "family": "pricing_workbook",
+      "version": "v1.0",
+      "currentness": "current",
+      "storage_key": "tenders/tender_fx_cop_metro_om/documents/doc_fx_metro_pricing/original.synthetic"
+    },
+    {
+      "id": "doc_fx_qna_register",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Registro Q&A",
+      "family": "clarification_register",
+      "version": "v1.0",
+      "currentness": "under_review",
+      "storage_key": "tenders/tender_fx_cop_metro_om/documents/doc_fx_qna_register/original.synthetic"
+    },
+    {
+      "id": "doc_fx_contract",
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "title": "Schema contratto O&M",
+      "family": "contract",
+      "version": "v2.1",
+      "currentness": "superseded",
+      "storage_key": "tenders/tender_fx_luas_light_rail_om/documents/doc_fx_contract/original.synthetic"
+    },
+    {
+      "id": "doc_fx_kpi",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "title": "Allegato KPI e penali",
+      "family": "technical_schedule",
+      "version": "v0.9",
+      "currentness": "under_review",
+      "storage_key": "tenders/tender_fx_milano_bus_lots/documents/doc_fx_kpi/original.synthetic"
+    },
+    {
+      "id": "doc_fx_pq",
+      "tender_id": "tender_fx_metrolink_ppp_pq",
+      "title": "Questionario di prequalifica",
+      "family": "prequalification",
+      "version": "v1.0",
+      "currentness": "current",
+      "storage_key": "tenders/tender_fx_metrolink_ppp_pq/documents/doc_fx_pq/original.synthetic"
+    },
+    {
+      "id": "doc_fx_depot_draft",
+      "tender_id": "tender_fx_depot_ebus_om",
+      "title": "Inventario iniziale deposito e bus elettrici",
+      "family": "draft_inventory",
+      "version": "v0.1",
+      "currentness": "under_review",
+      "storage_key": "tenders/tender_fx_depot_ebus_om/documents/doc_fx_depot_draft/original.synthetic"
+    }
+  ],
+  "source_references": [
+    {
+      "id": "src_fx_001",
+      "document_id": "doc_fx_itt",
+      "label": "Istruzioni, sezione 2.1",
+      "synthetic_excerpt": "Il termine per la presentazione delle offerte è indicato nel calendario di gara.",
+      "page": 4
+    },
+    {
+      "id": "src_fx_002",
+      "document_id": "doc_fx_contract",
+      "label": "Contratto, clausola 7",
+      "synthetic_excerpt": "L’operatore deve mantenere il servizio secondo livelli prestazionali definiti.",
+      "page": 18
+    },
+    {
+      "id": "src_fx_003",
+      "document_id": "doc_fx_kpi",
+      "label": "Allegato KPI, tabella 3",
+      "synthetic_excerpt": "La disponibilità del servizio è misurata con soglie e finestre di calcolo dedicate.",
+      "page": 11
+    },
+    {
+      "id": "src_fx_004",
+      "document_id": "doc_fx_pq",
+      "label": "PQ, requisito tecnico A",
+      "synthetic_excerpt": "Il candidato descrive esperienza O&M su sistemi di trasporto comparabili.",
+      "page": 6
+    },
+    {
+      "id": "src_fx_005",
+      "document_id": "doc_fx_itt",
+      "label": "Istruzioni, Q&A",
+      "synthetic_excerpt": "Le risposte Q&A approvate prevalgono sulle indicazioni precedenti se incompatibili.",
+      "page": 9
+    },
+    {
+      "id": "src_fx_metro_contract_term",
+      "document_id": "doc_fx_metro_contract",
+      "label": "Contratto, durata e opzioni",
+      "synthetic_excerpt": "Il contratto prevede una durata pluriennale con opzioni esercitabili secondo condizioni definite.",
+      "page": 12
+    },
+    {
+      "id": "src_fx_metro_performance_availability",
+      "document_id": "doc_fx_metro_performance",
+      "label": "Performance regime, disponibilità servizio",
+      "synthetic_excerpt": "La disponibilità del servizio è misurata per linea, fascia oraria e causa dell’evento.",
+      "page": 8
+    },
+    {
+      "id": "src_fx_metro_mobilization_handover",
+      "document_id": "doc_fx_metro_mobilization",
+      "label": "Mobilizzazione, handover asset",
+      "synthetic_excerpt": "Il piano di mobilizzazione include presa in carico asset, personale chiave e readiness operativa.",
+      "page": 5
+    },
+    {
+      "id": "src_fx_metro_pricing_indexation",
+      "document_id": "doc_fx_metro_pricing",
+      "label": "Workbook economico, indicizzazione",
+      "synthetic_excerpt": "La struttura economica distingue componenti fisse, variabili e meccanismi di indicizzazione.",
+      "page": 3
+    },
+    {
+      "id": "src_fx_qna_register",
+      "document_id": "doc_fx_qna_register",
+      "label": "Registro Q&A, riga sintetica 1",
+      "synthetic_excerpt": "Il registro Q&A contiene numero, oggetto, riferimento documento, domanda, risposta e classificazione.",
+      "page": 1
+    },
+    {
+      "id": "src_fx_qna_correction_schedule",
+      "document_id": "doc_fx_qna_register",
+      "label": "Registro Q&A, correzione sintetica",
+      "synthetic_excerpt": "Una risposta dell’ente rettifica un dato di calendario e richiede aggiornamento della dashboard.",
+      "page": 1
+    },
+    {
+      "id": "src_fx_qna_missing_attachment",
+      "document_id": "doc_fx_qna_register",
+      "label": "Registro Q&A, allegato mancante",
+      "synthetic_excerpt": "Una risposta rimanda a un allegato non ancora caricato nel Tender.",
+      "page": 1
+    },
+    {
+      "id": "src_fx_metro_submission_forms",
+      "document_id": "doc_fx_itt",
+      "label": "Istruzioni, moduli offerta",
+      "synthetic_excerpt": "La busta amministrativa richiede moduli standard e dichiarazioni firmate digitalmente.",
+      "page": 14
+    },
+    {
+      "id": "src_fx_metro_bid_validity",
+      "document_id": "doc_fx_itt",
+      "label": "Istruzioni, validità offerta",
+      "synthetic_excerpt": "L’offerta resta valida per un periodo minimo calcolato dalla scadenza di presentazione.",
+      "page": 16
+    },
+    {
+      "id": "src_fx_metro_table_calendar",
+      "document_id": "doc_fx_itt",
+      "label": "Istruzioni, calendario sintetico",
+      "synthetic_excerpt": "Il calendario di gara distingue richieste chiarimenti, sopralluoghi e consegna dell’offerta.",
+      "page": 5
+    },
+    {
+      "id": "src_fx_metro_contract_reporting",
+      "document_id": "doc_fx_metro_contract",
+      "label": "Contratto, reporting operativo",
+      "synthetic_excerpt": "Il gestore produce report periodici su servizio, manutenzione, sicurezza e reclami.",
+      "page": 27
+    },
+    {
+      "id": "src_fx_metro_performance_headway",
+      "document_id": "doc_fx_metro_performance",
+      "label": "Performance regime, regolarità corse",
+      "synthetic_excerpt": "La regolarità è misurata con soglie su frequenza, scostamenti e cause di esclusione.",
+      "page": 10
+    },
+    {
+      "id": "src_fx_metro_performance_cleanliness",
+      "document_id": "doc_fx_metro_performance",
+      "label": "Performance regime, pulizia e customer experience",
+      "synthetic_excerpt": "La qualità percepita include controlli su pulizia, informazione e gestione reclami.",
+      "page": 15
+    },
+    {
+      "id": "src_fx_metro_mobilization_staff_transfer",
+      "document_id": "doc_fx_metro_mobilization",
+      "label": "Mobilizzazione, personale e turni",
+      "synthetic_excerpt": "Il piano di avvio descrive trasferimento conoscenze, turnazione e ruoli chiave.",
+      "page": 9
+    },
+    {
+      "id": "src_fx_metro_mobilization_training",
+      "document_id": "doc_fx_metro_mobilization",
+      "label": "Mobilizzazione, formazione iniziale",
+      "synthetic_excerpt": "La formazione iniziale copre procedure operative, sicurezza e strumenti di controllo.",
+      "page": 13
+    },
+    {
+      "id": "src_fx_metro_pricing_payment_mechanism",
+      "document_id": "doc_fx_metro_pricing",
+      "label": "Workbook economico, payment mechanism",
+      "synthetic_excerpt": "Il modello economico collega canone, indicatori di servizio e componenti variabili.",
+      "page": 6
+    },
+    {
+      "id": "src_fx_metro_pricing_penalty_interface",
+      "document_id": "doc_fx_metro_pricing",
+      "label": "Workbook economico, interfaccia penali",
+      "synthetic_excerpt": "Le penali derivano da indicatori operativi e alimentano il prospetto economico.",
+      "page": 8
+    },
+    {
+      "id": "src_fx_qna_redline_scope",
+      "document_id": "doc_fx_qna_register",
+      "label": "Registro Q&A, perimetro redline",
+      "synthetic_excerpt": "Una risposta chiarisce quali modifiche redline sono da incorporare nel set corrente.",
+      "page": 2
+    },
+    {
+      "id": "src_fx_qna_sensitive_question",
+      "document_id": "doc_fx_qna_register",
+      "label": "Registro Q&A, domanda sensibile",
+      "synthetic_excerpt": "Una bozza interna contiene un dubbio da approvare prima di qualunque export esterno.",
+      "page": 3
+    },
+    {
+      "id": "src_fx_luas_redline_summary",
+      "document_id": "doc_fx_contract",
+      "label": "Contratto light rail, sintesi redline",
+      "synthetic_excerpt": "Il redline contrattuale modifica obblighi di manutenzione e rinnovo asset.",
+      "page": 22
+    },
+    {
+      "id": "src_fx_luas_asset_renewal",
+      "document_id": "doc_fx_contract",
+      "label": "Contratto light rail, rinnovo asset",
+      "synthetic_excerpt": "Il piano di rinnovo asset richiede una matrice rischi e un calendario di interventi.",
+      "page": 31
+    },
+    {
+      "id": "src_fx_milano_lot_matrix",
+      "document_id": "doc_fx_kpi",
+      "label": "Allegato KPI, matrice lotti",
+      "synthetic_excerpt": "La matrice lotti distingue frequenze, percorrenze e vincoli minimi per area operativa.",
+      "page": 7
+    },
+    {
+      "id": "src_fx_milano_pef_template",
+      "document_id": "doc_fx_kpi",
+      "label": "Allegato KPI, template PEF",
+      "synthetic_excerpt": "Il template PEF richiede coerenza tra lotti, costo servizio e ipotesi operative.",
+      "page": 19
+    },
+    {
+      "id": "src_fx_pq_financial_capacity",
+      "document_id": "doc_fx_pq",
+      "label": "PQ, capacità economico-finanziaria",
+      "synthetic_excerpt": "Il candidato dichiara requisiti di capacità economica su base sintetica e verificabile.",
+      "page": 10
+    },
+    {
+      "id": "src_fx_depot_initial_inventory",
+      "document_id": "doc_fx_depot_draft",
+      "label": "Inventario deposito, stato iniziale",
+      "synthetic_excerpt": "Il pacchetto iniziale contiene solo inventario di massima e richiede ingestione completa.",
+      "page": 2
+    }
+  ],
+  "indicators": [
+    {
+      "key": "package.stage",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "ITT",
+      "status": "confirmed",
+      "source_reference_id": "src_fx_001",
+      "priority": "P0"
+    },
+    {
+      "key": "documents.currentness_status",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "qna_changes_pending_review",
+      "status": "proposed",
+      "source_reference_id": "src_fx_qna_correction_schedule",
+      "priority": "P0"
+    },
+    {
+      "key": "clarifications.register_coverage_status",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "partial_missing_attachment",
+      "status": "proposed",
+      "source_reference_id": "src_fx_qna_missing_attachment",
+      "priority": "P0"
+    },
+    {
+      "key": "clarifications.ready_count",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "3",
+      "status": "proposed",
+      "source_reference_id": "src_fx_qna_register",
+      "priority": "P1"
+    },
+    {
+      "key": "documents.currentness_status",
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "value": "stale",
+      "status": "proposed",
+      "source_reference_id": "src_fx_005",
+      "priority": "P0"
+    },
+    {
+      "key": "ai.external_use.status",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "value": "pending_l1_approval",
+      "status": "proposed",
+      "source_reference_id": "src_fx_003",
+      "priority": "P0"
+    },
+    {
+      "key": "data_quality.source_coverage_ratio",
+      "tender_id": "tender_fx_metrolink_ppp_pq",
+      "value": "0.82",
+      "status": "proposed",
+      "source_reference_id": "src_fx_004",
+      "priority": "P1"
+    },
+    {
+      "key": "dashboard.validation_state.overall",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "open_critical_issues",
+      "status": "proposed",
+      "source_reference_id": "src_fx_qna_missing_attachment",
+      "priority": "P0"
+    },
+    {
+      "key": "timeline.next_deadline_risk",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "high",
+      "status": "contested",
+      "source_reference_id": "src_fx_metro_table_calendar",
+      "priority": "P0"
+    },
+    {
+      "key": "timeline.date_conflict_count",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "1",
+      "status": "contested",
+      "source_reference_id": "src_fx_qna_correction_schedule",
+      "priority": "P1"
+    },
+    {
+      "key": "deliverables.mandatory_count",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "4",
+      "status": "proposed",
+      "source_reference_id": "src_fx_metro_submission_forms",
+      "priority": "P0"
+    },
+    {
+      "key": "deliverables.review_gate_count",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "2",
+      "status": "proposed",
+      "source_reference_id": "src_fx_metro_mobilization_handover",
+      "priority": "P1"
+    },
+    {
+      "key": "requirements.kpi_count",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "4",
+      "status": "proposed",
+      "source_reference_id": "src_fx_metro_performance_availability",
+      "priority": "P0"
+    },
+    {
+      "key": "requirements.critical_kpi_count",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "1",
+      "status": "proposed",
+      "source_reference_id": "src_fx_metro_performance_headway",
+      "priority": "P1"
+    },
+    {
+      "key": "financials.item_count",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "3",
+      "status": "proposed",
+      "source_reference_id": "src_fx_metro_pricing_indexation",
+      "priority": "P0"
+    },
+    {
+      "key": "financials.payment_mechanism_status",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "human_review_required",
+      "status": "proposed",
+      "source_reference_id": "src_fx_metro_pricing_payment_mechanism",
+      "priority": "P0"
+    },
+    {
+      "key": "cost_drivers.high_risk_count",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "2",
+      "status": "proposed",
+      "source_reference_id": "src_fx_metro_pricing_penalty_interface",
+      "priority": "P1"
+    },
+    {
+      "key": "criticalities.candidate_count",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "2",
+      "status": "proposed",
+      "source_reference_id": "src_fx_qna_correction_schedule",
+      "priority": "P0"
+    },
+    {
+      "key": "review.blocking_count",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "3",
+      "status": "proposed",
+      "source_reference_id": "src_fx_qna_missing_attachment",
+      "priority": "P0"
+    },
+    {
+      "key": "audit.last_gate",
+      "tender_id": "tender_fx_cop_metro_om",
+      "value": "l2_effective_internal_offer_blocked",
+      "status": "confirmed",
+      "source_reference_id": "src_fx_metro_pricing_penalty_interface",
+      "priority": "P1"
+    },
+    {
+      "key": "package.stage",
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "value": "ITN",
+      "status": "confirmed",
+      "source_reference_id": "src_fx_luas_redline_summary",
+      "priority": "P0"
+    },
+    {
+      "key": "dashboard.validation_state.overall",
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "value": "partially_validated",
+      "status": "proposed",
+      "source_reference_id": "src_fx_luas_redline_summary",
+      "priority": "P0"
+    },
+    {
+      "key": "qna.addendum_status",
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "value": "answered_pending_review",
+      "status": "proposed",
+      "source_reference_id": "src_fx_luas_redline_summary",
+      "priority": "P1"
+    },
+    {
+      "key": "financials.ai_review_status",
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "value": "allowed_minimized",
+      "status": "proposed",
+      "source_reference_id": "src_fx_luas_asset_renewal",
+      "priority": "P0"
+    },
+    {
+      "key": "criticalities.redline_candidate_count",
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "value": "1",
+      "status": "proposed",
+      "source_reference_id": "src_fx_luas_redline_summary",
+      "priority": "P1"
+    },
+    {
+      "key": "package.stage",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "value": "negotiation",
+      "status": "confirmed",
+      "source_reference_id": "src_fx_milano_lot_matrix",
+      "priority": "P0"
+    },
+    {
+      "key": "dashboard.validation_state.overall",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "value": "stale_due_to_new_docs",
+      "status": "proposed",
+      "source_reference_id": "src_fx_milano_lot_matrix",
+      "priority": "P0"
+    },
+    {
+      "key": "documents.currentness_status",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "value": "stale_due_to_new_docs",
+      "status": "proposed",
+      "source_reference_id": "src_fx_milano_lot_matrix",
+      "priority": "P0"
+    },
+    {
+      "key": "timeline.deadline_status",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "value": "unclear",
+      "status": "proposed",
+      "source_reference_id": "src_fx_milano_lot_matrix",
+      "priority": "P1"
+    },
+    {
+      "key": "financials.owner_approval_status",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "value": "pending_owner_approval",
+      "status": "proposed",
+      "source_reference_id": "src_fx_milano_pef_template",
+      "priority": "P0"
+    },
+    {
+      "key": "criticalities.pef_issue_count",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "value": "2",
+      "status": "proposed",
+      "source_reference_id": "src_fx_milano_pef_template",
+      "priority": "P1"
+    },
+    {
+      "key": "package.stage",
+      "tender_id": "tender_fx_metrolink_ppp_pq",
+      "value": "prequalification",
+      "status": "confirmed",
+      "source_reference_id": "src_fx_004",
+      "priority": "P0"
+    },
+    {
+      "key": "dashboard.validation_state.overall",
+      "tender_id": "tender_fx_metrolink_ppp_pq",
+      "value": "validated_internal",
+      "status": "confirmed",
+      "source_reference_id": "src_fx_004",
+      "priority": "P0"
+    },
+    {
+      "key": "financials.applicability",
+      "tender_id": "tender_fx_metrolink_ppp_pq",
+      "value": "not_applicable",
+      "status": "confirmed",
+      "source_reference_id": "src_fx_pq_financial_capacity",
+      "priority": "P1"
+    },
+    {
+      "key": "package.stage",
+      "tender_id": "tender_fx_depot_ebus_om",
+      "value": "draft",
+      "status": "proposed",
+      "source_reference_id": "src_fx_depot_initial_inventory",
+      "priority": "P0"
+    },
+    {
+      "key": "dashboard.validation_state.overall",
+      "tender_id": "tender_fx_depot_ebus_om",
+      "value": "draft",
+      "status": "proposed",
+      "source_reference_id": "src_fx_depot_initial_inventory",
+      "priority": "P0"
+    },
+    {
+      "key": "documents.ingestion_status",
+      "tender_id": "tender_fx_depot_ebus_om",
+      "value": "not_started",
+      "status": "proposed",
+      "source_reference_id": "src_fx_depot_initial_inventory",
+      "priority": "P0"
+    },
+    {
+      "key": "timeline.schedule_status",
+      "tender_id": "tender_fx_depot_ebus_om",
+      "value": "missing_schedule",
+      "status": "proposed",
+      "source_reference_id": "src_fx_depot_initial_inventory",
+      "priority": "P1"
+    },
+    {
+      "key": "review.open_count",
+      "tender_id": "tender_fx_depot_ebus_om",
+      "value": "1",
+      "status": "proposed",
+      "source_reference_id": "src_fx_depot_initial_inventory",
+      "priority": "P1"
+    },
+    {
+      "key": "audit.last_gate",
+      "tender_id": "tender_fx_depot_ebus_om",
+      "value": "quota_exhausted",
+      "status": "proposed",
+      "source_reference_id": "src_fx_depot_initial_inventory",
+      "priority": "P1"
+    }
+  ],
+  "review_items": [
+    {
+      "id": "rev_fx_001",
+      "tender_id": "tender_fx_cop_metro_om",
+      "task": "T2",
+      "title": "Verificare scadenza offerta",
+      "risk": "medium",
+      "status": "open",
+      "source_reference_id": "src_fx_001"
+    },
+    {
+      "id": "rev_fx_qna_001",
+      "tender_id": "tender_fx_cop_metro_om",
+      "task": "T8",
+      "title": "Integrare risposta Q&A correttiva nella dashboard",
+      "risk": "high",
+      "status": "needs_owner",
+      "source_reference_id": "src_fx_qna_correction_schedule"
+    },
+    {
+      "id": "rev_fx_qna_002",
+      "tender_id": "tender_fx_cop_metro_om",
+      "task": "T1",
+      "title": "Caricare allegato citato dal registro Q&A",
+      "risk": "high",
+      "status": "blocked",
+      "source_reference_id": "src_fx_qna_missing_attachment"
+    },
+    {
+      "id": "rev_fx_002",
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "task": "T7",
+      "title": "Addendum potenzialmente incoerente con contratto",
+      "risk": "high",
+      "status": "needs_owner",
+      "source_reference_id": "src_fx_005"
+    },
+    {
+      "id": "rev_fx_003",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "task": "T5",
+      "title": "Payment mechanism da analizzare con AI gate L1",
+      "risk": "high",
+      "status": "needs_owner",
+      "source_reference_id": "src_fx_003"
+    },
+    {
+      "id": "rev_fx_004",
+      "tender_id": "tender_fx_metrolink_ppp_pq",
+      "task": "T3",
+      "title": "Submission PQ pronta per conferma",
+      "risk": "low",
+      "status": "ready",
+      "source_reference_id": "src_fx_004"
+    },
+    {
+      "id": "rev_fx_005",
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "task": "T1",
+      "title": "Confermare perimetro redline del contratto light rail",
+      "risk": "medium",
+      "status": "open",
+      "source_reference_id": "src_fx_luas_redline_summary"
+    },
+    {
+      "id": "rev_fx_006",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "task": "T7",
+      "title": "Verificare coerenza PEF sintetico e matrice lotti",
+      "risk": "critical",
+      "status": "open",
+      "source_reference_id": "src_fx_milano_pef_template"
+    },
+    {
+      "id": "rev_fx_007",
+      "tender_id": "tender_fx_cop_metro_om",
+      "task": "T4",
+      "title": "Validare KPI regolarità collegato a penali",
+      "risk": "medium",
+      "status": "contested",
+      "source_reference_id": "src_fx_metro_performance_headway"
+    },
+    {
+      "id": "rev_fx_008",
+      "tender_id": "tender_fx_depot_ebus_om",
+      "task": "T1",
+      "title": "Completare inventario iniziale prima della mappatura",
+      "risk": "medium",
+      "status": "open",
+      "source_reference_id": "src_fx_depot_initial_inventory"
+    }
+  ],
+  "clarification_register_imports": [
+    {
+      "id": "clar_import_fx_metro_qna_001",
+      "tender_id": "tender_fx_cop_metro_om",
+      "source_document_id": "doc_fx_qna_register",
+      "source_filename": "qna-register-synthetic.xlsx",
+      "row_count": 6,
+      "column_map": {
+        "number": "No.",
+        "subject": "Subject",
+        "document_reference": "Document reference",
+        "question": "Question",
+        "answer": "Answer",
+        "kind": "Clarification/Correction"
+      },
+      "rows_with_document_reference_count": 4,
+      "rows_without_document_reference_count": 2,
+      "clarification_count": 4,
+      "correction_count": 2,
+      "missing_attachment_count": 1,
+      "import_status": "needs_review"
+    }
+  ],
+  "clarification_threads": [
+    {
+      "id": "clar_fx_metro_deadline_correction",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Rettifica calendario offerta",
+      "status": "answered",
+      "source_channel": "q_and_a_register",
+      "source_register_row_no": "2",
+      "document_reference_raw": "Calendario di gara",
+      "clarification_kind": "correction",
+      "currentness_effect": "supersedes",
+      "affected_source_ref_ids": ["src_fx_001", "src_fx_qna_correction_schedule"],
+      "authority_platform_reference": "portale_ente:registro_qna_sintetico",
+      "question_summary": "Domanda sintetica su data o termine operativo.",
+      "answer_summary": "Risposta sintetica dell’ente che rettifica un dato precedente.",
+      "blocked_reason": null,
+      "requires_dashboard_update": true,
+      "approval_required": true,
+      "approved_by": null,
+      "can_export": false
+    },
+    {
+      "id": "clar_fx_metro_requirement_clarification",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Q&A requisito operativo",
+      "status": "incorporated",
+      "source_channel": "q_and_a_register",
+      "source_register_row_no": "4",
+      "document_reference_raw": "Specifiche O&M",
+      "clarification_kind": "clarification",
+      "currentness_effect": "clarifies",
+      "affected_source_ref_ids": ["src_fx_qna_register"],
+      "authority_platform_reference": "portale_ente:registro_qna_sintetico",
+      "question_summary": "Domanda sintetica su interpretazione di un requisito O&M.",
+      "answer_summary": "Risposta sintetica che precisa il perimetro del requisito.",
+      "blocked_reason": null,
+      "requires_dashboard_update": true,
+      "approval_required": false,
+      "approved_by": "fixture.owner@example.invalid",
+      "can_export": false
+    },
+    {
+      "id": "clar_fx_metro_missing_attachment",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Risposta con allegato non caricato",
+      "status": "blocked",
+      "source_channel": "q_and_a_register",
+      "source_register_row_no": "5",
+      "document_reference_raw": null,
+      "clarification_kind": "answer",
+      "currentness_effect": "unknown",
+      "affected_source_ref_ids": ["src_fx_qna_missing_attachment"],
+      "authority_platform_reference": "portale_ente:registro_qna_sintetico",
+      "question_summary": "Domanda sintetica con risposta che rimanda a materiale esterno.",
+      "answer_summary": "Risposta sintetica non incorporabile finché l’allegato citato non è presente.",
+      "blocked_reason": "Allegato citato dalla risposta Q&A non disponibile nel Tender.",
+      "requires_dashboard_update": false,
+      "approval_required": true,
+      "approved_by": null,
+      "can_export": false
+    },
+    {
+      "id": "clar_fx_metro_internal_draft",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Bozza Q&A da valutare",
+      "status": "draft_question",
+      "source_channel": "internal_draft",
+      "source_register_row_no": null,
+      "document_reference_raw": "Istruzioni ai concorrenti",
+      "clarification_kind": "unknown",
+      "currentness_effect": "none",
+      "affected_source_ref_ids": ["src_fx_001"],
+      "authority_platform_reference": null,
+      "question_summary": "Bozza sintetica da approvare manualmente prima di usare il portale dell’ente.",
+      "answer_summary": null,
+      "blocked_reason": null,
+      "requires_dashboard_update": false,
+      "approval_required": true,
+      "approved_by": null,
+      "can_export": true
+    },
+    {
+      "id": "clar_fx_milano_deadline_question",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "title": "Q&A su finestra di aggiornamento lotti",
+      "status": "sent_to_authority",
+      "source_channel": "procurement_portal",
+      "source_register_row_no": null,
+      "document_reference_raw": "Allegato KPI e penali",
+      "clarification_kind": "clarification",
+      "currentness_effect": "unknown",
+      "affected_source_ref_ids": ["src_fx_milano_lot_matrix"],
+      "authority_platform_reference": "portale_ente:ticket_sintetico_001",
+      "question_summary": "Domanda sintetica su decorrenza dell’aggiornamento lotti.",
+      "answer_summary": null,
+      "blocked_reason": null,
+      "requires_dashboard_update": true,
+      "approval_required": false,
+      "approved_by": "fixture.reviewer@example.invalid",
+      "can_export": false
+    }
+  ],
+  "timeline_events": [
+    {
+      "id": "time_fx_metro_site_visit",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Sopralluogo tecnico facoltativo",
+      "date_label": "Settimana 3",
+      "status": "confirmed",
+      "impact": "medium",
+      "source_reference_id": "src_fx_001"
+    },
+    {
+      "id": "time_fx_metro_qna_deadline",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Termine ricezione Q&A",
+      "date_label": "Settimana 5",
+      "status": "confirmed",
+      "impact": "high",
+      "source_reference_id": "src_fx_005"
+    },
+    {
+      "id": "time_fx_metro_submission",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Presentazione offerta",
+      "date_label": "Settimana 8",
+      "status": "changed_by_qna",
+      "impact": "high",
+      "source_reference_id": "src_fx_qna_correction_schedule"
+    },
+    {
+      "id": "time_fx_luas_redline_effective",
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "title": "Decorrenza addendum redline",
+      "date_label": "Settimana 6",
+      "status": "confirmed",
+      "impact": "medium",
+      "source_reference_id": "src_fx_luas_redline_summary"
+    },
+    {
+      "id": "time_fx_milano_updated_lot_deadline",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "title": "Deadline aggiornata per matrice lotti",
+      "date_label": "Data da chiarire",
+      "status": "unclear",
+      "impact": "high",
+      "source_reference_id": "src_fx_milano_lot_matrix"
+    }
+  ],
+  "deliverables": [
+    {
+      "id": "del_fx_metro_admin_declarations",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Dichiarazioni amministrative e requisiti di partecipazione",
+      "envelope": "Amministrativa",
+      "status": "mapped",
+      "source_reference_id": "src_fx_001"
+    },
+    {
+      "id": "del_fx_metro_technical_method",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Relazione tecnica O&M e modello organizzativo",
+      "envelope": "Tecnica",
+      "status": "needs_review",
+      "source_reference_id": "src_fx_metro_mobilization_handover"
+    },
+    {
+      "id": "del_fx_metro_mobilization_plan",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Piano mobilizzazione, handover e avvio servizio",
+      "envelope": "Tecnica",
+      "status": "mapped",
+      "source_reference_id": "src_fx_metro_mobilization_handover"
+    },
+    {
+      "id": "del_fx_metro_pricing_workbook",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Workbook economico e allegati di prezzo",
+      "envelope": "Economica",
+      "status": "local_review_only",
+      "source_reference_id": "src_fx_metro_pricing_indexation"
+    },
+    {
+      "id": "del_fx_luas_asset_renewal_plan",
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "title": "Piano rinnovo asset e matrice interventi",
+      "envelope": "Tecnica",
+      "status": "needs_review",
+      "source_reference_id": "src_fx_luas_asset_renewal"
+    },
+    {
+      "id": "del_fx_pq_reference_projects",
+      "tender_id": "tender_fx_metrolink_ppp_pq",
+      "title": "Schede esperienze O&M comparabili",
+      "envelope": "Prequalifica",
+      "status": "ready",
+      "source_reference_id": "src_fx_004"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "req_fx_metro_operations_control",
+      "tender_id": "tender_fx_cop_metro_om",
+      "domain": "Operations",
+      "title": "Presidio centrale operativa e gestione eventi",
+      "status": "proposed",
+      "risk": "medium",
+      "source_reference_id": "src_fx_metro_performance_availability"
+    },
+    {
+      "id": "req_fx_metro_maintenance_readiness",
+      "tender_id": "tender_fx_cop_metro_om",
+      "domain": "Maintenance",
+      "title": "Readiness manutentiva prima dell’avvio servizio",
+      "status": "confirmed",
+      "risk": "medium",
+      "source_reference_id": "src_fx_metro_mobilization_handover"
+    },
+    {
+      "id": "req_fx_metro_customer_info",
+      "tender_id": "tender_fx_cop_metro_om",
+      "domain": "Customer experience",
+      "title": "Informazione passeggeri durante interruzioni",
+      "status": "proposed",
+      "risk": "low",
+      "source_reference_id": "src_fx_metro_performance_availability"
+    },
+    {
+      "id": "req_fx_metro_reporting",
+      "tender_id": "tender_fx_cop_metro_om",
+      "domain": "Reporting",
+      "title": "Report mensili su performance, incidenti e reclami",
+      "status": "clarified_by_qna",
+      "risk": "medium",
+      "source_reference_id": "src_fx_qna_register"
+    },
+    {
+      "id": "req_fx_luas_asset_condition",
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "domain": "Maintenance",
+      "title": "Matrice condizioni asset e soglie di rinnovo",
+      "status": "proposed",
+      "risk": "high",
+      "source_reference_id": "src_fx_luas_asset_renewal"
+    },
+    {
+      "id": "req_fx_milano_lot_availability",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "domain": "Operations",
+      "title": "Disponibilità minima per lotto e fascia oraria",
+      "status": "proposed",
+      "risk": "high",
+      "source_reference_id": "src_fx_milano_lot_matrix"
+    }
+  ],
+  "financial_items": [
+    {
+      "id": "fin_fx_metro_fixed_fee",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Canone operativo fisso",
+      "sensitivity": "medium",
+      "privacy_level": "L1",
+      "ai_analysis_status": "allowed_minimized",
+      "status": "structure_only",
+      "source_reference_id": "src_fx_metro_pricing_indexation"
+    },
+    {
+      "id": "fin_fx_metro_variable_component",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Componente variabile legata a servizio e performance",
+      "sensitivity": "medium",
+      "privacy_level": "L1",
+      "ai_analysis_status": "review_after_ai",
+      "status": "human_review_required",
+      "source_reference_id": "src_fx_metro_pricing_indexation"
+    },
+    {
+      "id": "fin_fx_metro_indexation",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Formula di indicizzazione e soglie di applicazione",
+      "sensitivity": "medium",
+      "privacy_level": "L1",
+      "ai_analysis_status": "allowed_minimized",
+      "status": "human_review_required",
+      "source_reference_id": "src_fx_metro_pricing_indexation"
+    },
+    {
+      "id": "fin_fx_luas_renewal_allowance",
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "title": "Allowance sintetica per rinnovo asset",
+      "sensitivity": "medium",
+      "privacy_level": "L1",
+      "ai_analysis_status": "allowed_minimized",
+      "status": "human_review_required",
+      "source_reference_id": "src_fx_luas_asset_renewal"
+    },
+    {
+      "id": "fin_fx_milano_lot_adjustment",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "title": "Adeguamento PEF per variabilità lotti",
+      "sensitivity": "medium",
+      "privacy_level": "L1",
+      "ai_analysis_status": "pending_owner_approval",
+      "status": "human_review_required",
+      "source_reference_id": "src_fx_milano_pef_template"
+    }
+  ],
+  "cost_drivers": [
+    {
+      "id": "cost_fx_metro_staffing",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Copertura turni, reperibilità e personale chiave",
+      "category": "personale",
+      "status": "proposed",
+      "source_reference_id": "src_fx_metro_mobilization_handover"
+    },
+    {
+      "id": "cost_fx_metro_energy",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Energia, trazione e utilities operative",
+      "category": "energia",
+      "status": "watch",
+      "source_reference_id": "src_fx_metro_pricing_indexation"
+    },
+    {
+      "id": "cost_fx_metro_penalties",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Esposizione a penali su disponibilità e regolarità",
+      "category": "rischio performance",
+      "status": "needs_review",
+      "source_reference_id": "src_fx_metro_performance_availability"
+    },
+    {
+      "id": "cost_fx_metro_transition",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Costi una tantum di mobilizzazione e transizione",
+      "category": "mobilizzazione",
+      "status": "proposed",
+      "source_reference_id": "src_fx_metro_mobilization_handover"
+    },
+    {
+      "id": "cost_fx_milano_lot_complexity",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "title": "Variabilità operativa tra lotti e percorrenze",
+      "category": "complessità lotti",
+      "status": "needs_review",
+      "source_reference_id": "src_fx_milano_lot_matrix"
+    }
+  ],
+  "route_networks": [
+    {
+      "tender_id": "tender_fx_cop_metro_om",
+      "overall_state": "open_critical_issues",
+      "primary_blocker_node_key": "timeline",
+      "nodes": [
+        {
+          "id": "route_node_fx_cop_documents",
+          "tender_id": "tender_fx_cop_metro_om",
+          "node_key": "documents",
+          "label": "Documenti",
+          "route_token": "route-document",
+          "state": "proposed",
+          "risk": "high",
+          "count_label": "2 review",
+          "target_route": "/tenders/tender_fx_cop_metro_om/documents",
+          "source_reference_ids": ["src_fx_001", "src_fx_qna_missing_attachment"],
+          "review_item_ids": ["rev_fx_qna_002"],
+          "indicator_keys": ["documents.currentness_status"],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_cop_timeline",
+          "tender_id": "tender_fx_cop_metro_om",
+          "node_key": "timeline",
+          "label": "Timeline",
+          "route_token": "route-core",
+          "state": "contested",
+          "risk": "critical",
+          "count_label": "1 mismatch",
+          "target_route": "/tenders/tender_fx_cop_metro_om/timeline",
+          "source_reference_ids": ["src_fx_001", "src_fx_qna_correction_schedule"],
+          "review_item_ids": ["rev_fx_001", "rev_fx_qna_001"],
+          "indicator_keys": ["package.stage"],
+          "ai_gate_status": null,
+          "is_primary_blocker": true
+        },
+        {
+          "id": "route_node_fx_cop_deliverables",
+          "tender_id": "tender_fx_cop_metro_om",
+          "node_key": "deliverables",
+          "label": "Deliverables",
+          "route_token": "route-core",
+          "state": "proposed",
+          "risk": "medium",
+          "count_label": "4 mapped",
+          "target_route": "/tenders/tender_fx_cop_metro_om/deliverables",
+          "source_reference_ids": ["src_fx_metro_mobilization_handover"],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_cop_requirements",
+          "tender_id": "tender_fx_cop_metro_om",
+          "node_key": "requirements",
+          "label": "Requisiti",
+          "route_token": "route-core",
+          "state": "proposed",
+          "risk": "high",
+          "count_label": "KPI/payment",
+          "target_route": "/tenders/tender_fx_cop_metro_om/requirements",
+          "source_reference_ids": ["src_fx_metro_performance_availability", "src_fx_metro_pricing_indexation"],
+          "review_item_ids": ["rev_fx_001"],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_cop_qna",
+          "tender_id": "tender_fx_cop_metro_om",
+          "node_key": "q_and_a",
+          "label": "Q&A",
+          "route_token": "route-qna",
+          "state": "answered",
+          "risk": "high",
+          "count_label": "3 update",
+          "target_route": "/tenders/tender_fx_cop_metro_om/queries",
+          "source_reference_ids": ["src_fx_qna_register", "src_fx_qna_correction_schedule"],
+          "review_item_ids": ["rev_fx_qna_001"],
+          "indicator_keys": ["clarifications.ready_count", "clarifications.register_coverage_status"],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_cop_financials",
+          "tender_id": "tender_fx_cop_metro_om",
+          "node_key": "financials",
+          "label": "Financials",
+          "route_token": "route-financials",
+          "state": "proposed",
+          "risk": "high",
+          "count_label": "3 L1",
+          "target_route": "/tenders/tender_fx_cop_metro_om/financials",
+          "source_reference_ids": ["src_fx_metro_pricing_indexation"],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": "allowed_minimized",
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_cop_cost_drivers",
+          "tender_id": "tender_fx_cop_metro_om",
+          "node_key": "cost_drivers",
+          "label": "Cost driver",
+          "route_token": "route-core",
+          "state": "proposed",
+          "risk": "high",
+          "count_label": "payment",
+          "target_route": "/tenders/tender_fx_cop_metro_om/cost-drivers",
+          "source_reference_ids": ["src_fx_metro_pricing_indexation"],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": "allowed_minimized",
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_cop_criticalities",
+          "tender_id": "tender_fx_cop_metro_om",
+          "node_key": "criticalities",
+          "label": "Criticità",
+          "route_token": "route-risk",
+          "state": "candidate",
+          "risk": "high",
+          "count_label": "2 candidate",
+          "target_route": "/tenders/tender_fx_cop_metro_om/contradictions",
+          "source_reference_ids": ["src_fx_001", "src_fx_qna_correction_schedule"],
+          "review_item_ids": ["rev_fx_001"],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        }
+      ],
+      "edges": [
+        {
+          "id": "route_edge_fx_cop_docs_timeline",
+          "tender_id": "tender_fx_cop_metro_om",
+          "from_node_key": "documents",
+          "to_node_key": "timeline",
+          "relation_type": "source_to_review",
+          "state": "contested",
+          "source_reference_ids": ["src_fx_001", "src_fx_qna_correction_schedule"],
+          "review_item_ids": ["rev_fx_001"],
+          "label": "fonti calendario divergenti"
+        },
+        {
+          "id": "route_edge_fx_cop_qna_timeline",
+          "tender_id": "tender_fx_cop_metro_om",
+          "from_node_key": "q_and_a",
+          "to_node_key": "timeline",
+          "relation_type": "qna_updates_timeline",
+          "state": "unclear",
+          "source_reference_ids": ["src_fx_qna_correction_schedule"],
+          "review_item_ids": ["rev_fx_qna_001"],
+          "label": "Q&A modifica deadline"
+        },
+        {
+          "id": "route_edge_fx_cop_fin_cost",
+          "tender_id": "tender_fx_cop_metro_om",
+          "from_node_key": "financials",
+          "to_node_key": "cost_drivers",
+          "relation_type": "financials_links_cost_driver",
+          "state": "proposed",
+          "source_reference_ids": ["src_fx_metro_pricing_indexation"],
+          "review_item_ids": [],
+          "label": "AI L1 ammessa, driver costo da review"
+        }
+      ]
+    },
+    {
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "overall_state": "partially_validated",
+      "primary_blocker_node_key": "documents",
+      "nodes": [
+        {
+          "id": "route_node_fx_luas_documents",
+          "tender_id": "tender_fx_luas_light_rail_om",
+          "node_key": "documents",
+          "label": "Documenti",
+          "route_token": "route-document",
+          "state": "stale",
+          "risk": "high",
+          "count_label": "redline",
+          "target_route": "/tenders/tender_fx_luas_light_rail_om/documents",
+          "source_reference_ids": ["src_fx_002", "src_fx_005"],
+          "review_item_ids": ["rev_fx_002"],
+          "indicator_keys": ["documents.currentness_status"],
+          "ai_gate_status": null,
+          "is_primary_blocker": true
+        },
+        {
+          "id": "route_node_fx_luas_timeline",
+          "tender_id": "tender_fx_luas_light_rail_om",
+          "node_key": "timeline",
+          "label": "Timeline",
+          "route_token": "route-core",
+          "state": "confirmed",
+          "risk": "medium",
+          "count_label": "addendum",
+          "target_route": "/tenders/tender_fx_luas_light_rail_om/timeline",
+          "source_reference_ids": ["src_fx_005"],
+          "review_item_ids": ["rev_fx_002"],
+          "indicator_keys": ["documents.currentness_status"],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_luas_deliverables",
+          "tender_id": "tender_fx_luas_light_rail_om",
+          "node_key": "deliverables",
+          "label": "Deliverables",
+          "route_token": "route-core",
+          "state": "proposed",
+          "risk": "medium",
+          "count_label": "maintenance",
+          "target_route": "/tenders/tender_fx_luas_light_rail_om/deliverables",
+          "source_reference_ids": ["src_fx_002"],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_luas_requirements",
+          "tender_id": "tender_fx_luas_light_rail_om",
+          "node_key": "requirements",
+          "label": "Requisiti",
+          "route_token": "route-core",
+          "state": "proposed",
+          "risk": "medium",
+          "count_label": "maintenance",
+          "target_route": "/tenders/tender_fx_luas_light_rail_om/requirements",
+          "source_reference_ids": ["src_fx_002"],
+          "review_item_ids": ["rev_fx_002"],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_luas_qna",
+          "tender_id": "tender_fx_luas_light_rail_om",
+          "node_key": "q_and_a",
+          "label": "Q&A",
+          "route_token": "route-qna",
+          "state": "answered",
+          "risk": "medium",
+          "count_label": "addendum",
+          "target_route": "/tenders/tender_fx_luas_light_rail_om/queries",
+          "source_reference_ids": ["src_fx_005"],
+          "review_item_ids": ["rev_fx_002"],
+          "indicator_keys": ["documents.currentness_status"],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_luas_financials",
+          "tender_id": "tender_fx_luas_light_rail_om",
+          "node_key": "financials",
+          "label": "Financials",
+          "route_token": "route-financials",
+          "state": "proposed",
+          "risk": "medium",
+          "count_label": "AI review",
+          "target_route": "/tenders/tender_fx_luas_light_rail_om/financials",
+          "source_reference_ids": ["src_fx_002"],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": "allowed_minimized",
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_luas_cost_drivers",
+          "tender_id": "tender_fx_luas_light_rail_om",
+          "node_key": "cost_drivers",
+          "label": "Cost driver",
+          "route_token": "route-core",
+          "state": "proposed",
+          "risk": "high",
+          "count_label": "asset renewal",
+          "target_route": "/tenders/tender_fx_luas_light_rail_om/cost-drivers",
+          "source_reference_ids": ["src_fx_002"],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_luas_criticalities",
+          "tender_id": "tender_fx_luas_light_rail_om",
+          "node_key": "criticalities",
+          "label": "Criticità",
+          "route_token": "route-risk",
+          "state": "candidate",
+          "risk": "high",
+          "count_label": "1 candidata",
+          "target_route": "/tenders/tender_fx_luas_light_rail_om/contradictions",
+          "source_reference_ids": ["src_fx_005"],
+          "review_item_ids": ["rev_fx_002"],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        }
+      ],
+      "edges": [
+        {
+          "id": "route_edge_fx_luas_docs_deliverables",
+          "tender_id": "tender_fx_luas_light_rail_om",
+          "from_node_key": "documents",
+          "to_node_key": "deliverables",
+          "relation_type": "addendum_stales_node",
+          "state": "stale",
+          "source_reference_ids": ["src_fx_005"],
+          "review_item_ids": ["rev_fx_002"],
+          "label": "redline da riconciliare"
+        },
+        {
+          "id": "route_edge_fx_luas_requirements_documents",
+          "tender_id": "tender_fx_luas_light_rail_om",
+          "from_node_key": "requirements",
+          "to_node_key": "documents",
+          "relation_type": "source_to_review",
+          "state": "needs_owner",
+          "source_reference_ids": ["src_fx_002", "src_fx_005"],
+          "review_item_ids": ["rev_fx_002"],
+          "label": "review necessaria prima di confermare il set"
+        },
+        {
+          "id": "route_edge_fx_luas_fin_cost",
+          "tender_id": "tender_fx_luas_light_rail_om",
+          "from_node_key": "financials",
+          "to_node_key": "cost_drivers",
+          "relation_type": "financials_links_cost_driver",
+          "state": "proposed",
+          "source_reference_ids": ["src_fx_002"],
+          "review_item_ids": [],
+          "label": "renewal asset collegato a cost driver"
+        }
+      ]
+    },
+    {
+      "tender_id": "tender_fx_milano_bus_lots",
+      "overall_state": "stale_due_to_new_docs",
+      "primary_blocker_node_key": "documents",
+      "nodes": [
+        {
+          "id": "route_node_fx_milano_documents",
+          "tender_id": "tender_fx_milano_bus_lots",
+          "node_key": "documents",
+          "label": "Documenti",
+          "route_token": "route-document",
+          "state": "stale",
+          "risk": "high",
+          "count_label": "addendum",
+          "target_route": "/tenders/tender_fx_milano_bus_lots/documents",
+          "source_reference_ids": ["src_fx_003"],
+          "review_item_ids": ["rev_fx_003"],
+          "indicator_keys": ["ai.external_use.status"],
+          "ai_gate_status": null,
+          "is_primary_blocker": true
+        },
+        {
+          "id": "route_node_fx_milano_timeline",
+          "tender_id": "tender_fx_milano_bus_lots",
+          "node_key": "timeline",
+          "label": "Timeline",
+          "route_token": "route-core",
+          "state": "unclear",
+          "risk": "high",
+          "count_label": "deadline",
+          "target_route": "/tenders/tender_fx_milano_bus_lots/timeline",
+          "source_reference_ids": ["src_fx_003"],
+          "review_item_ids": ["rev_fx_003"],
+          "indicator_keys": ["ai.external_use.status"],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_milano_deliverables",
+          "tender_id": "tender_fx_milano_bus_lots",
+          "node_key": "deliverables",
+          "label": "Deliverables",
+          "route_token": "route-core",
+          "state": "proposed",
+          "risk": "high",
+          "count_label": "PEF",
+          "target_route": "/tenders/tender_fx_milano_bus_lots/deliverables",
+          "source_reference_ids": ["src_fx_003"],
+          "review_item_ids": ["rev_fx_003"],
+          "indicator_keys": ["ai.external_use.status"],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_milano_requirements",
+          "tender_id": "tender_fx_milano_bus_lots",
+          "node_key": "requirements",
+          "label": "Requisiti",
+          "route_token": "route-core",
+          "state": "proposed",
+          "risk": "high",
+          "count_label": "lotti",
+          "target_route": "/tenders/tender_fx_milano_bus_lots/requirements",
+          "source_reference_ids": ["src_fx_003"],
+          "review_item_ids": ["rev_fx_003"],
+          "indicator_keys": ["ai.external_use.status"],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_milano_qna",
+          "tender_id": "tender_fx_milano_bus_lots",
+          "node_key": "q_and_a",
+          "label": "Q&A",
+          "route_token": "route-qna",
+          "state": "proposed",
+          "risk": "medium",
+          "count_label": "deadline",
+          "target_route": "/tenders/tender_fx_milano_bus_lots/queries",
+          "source_reference_ids": ["src_fx_003"],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_milano_financials",
+          "tender_id": "tender_fx_milano_bus_lots",
+          "node_key": "financials",
+          "label": "Financials",
+          "route_token": "route-financials",
+          "state": "proposed",
+          "risk": "high",
+          "count_label": "PEF L1",
+          "target_route": "/tenders/tender_fx_milano_bus_lots/financials",
+          "source_reference_ids": ["src_fx_003"],
+          "review_item_ids": ["rev_fx_003"],
+          "indicator_keys": ["ai.external_use.status"],
+          "ai_gate_status": "pending_owner_approval",
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_milano_cost_drivers",
+          "tender_id": "tender_fx_milano_bus_lots",
+          "node_key": "cost_drivers",
+          "label": "Cost driver",
+          "route_token": "route-core",
+          "state": "proposed",
+          "risk": "high",
+          "count_label": "PEF",
+          "target_route": "/tenders/tender_fx_milano_bus_lots/cost-drivers",
+          "source_reference_ids": ["src_fx_003"],
+          "review_item_ids": ["rev_fx_003"],
+          "indicator_keys": ["ai.external_use.status"],
+          "ai_gate_status": "pending_owner_approval",
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_milano_criticalities",
+          "tender_id": "tender_fx_milano_bus_lots",
+          "node_key": "criticalities",
+          "label": "Criticità",
+          "route_token": "route-risk",
+          "state": "candidate",
+          "risk": "high",
+          "count_label": "parser",
+          "target_route": "/tenders/tender_fx_milano_bus_lots/contradictions",
+          "source_reference_ids": ["src_fx_003"],
+          "review_item_ids": ["rev_fx_003"],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        }
+      ],
+      "edges": [
+        {
+          "id": "route_edge_fx_milano_addendum_stale",
+          "tender_id": "tender_fx_milano_bus_lots",
+          "from_node_key": "q_and_a",
+          "to_node_key": "documents",
+          "relation_type": "addendum_stales_node",
+          "state": "stale_due_to_new_docs",
+          "source_reference_ids": ["src_fx_003"],
+          "review_item_ids": ["rev_fx_003"],
+          "label": "addendum rende stale il nodo documenti"
+        },
+        {
+          "id": "route_edge_fx_milano_qna_timeline",
+          "tender_id": "tender_fx_milano_bus_lots",
+          "from_node_key": "q_and_a",
+          "to_node_key": "timeline",
+          "relation_type": "qna_updates_timeline",
+          "state": "unclear",
+          "source_reference_ids": ["src_fx_003"],
+          "review_item_ids": ["rev_fx_003"],
+          "label": "Q&A modifica deadline sintetica"
+        },
+        {
+          "id": "route_edge_fx_milano_fin_criticalities",
+          "tender_id": "tender_fx_milano_bus_lots",
+          "from_node_key": "financials",
+          "to_node_key": "criticalities",
+          "relation_type": "criticality_blocks_dashboard",
+          "state": "proposed",
+          "source_reference_ids": ["src_fx_003"],
+          "review_item_ids": ["rev_fx_003"],
+          "label": "PEF sintetico in attesa di approvazione L1"
+        },
+        {
+          "id": "route_edge_fx_milano_fin_cost",
+          "tender_id": "tender_fx_milano_bus_lots",
+          "from_node_key": "financials",
+          "to_node_key": "cost_drivers",
+          "relation_type": "financials_links_cost_driver",
+          "state": "proposed",
+          "source_reference_ids": ["src_fx_003"],
+          "review_item_ids": ["rev_fx_003"],
+          "label": "PEF sintetico alimenta i driver costo"
+        }
+      ]
+    },
+    {
+      "tender_id": "tender_fx_metrolink_ppp_pq",
+      "overall_state": "validated_internal",
+      "primary_blocker_node_key": null,
+      "nodes": [
+        {
+          "id": "route_node_fx_metro_pq_documents",
+          "tender_id": "tender_fx_metrolink_ppp_pq",
+          "node_key": "documents",
+          "label": "Documenti",
+          "route_token": "route-document",
+          "state": "confirmed",
+          "risk": "low",
+          "count_label": "PQP",
+          "target_route": "/tenders/tender_fx_metrolink_ppp_pq/documents",
+          "source_reference_ids": ["src_fx_004"],
+          "review_item_ids": [],
+          "indicator_keys": ["data_quality.source_coverage_ratio"],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_metro_pq_timeline",
+          "tender_id": "tender_fx_metrolink_ppp_pq",
+          "node_key": "timeline",
+          "label": "Timeline",
+          "route_token": "route-core",
+          "state": "confirmed",
+          "risk": "low",
+          "count_label": "PQ window",
+          "target_route": "/tenders/tender_fx_metrolink_ppp_pq/timeline",
+          "source_reference_ids": ["src_fx_004"],
+          "review_item_ids": [],
+          "indicator_keys": ["data_quality.source_coverage_ratio"],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_metro_pq_deliverables",
+          "tender_id": "tender_fx_metrolink_ppp_pq",
+          "node_key": "deliverables",
+          "label": "Deliverables",
+          "route_token": "route-core",
+          "state": "ready",
+          "risk": "low",
+          "count_label": "PQ ready",
+          "target_route": "/tenders/tender_fx_metrolink_ppp_pq/deliverables",
+          "source_reference_ids": ["src_fx_004"],
+          "review_item_ids": ["rev_fx_004"],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_metro_pq_requirements",
+          "tender_id": "tender_fx_metrolink_ppp_pq",
+          "node_key": "requirements",
+          "label": "Requisiti",
+          "route_token": "route-core",
+          "state": "confirmed",
+          "risk": "low",
+          "count_label": "qualification",
+          "target_route": "/tenders/tender_fx_metrolink_ppp_pq/requirements",
+          "source_reference_ids": ["src_fx_004"],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": "allowed_l0_minimized",
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_metro_pq_qna",
+          "tender_id": "tender_fx_metrolink_ppp_pq",
+          "node_key": "q_and_a",
+          "label": "Q&A",
+          "route_token": "route-qna",
+          "state": "confirmed",
+          "risk": "low",
+          "count_label": "0 aperte",
+          "target_route": "/tenders/tender_fx_metrolink_ppp_pq/queries",
+          "source_reference_ids": ["src_fx_004"],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_metro_pq_financials",
+          "tender_id": "tender_fx_metrolink_ppp_pq",
+          "node_key": "financials",
+          "label": "Financials",
+          "route_token": "route-financials",
+          "state": "not_applicable",
+          "risk": null,
+          "count_label": "n/a PQ",
+          "target_route": "/tenders/tender_fx_metrolink_ppp_pq/financials",
+          "source_reference_ids": [],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_metro_pq_cost_drivers",
+          "tender_id": "tender_fx_metrolink_ppp_pq",
+          "node_key": "cost_drivers",
+          "label": "Cost driver",
+          "route_token": "route-core",
+          "state": "not_applicable",
+          "risk": null,
+          "count_label": "n/a PQ",
+          "target_route": "/tenders/tender_fx_metrolink_ppp_pq/cost-drivers",
+          "source_reference_ids": [],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_metro_pq_criticalities",
+          "tender_id": "tender_fx_metrolink_ppp_pq",
+          "node_key": "criticalities",
+          "label": "Criticità",
+          "route_token": "route-risk",
+          "state": "confirmed",
+          "risk": "low",
+          "count_label": "0 aperte",
+          "target_route": "/tenders/tender_fx_metrolink_ppp_pq/contradictions",
+          "source_reference_ids": ["src_fx_004"],
+          "review_item_ids": ["rev_fx_004"],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        }
+      ],
+      "edges": [
+        {
+          "id": "route_edge_fx_metro_pq_docs_deliverables",
+          "tender_id": "tender_fx_metrolink_ppp_pq",
+          "from_node_key": "documents",
+          "to_node_key": "deliverables",
+          "relation_type": "source_to_review",
+          "state": "confirmed",
+          "source_reference_ids": ["src_fx_004"],
+          "review_item_ids": ["rev_fx_004"],
+          "label": "PQP alimenta checklist qualification"
+        },
+        {
+          "id": "route_edge_fx_metro_pq_requirements_deliverables",
+          "tender_id": "tender_fx_metrolink_ppp_pq",
+          "from_node_key": "requirements",
+          "to_node_key": "deliverables",
+          "relation_type": "source_to_review",
+          "state": "confirmed",
+          "source_reference_ids": ["src_fx_004"],
+          "review_item_ids": ["rev_fx_004"],
+          "label": "requisiti PQ pronti per conferma"
+        },
+        {
+          "id": "route_edge_fx_metro_pq_criticalities_documents",
+          "tender_id": "tender_fx_metrolink_ppp_pq",
+          "from_node_key": "criticalities",
+          "to_node_key": "documents",
+          "relation_type": "criticality_blocks_dashboard",
+          "state": "confirmed",
+          "source_reference_ids": ["src_fx_004"],
+          "review_item_ids": ["rev_fx_004"],
+          "label": "review pronta senza blocker"
+        }
+      ]
+    },
+    {
+      "tender_id": "tender_fx_depot_ebus_om",
+      "overall_state": "draft",
+      "primary_blocker_node_key": null,
+      "nodes": [
+        {
+          "id": "route_node_fx_depot_documents",
+          "tender_id": "tender_fx_depot_ebus_om",
+          "node_key": "documents",
+          "label": "Documenti",
+          "route_token": "route-document",
+          "state": "not_started",
+          "risk": null,
+          "count_label": "bozza",
+          "target_route": "/tenders/tender_fx_depot_ebus_om/documents",
+          "source_reference_ids": ["src_fx_depot_initial_inventory"],
+          "review_item_ids": ["rev_fx_008"],
+          "indicator_keys": ["documents.ingestion_status"],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_depot_timeline",
+          "tender_id": "tender_fx_depot_ebus_om",
+          "node_key": "timeline",
+          "label": "Timeline",
+          "route_token": "route-core",
+          "state": "not_started",
+          "risk": null,
+          "count_label": "manca",
+          "target_route": "/tenders/tender_fx_depot_ebus_om/timeline",
+          "source_reference_ids": ["src_fx_depot_initial_inventory"],
+          "review_item_ids": [],
+          "indicator_keys": ["timeline.schedule_status"],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_depot_deliverables",
+          "tender_id": "tender_fx_depot_ebus_om",
+          "node_key": "deliverables",
+          "label": "Deliverables",
+          "route_token": "route-core",
+          "state": "not_started",
+          "risk": null,
+          "count_label": "0",
+          "target_route": "/tenders/tender_fx_depot_ebus_om/deliverables",
+          "source_reference_ids": ["src_fx_depot_initial_inventory"],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_depot_requirements",
+          "tender_id": "tender_fx_depot_ebus_om",
+          "node_key": "requirements",
+          "label": "Requisiti",
+          "route_token": "route-core",
+          "state": "not_started",
+          "risk": null,
+          "count_label": "0",
+          "target_route": "/tenders/tender_fx_depot_ebus_om/requirements",
+          "source_reference_ids": ["src_fx_depot_initial_inventory"],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_depot_qna",
+          "tender_id": "tender_fx_depot_ebus_om",
+          "node_key": "q_and_a",
+          "label": "Q&A",
+          "route_token": "route-qna",
+          "state": "not_started",
+          "risk": null,
+          "count_label": "0",
+          "target_route": "/tenders/tender_fx_depot_ebus_om/queries",
+          "source_reference_ids": ["src_fx_depot_initial_inventory"],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_depot_financials",
+          "tender_id": "tender_fx_depot_ebus_om",
+          "node_key": "financials",
+          "label": "Financials",
+          "route_token": "route-financials",
+          "state": "not_started",
+          "risk": null,
+          "count_label": "0",
+          "target_route": "/tenders/tender_fx_depot_ebus_om/financials",
+          "source_reference_ids": ["src_fx_depot_initial_inventory"],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": "quota_exhausted",
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_depot_cost_drivers",
+          "tender_id": "tender_fx_depot_ebus_om",
+          "node_key": "cost_drivers",
+          "label": "Cost driver",
+          "route_token": "route-core",
+          "state": "not_started",
+          "risk": null,
+          "count_label": "0",
+          "target_route": "/tenders/tender_fx_depot_ebus_om/cost-drivers",
+          "source_reference_ids": ["src_fx_depot_initial_inventory"],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        },
+        {
+          "id": "route_node_fx_depot_criticalities",
+          "tender_id": "tender_fx_depot_ebus_om",
+          "node_key": "criticalities",
+          "label": "Criticità",
+          "route_token": "route-risk",
+          "state": "not_started",
+          "risk": null,
+          "count_label": "0",
+          "target_route": "/tenders/tender_fx_depot_ebus_om/contradictions",
+          "source_reference_ids": ["src_fx_depot_initial_inventory"],
+          "review_item_ids": [],
+          "indicator_keys": [],
+          "ai_gate_status": null,
+          "is_primary_blocker": false
+        }
+      ],
+      "edges": [
+        {
+          "id": "route_edge_fx_depot_docs_timeline",
+          "tender_id": "tender_fx_depot_ebus_om",
+          "from_node_key": "documents",
+          "to_node_key": "timeline",
+          "relation_type": "source_to_review",
+          "state": "not_started",
+          "source_reference_ids": ["src_fx_depot_initial_inventory"],
+          "review_item_ids": ["rev_fx_008"],
+          "label": "inventario iniziale non basta per calendario"
+        },
+        {
+          "id": "route_edge_fx_depot_docs_requirements",
+          "tender_id": "tender_fx_depot_ebus_om",
+          "from_node_key": "documents",
+          "to_node_key": "requirements",
+          "relation_type": "source_to_review",
+          "state": "not_started",
+          "source_reference_ids": ["src_fx_depot_initial_inventory"],
+          "review_item_ids": ["rev_fx_008"],
+          "label": "mappatura requisiti in attesa di ingestione"
+        }
+      ]
+    }
+  ],
+  "contradictions": [
+    {
+      "id": "con_fx_metro_submission_deadline",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Scadenza offerta diversa tra istruzioni e Q&A",
+      "status": "candidate",
+      "risk": "high",
+      "source_reference_ids": ["src_fx_001", "src_fx_qna_correction_schedule"]
+    },
+    {
+      "id": "con_fx_metro_attachment_gap",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Risposta Q&A cita allegato non presente nel set caricato",
+      "status": "blocked",
+      "risk": "high",
+      "source_reference_ids": ["src_fx_qna_missing_attachment"]
+    },
+    {
+      "id": "con_fx_metro_contract_performance",
+      "tender_id": "tender_fx_cop_metro_om",
+      "title": "Allineamento da verificare tra regime penali e schema contratto",
+      "status": "needs_review",
+      "risk": "medium",
+      "source_reference_ids": ["src_fx_metro_contract_term", "src_fx_metro_performance_availability"]
+    },
+    {
+      "id": "con_fx_luas_redline_renewal",
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "title": "Redline modifica rinnovo asset senza aggiornare deliverable collegato",
+      "status": "candidate",
+      "risk": "medium",
+      "source_reference_ids": ["src_fx_luas_redline_summary", "src_fx_luas_asset_renewal"]
+    },
+    {
+      "id": "con_fx_milano_pef_lot_matrix",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "title": "Template PEF sintetico non allineato alla matrice lotti",
+      "status": "candidate",
+      "risk": "high",
+      "source_reference_ids": ["src_fx_milano_lot_matrix", "src_fx_milano_pef_template"]
+    }
+  ],
+  "ai_gate_decisions": [
+    {
+      "id": "gate_fx_001",
+      "tender_id": "tender_fx_cop_metro_om",
+      "task": "T1",
+      "privacy_level": "L0",
+      "decision": "allowed_l0_minimized",
+      "reason_code": "minimized_public_envelope",
+      "provider": "gemini",
+      "model": "gemini-free-fixture",
+      "quota_status": "available",
+      "estimated_cost": 0,
+      "cost_cap": "free",
+      "created_at": "2026-05-13T12:01:00+02:00"
+    },
+    {
+      "id": "gate_fx_002",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "task": "T5",
+      "privacy_level": "L1",
+      "decision": "pending_l1_owner_approval",
+      "reason_code": "owner_approval_required",
+      "provider": "gemini",
+      "model": "gemini-free-fixture",
+      "quota_status": "available",
+      "estimated_cost": 0,
+      "cost_cap": "free",
+      "created_at": "2026-05-13T12:05:00+02:00"
+    },
+    {
+      "id": "gate_fx_003",
+      "tender_id": "tender_fx_cop_metro_om",
+      "task": "T5",
+      "privacy_level": "L2",
+      "decision": "blocked_l2_effective",
+      "reason_code": "internal_offer_sensitive",
+      "provider": "none",
+      "model": null,
+      "quota_status": "not_applicable",
+      "estimated_cost": null,
+      "cost_cap": "none",
+      "created_at": "2026-05-14T16:05:00+02:00"
+    },
+    {
+      "id": "gate_fx_004",
+      "tender_id": "tender_fx_depot_ebus_om",
+      "task": "T1",
+      "privacy_level": "L1",
+      "decision": "quota_exhausted",
+      "reason_code": "free_quota_exhausted",
+      "provider": "gemini",
+      "model": "gemini-free-fixture",
+      "quota_status": "exhausted",
+      "estimated_cost": 0,
+      "cost_cap": "free",
+      "created_at": "2026-05-15T11:10:00+02:00"
+    },
+    {
+      "id": "gate_fx_005",
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "task": "T8",
+      "privacy_level": "L1",
+      "decision": "provider_policy_stale",
+      "reason_code": "provider_policy_requires_refresh",
+      "provider": "mistral",
+      "model": "mistral-free-fixture",
+      "quota_status": "unknown",
+      "estimated_cost": 0,
+      "cost_cap": "free",
+      "created_at": "2026-05-15T11:15:00+02:00"
+    }
+  ],
+  "audit_events": [
+    {
+      "id": "audit_fx_001",
+      "tender_id": "tender_fx_cop_metro_om",
+      "event_type": "validation",
+      "title": "Tender fixture creato",
+      "status": "completed",
+      "task": "audit",
+      "related_record_id": "tender_fx_cop_metro_om",
+      "actor": "fixture.owner@example.invalid",
+      "action": "fixture_tender_created",
+      "created_at": "2026-05-13T12:00:00+02:00"
+    },
+    {
+      "id": "audit_fx_002",
+      "tender_id": "tender_fx_milano_bus_lots",
+      "event_type": "ai_gate",
+      "title": "Gate AI L1 in attesa owner",
+      "status": "blocked",
+      "task": "T5",
+      "related_record_id": "gate_fx_002",
+      "actor": "fixture.reviewer@example.invalid",
+      "action": "l1_ai_gate_pending_owner",
+      "created_at": "2026-05-13T12:05:00+02:00"
+    },
+    {
+      "id": "audit_fx_003",
+      "tender_id": "tender_fx_cop_metro_om",
+      "event_type": "ai_gate",
+      "title": "Dato L2 bloccato per uso esterno",
+      "status": "blocked",
+      "task": "T5",
+      "related_record_id": "gate_fx_003",
+      "actor": "fixture.system@example.invalid",
+      "action": "l2_effective_internal_offer_blocked",
+      "created_at": "2026-05-14T16:05:00+02:00"
+    },
+    {
+      "id": "audit_fx_004",
+      "tender_id": "tender_fx_depot_ebus_om",
+      "event_type": "ai_call",
+      "title": "Quota gratuita esaurita",
+      "status": "suspended",
+      "task": "T1",
+      "related_record_id": "gate_fx_004",
+      "actor": "fixture.system@example.invalid",
+      "action": "free_quota_exhausted_job_suspended",
+      "created_at": "2026-05-15T11:10:00+02:00"
+    },
+    {
+      "id": "audit_fx_005",
+      "tender_id": "tender_fx_luas_light_rail_om",
+      "event_type": "policy",
+      "title": "Policy provider da verificare",
+      "status": "blocked",
+      "task": "T8",
+      "related_record_id": "gate_fx_005",
+      "actor": "fixture.system@example.invalid",
+      "action": "provider_policy_stale_requires_review",
+      "created_at": "2026-05-15T11:15:00+02:00"
+    },
+    {
+      "id": "audit_fx_006",
+      "tender_id": "tender_fx_cop_metro_om",
+      "event_type": "validation",
+      "title": "Review item contestato",
+      "status": "completed",
+      "task": "T4",
+      "related_record_id": "rev_fx_007",
+      "actor": "fixture.reviewer@example.invalid",
+      "action": "review_item_contested",
+      "created_at": "2026-05-15T11:20:00+02:00"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+# Environment and local secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p8
+*.p12
+*.pfx
+*.crt
+*.cer
+ssh-key-tram.key
+.oci/
+
+# Local app/runtime state
+.next/
+.playwright-cli/
+out/
+dist/
+build/
+coverage/
+node_modules/
+.turbo/
+.vercel/
+.local/
+*.tsbuildinfo
+
+# Python and document-processing state
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Sensitive tender packages and generated working data
+data/packages/
+data/keys/
+data/private/
+data/uploads/
+data/working/
+data/ocr/
+data/extracts/
+data/exports/
+data/indexes/
+data/tmp/
+storage/
+tmp/
+logs/
+*.log
+
+# Local databases and dumps
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.backup
+*.bak
+
+# Local reports and exports
+exports/
+reports/
+output/playwright/
+
+# macOS/editor noise
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json

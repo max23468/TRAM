@@ -1,0 +1,15 @@
+{
+  "fixture_set_id": "tram_mvp_synthetic_v0_1",
+  "version": "0.1.0",
+  "status": "synthetic",
+  "primary_file": "tram-v1-mvp-synthetic-fixtures.json",
+  "route_network_included": true,
+  "contains_real_tender_data": false,
+  "forbidden_paths": ["data/packages/", "data/private/", "ssh-key-tram.key"],
+  "notes": [
+    "Fixture sintetiche per Slice 0.",
+    "Nessun record punta a documenti reali o pacchetti benchmark riservati.",
+    "La route network è derivata da fixture sintetiche e segue la direzione networked control room.",
+    "Il seed DB futuro dovrà derivare da questi JSON dopo schema Postgres stabile."
+  ]
+}

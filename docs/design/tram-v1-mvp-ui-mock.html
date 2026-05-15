@@ -1,0 +1,3386 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TRAM V1 - mock UI MVP canonico</title>
+    <link rel="icon" href="data:," />
+    <style>
+      :root {
+        --font-ui: Aptos, "SF Pro Text", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-display: Aptos, "SF Pro Display", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-mono: "SF Mono", "Roboto Mono", ui-monospace, monospace;
+        --font-evidence: "Iowan Old Style", "Source Serif 4", Georgia, serif;
+        --radius-xs: 5px;
+        --radius-sm: 7px;
+        --radius-md: 10px;
+        --radius-lg: 14px;
+        --duration: 160ms;
+        --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .theme-light {
+        --canvas: oklch(96.5% 0.01 112);
+        --canvas-strong: oklch(93.8% 0.014 112);
+        --surface: oklch(99.2% 0.004 112);
+        --surface-subtle: oklch(97.2% 0.006 112);
+        --surface-raised: oklch(100% 0 0);
+        --ink: oklch(19% 0.018 245);
+        --ink-soft: oklch(37% 0.026 245);
+        --muted: oklch(54% 0.024 242);
+        --border: oklch(86% 0.012 112);
+        --border-soft: oklch(91% 0.008 112);
+        --sidebar: oklch(20.5% 0.04 226);
+        --sidebar-soft: oklch(27% 0.042 226);
+        --sidebar-text: oklch(92% 0.01 112);
+        --sidebar-muted: oklch(70% 0.025 218);
+        --accent: oklch(50% 0.085 188);
+        --accent-soft: oklch(90% 0.052 188);
+        --risk: oklch(45% 0.13 26);
+        --risk-soft: oklch(92% 0.04 28);
+        --warn: oklch(52% 0.1 72);
+        --warn-soft: oklch(92% 0.052 80);
+        --success: oklch(48% 0.09 148);
+        --success-soft: oklch(92% 0.05 148);
+        --route-core: oklch(50% 0.085 188);
+        --route-document: oklch(45% 0.055 230);
+        --route-qna: oklch(56% 0.105 72);
+        --route-review: oklch(50% 0.075 148);
+        --route-financials: oklch(38% 0.045 255);
+        --route-risk: oklch(45% 0.13 26);
+        --shadow-card: 0 1px 2px oklch(18% 0.018 245 / 0.08),
+          0 14px 34px oklch(18% 0.018 245 / 0.08);
+        --shadow-frame: 0 24px 70px oklch(18% 0.018 245 / 0.13);
+      }
+
+      .theme-dark {
+        --canvas: oklch(15.5% 0.02 244);
+        --canvas-strong: oklch(12.5% 0.018 244);
+        --surface: oklch(20.5% 0.022 244);
+        --surface-subtle: oklch(24% 0.024 244);
+        --surface-raised: oklch(27% 0.026 244);
+        --ink: oklch(93% 0.008 112);
+        --ink-soft: oklch(78% 0.014 112);
+        --muted: oklch(63% 0.018 224);
+        --border: oklch(100% 0 0 / 0.1);
+        --border-soft: oklch(100% 0 0 / 0.065);
+        --sidebar: oklch(11% 0.018 244);
+        --sidebar-soft: oklch(19% 0.024 244);
+        --sidebar-text: oklch(93% 0.008 112);
+        --sidebar-muted: oklch(65% 0.018 224);
+        --accent: oklch(72% 0.09 188);
+        --accent-soft: oklch(31% 0.052 188);
+        --risk: oklch(72% 0.12 28);
+        --risk-soft: oklch(29% 0.07 28);
+        --warn: oklch(78% 0.11 78);
+        --warn-soft: oklch(31% 0.06 78);
+        --success: oklch(73% 0.09 148);
+        --success-soft: oklch(30% 0.06 148);
+        --route-core: oklch(72% 0.09 188);
+        --route-document: oklch(69% 0.06 230);
+        --route-qna: oklch(78% 0.11 78);
+        --route-review: oklch(73% 0.09 148);
+        --route-financials: oklch(66% 0.045 255);
+        --route-risk: oklch(72% 0.12 28);
+        --shadow-card: 0 1px 0 oklch(100% 0 0 / 0.04),
+          0 22px 46px oklch(0% 0 0 / 0.34);
+        --shadow-frame: 0 28px 80px oklch(0% 0 0 / 0.42);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        background: oklch(95% 0.01 112);
+        color: oklch(19% 0.018 245);
+        font-family: var(--font-ui);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        background: oklch(95.5% 0.011 112);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .page {
+        display: grid;
+        gap: 22px;
+        margin: 0 auto;
+        max-width: 1460px;
+        padding: 22px 26px 56px;
+      }
+
+      .brief {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 330px;
+        gap: 18px;
+        align-items: center;
+        border: 1px solid oklch(86% 0.012 112);
+        border-radius: var(--radius-lg);
+        background: oklch(98% 0.006 112 / 0.72);
+        box-shadow: 0 1px 2px oklch(18% 0.018 245 / 0.04);
+        padding: 16px 18px;
+      }
+
+      .brief.app-boundary {
+        background: oklch(98% 0.006 112 / 0.86);
+      }
+
+      .kicker {
+        margin: 0 0 7px;
+        color: oklch(42% 0.12 28);
+        font-family: var(--font-mono);
+        font-size: 10px;
+        font-weight: 650;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        max-width: 680px;
+        font-family: var(--font-display);
+        font-size: clamp(25px, 2.8vw, 34px);
+        font-weight: 760;
+        letter-spacing: -0.028em;
+        line-height: 1.02;
+        text-wrap: balance;
+      }
+
+      .brief-copy {
+        margin-top: 8px;
+        max-width: 790px;
+        color: oklch(36% 0.026 245);
+        font-size: 12px;
+        line-height: 1.5;
+        text-wrap: pretty;
+      }
+
+      .brief-card {
+        border: 1px solid oklch(84% 0.012 112);
+        border-radius: var(--radius-sm);
+        background: oklch(99% 0.004 112 / 0.9);
+        padding: 14px;
+      }
+
+      .brief-card strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+      }
+
+      .brief-card p {
+        color: oklch(46% 0.024 242);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+
+      .mock-section {
+        display: grid;
+        gap: 10px;
+      }
+
+      .frame-label {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        color: oklch(48% 0.028 242);
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 650;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .app-frame {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        background: var(--canvas);
+        box-shadow: var(--shadow-frame);
+        color: var(--ink);
+      }
+
+      .desktop-shell {
+        display: grid;
+        min-height: 1030px;
+        grid-template-columns: 248px minmax(0, 1fr);
+      }
+
+      .sidebar {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        gap: 24px;
+        background: var(--sidebar);
+        color: var(--sidebar-text);
+        padding: 20px 14px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .mark {
+        position: relative;
+        display: grid;
+        width: 32px;
+        height: 32px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 9px;
+        background: oklch(92% 0.04 92);
+        color: oklch(18% 0.03 226);
+        box-shadow: inset 0 0 0 1px oklch(18% 0.03 226 / 0.18);
+      }
+
+      .mark::before,
+      .mark::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        background: oklch(18% 0.03 226);
+      }
+
+      .mark::before {
+        width: 3px;
+        height: 17px;
+        top: 11px;
+        left: 14px;
+      }
+
+      .mark::after {
+        width: 18px;
+        height: 3px;
+        top: 10px;
+        left: 7px;
+      }
+
+      .mark span {
+        position: absolute;
+        top: 7px;
+        left: 11px;
+        z-index: 1;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--route-core);
+        box-shadow:
+          0 0 0 3px oklch(92% 0.04 92),
+          0 0 0 5px color-mix(in oklab, var(--route-core) 20%, transparent);
+        font-size: 0;
+      }
+
+      .brand strong,
+      .brand span {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .brand strong {
+        font-size: 17px;
+        font-weight: 740;
+        letter-spacing: -0.018em;
+      }
+
+      .brand span {
+        color: var(--sidebar-muted);
+        font-size: 11px;
+      }
+
+      .brand .mark span {
+        width: 10px;
+        height: 10px;
+        overflow: visible;
+        color: transparent;
+        font-size: 0;
+        white-space: normal;
+      }
+
+      .side-group {
+        display: grid;
+        gap: 8px;
+      }
+
+      .nav-rail {
+        position: relative;
+      }
+
+      .nav-rail::before {
+        content: "";
+        position: absolute;
+        top: 35px;
+        bottom: 6px;
+        left: 17px;
+        width: 1px;
+        background: color-mix(in oklab, var(--sidebar-text) 18%, transparent);
+      }
+
+      .tender-card {
+        display: grid;
+        gap: 11px;
+        border-radius: var(--radius-md);
+        background: color-mix(in oklab, var(--sidebar-text) 9%, transparent);
+        padding: 11px;
+      }
+
+      .tender-card strong {
+        display: block;
+        font-size: 13px;
+        line-height: 1.18;
+      }
+
+      .tender-card span {
+        color: var(--sidebar-muted);
+        font-size: 10px;
+      }
+
+      .tender-id {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        color: var(--sidebar-muted);
+        font-family: var(--font-mono);
+        font-size: 10px;
+      }
+
+      .tender-health {
+        display: grid;
+        gap: 6px;
+      }
+
+      .health-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+        align-items: center;
+        color: var(--sidebar-muted);
+        font-size: 10px;
+      }
+
+      .health-bar {
+        overflow: hidden;
+        height: 4px;
+        border-radius: 999px;
+        background: color-mix(in oklab, var(--sidebar-text) 11%, transparent);
+      }
+
+      .health-bar span {
+        display: block;
+        width: var(--value);
+        height: 100%;
+        border-radius: inherit;
+        background: var(--accent);
+      }
+
+      .side-heading {
+        padding: 0 8px;
+        color: var(--sidebar-muted);
+        font-family: var(--font-mono);
+        font-size: 10px;
+        font-weight: 650;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .side-card,
+      .nav-item {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px;
+        align-items: center;
+        min-height: 36px;
+        border-radius: var(--radius-sm);
+        padding: 8px 9px 8px 27px;
+        font-size: 13px;
+      }
+
+      .side-card {
+        background: color-mix(in oklab, var(--sidebar-text) 9%, transparent);
+      }
+
+      .nav-item.active {
+        background: color-mix(in oklab, var(--sidebar-text) 11%, transparent);
+      }
+
+      .nav-item::before {
+        content: "";
+        position: absolute;
+        left: 11px;
+        top: 50%;
+        z-index: 1;
+        width: 8px;
+        height: 8px;
+        border: 2px solid var(--route-token, var(--accent));
+        border-radius: 50%;
+        background: var(--sidebar);
+        transform: translateY(-50%);
+      }
+
+      .nav-item.active::before {
+        background: var(--route-token, var(--accent));
+        box-shadow: 0 0 0 4px color-mix(in oklab, var(--route-token, var(--accent)) 20%, transparent);
+      }
+
+      .route-core {
+        --route-token: var(--route-core);
+      }
+
+      .route-document {
+        --route-token: var(--route-document);
+      }
+
+      .route-qna {
+        --route-token: var(--route-qna);
+      }
+
+      .route-review {
+        --route-token: var(--route-review);
+      }
+
+      .route-financials {
+        --route-token: var(--route-financials);
+      }
+
+      .route-risk {
+        --route-token: var(--route-risk);
+      }
+
+      .nav-item span:first-child,
+      .side-card span:first-child {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 23px;
+        height: 21px;
+        border-radius: 999px;
+        background: color-mix(in oklab, var(--sidebar-text) 12%, transparent);
+        color: var(--sidebar-text);
+        font-family: var(--font-mono);
+        font-size: 10px;
+        font-weight: 650;
+        padding: 0 7px;
+        white-space: nowrap;
+      }
+
+      .sidebar-note {
+        margin-top: auto;
+        border-top: 1px solid color-mix(in oklab, var(--sidebar-text) 12%, transparent);
+        color: var(--sidebar-muted);
+        font-size: 11px;
+        line-height: 1.5;
+        padding: 14px 8px 0;
+      }
+
+      .sidebar-updates {
+        display: grid;
+        gap: 8px;
+      }
+
+      .update-row {
+        display: grid;
+        gap: 3px;
+        border-radius: var(--radius-sm);
+        background: color-mix(in oklab, var(--sidebar-text) 6%, transparent);
+        color: var(--sidebar-muted);
+        padding: 8px;
+      }
+
+      .update-row strong {
+        color: var(--sidebar-text);
+        font-size: 11px;
+        line-height: 1.25;
+      }
+
+      .update-row span {
+        font-size: 10px;
+        line-height: 1.35;
+      }
+
+      .main {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        min-width: 0;
+        background: linear-gradient(180deg, var(--canvas), var(--canvas-strong));
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        border-bottom: 1px solid var(--border);
+        padding: 18px 24px;
+      }
+
+      .breadcrumb {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .top-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 34px;
+        border: 0;
+        border-radius: var(--radius-xs);
+        background: var(--ink);
+        color: var(--canvas);
+        cursor: default;
+        padding: 0 12px;
+        font-size: 12px;
+        font-weight: 650;
+        transition: transform var(--duration) var(--ease), opacity var(--duration) var(--ease);
+      }
+
+      .btn.secondary {
+        background: var(--surface);
+        color: var(--ink);
+        box-shadow: inset 0 0 0 1px var(--border);
+      }
+
+      .btn:active {
+        transform: scale(0.97);
+      }
+
+      .workspace {
+        display: grid;
+        gap: 14px;
+        min-width: 0;
+        padding: 18px 22px 22px;
+      }
+
+      .overview-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+        gap: 18px;
+        align-items: stretch;
+      }
+
+      .panel {
+        min-width: 0;
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-lg);
+        background: var(--surface);
+        box-shadow: var(--shadow-card);
+      }
+
+      .panel.pad {
+        padding: 18px;
+      }
+
+      .summary-card {
+        display: grid;
+        gap: 16px;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        min-height: 20px;
+        max-width: 100%;
+        border: 1px solid color-mix(in oklab, var(--border) 82%, transparent);
+        border-radius: var(--radius-xs);
+        background: color-mix(in oklab, var(--surface-subtle) 74%, transparent);
+        color: var(--ink-soft);
+        font-size: 10px;
+        font-weight: 670;
+        letter-spacing: 0.01em;
+        line-height: 1;
+        padding: 0 7px;
+        white-space: nowrap;
+      }
+
+      .tag.info {
+        border-color: color-mix(in oklab, var(--accent) 28%, transparent);
+        background: color-mix(in oklab, var(--accent-soft) 62%, transparent);
+        color: color-mix(in oklab, var(--accent) 72%, var(--ink));
+      }
+
+      .tag.risk {
+        border-color: color-mix(in oklab, var(--risk) 24%, transparent);
+        background: color-mix(in oklab, var(--risk-soft) 58%, transparent);
+        color: var(--risk);
+      }
+
+      .tag.warn {
+        border-color: color-mix(in oklab, var(--warn) 24%, transparent);
+        background: color-mix(in oklab, var(--warn-soft) 60%, transparent);
+        color: var(--warn);
+      }
+
+      .tag.good {
+        border-color: color-mix(in oklab, var(--success) 24%, transparent);
+        background: color-mix(in oklab, var(--success-soft) 60%, transparent);
+        color: var(--success);
+      }
+
+      .summary-title {
+        max-width: 680px;
+        font-family: var(--font-display);
+        font-size: clamp(31px, 3.8vw, 43px);
+        font-weight: 780;
+        letter-spacing: -0.034em;
+        line-height: 1.02;
+        text-wrap: balance;
+      }
+
+      .summary-copy {
+        max-width: 700px;
+        color: var(--ink-soft);
+        font-size: 14px;
+        line-height: 1.5;
+        text-wrap: pretty;
+      }
+
+      .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .metric {
+        min-width: 0;
+        border-top: 1px solid var(--border);
+        padding-top: 10px;
+      }
+
+      .metric span {
+        display: block;
+        min-height: 30px;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.25;
+      }
+
+      .metric strong {
+        display: block;
+        margin-top: 6px;
+        font-size: 25px;
+        font-variant-numeric: tabular-nums;
+        font-weight: 780;
+        letter-spacing: -0.024em;
+      }
+
+      .route-map {
+        display: grid;
+        gap: 14px;
+        overflow: hidden;
+        background:
+          linear-gradient(180deg, color-mix(in oklab, var(--surface-raised) 82%, transparent), var(--surface));
+      }
+
+      .route-map-header {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .route-map-title {
+        display: grid;
+        gap: 4px;
+      }
+
+      .route-map-title h3 {
+        font-size: 18px;
+        font-weight: 760;
+        letter-spacing: -0.024em;
+      }
+
+      .route-map-title p {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .route-line {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(8, minmax(82px, 1fr));
+        min-width: 0;
+        overflow: visible;
+        padding: 10px 14px 4px;
+      }
+
+      .route-line::before {
+        content: "";
+        position: absolute;
+        top: 29px;
+        right: 62px;
+        left: 62px;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(
+          90deg,
+          var(--route-document),
+          var(--route-core),
+          var(--route-qna),
+          var(--route-financials),
+          var(--route-risk)
+        );
+        opacity: 0.72;
+      }
+
+      .route-stop {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        justify-items: center;
+        gap: 7px;
+        min-width: 0;
+        padding: 0 5px;
+        text-align: center;
+      }
+
+      .route-stop-node {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border: 2px solid var(--route-token, var(--route-core));
+        border-radius: 50%;
+        background: var(--surface);
+        color: var(--route-token, var(--route-core));
+        box-shadow: 0 0 0 5px var(--surface);
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 760;
+      }
+
+      .route-stop[data-state="blocked"] .route-stop-node {
+        background: color-mix(in oklab, var(--route-token) 12%, var(--surface));
+        box-shadow:
+          0 0 0 5px var(--surface),
+          0 0 0 8px color-mix(in oklab, var(--route-token) 18%, transparent);
+      }
+
+      .route-stop strong {
+        display: block;
+        overflow-wrap: anywhere;
+        font-size: 11px;
+        line-height: 1.2;
+      }
+
+      .route-stop span {
+        display: block;
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 10px;
+        line-height: 1.2;
+      }
+
+      .line-code {
+        display: inline-grid;
+        min-width: 28px;
+        height: 18px;
+        place-items: center;
+        border-radius: 999px;
+        background: color-mix(in oklab, var(--route-token, var(--route-core)) 12%, var(--surface));
+        color: var(--route-token, var(--route-core));
+        font-family: var(--font-mono);
+        font-size: 9px;
+        font-weight: 760;
+        letter-spacing: 0.02em;
+      }
+
+      .service-status {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 9px;
+        line-height: 1.2;
+      }
+
+      .route-stop .line-code {
+        display: inline-grid;
+        color: var(--route-token, var(--route-core));
+        font-size: 9px;
+        line-height: 1;
+      }
+
+      .route-stop .service-status {
+        color: var(--muted);
+        font-size: 9px;
+      }
+
+      .route-stop.review-link .route-stop-node {
+        box-shadow:
+          0 0 0 5px var(--surface),
+          0 0 0 8px color-mix(in oklab, var(--route-token) 18%, transparent),
+          0 0 0 12px color-mix(in oklab, var(--route-token) 8%, transparent);
+      }
+
+      .route-stop.alert-link .route-stop-node {
+        box-shadow:
+          0 0 0 5px var(--surface),
+          0 0 0 8px color-mix(in oklab, var(--route-token) 16%, transparent);
+      }
+
+      .route-edges {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .route-edge {
+        display: grid;
+        gap: 5px;
+        border-radius: var(--radius-sm);
+        background: var(--surface-subtle);
+        padding: 9px;
+      }
+
+      .route-edge span {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 10px;
+        font-weight: 650;
+        text-transform: uppercase;
+      }
+
+      .route-edge strong {
+        font-size: 12px;
+        line-height: 1.25;
+      }
+
+      .evidence-card {
+        display: grid;
+        align-content: space-between;
+        gap: 18px;
+        min-height: 100%;
+        background: var(--surface-raised);
+      }
+
+      .evidence-title {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 650;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .evidence-card h3 {
+        margin-top: 10px;
+        font-size: 23px;
+        font-weight: 760;
+        letter-spacing: -0.026em;
+        line-height: 1.08;
+        text-wrap: balance;
+      }
+
+      .evidence-card p {
+        margin-top: 12px;
+        color: var(--ink-soft);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .source-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .source-item {
+        display: grid;
+        gap: 3px;
+        border-radius: var(--radius-sm);
+        background: var(--surface-subtle);
+        padding: 10px;
+      }
+
+      .source-item strong {
+        font-size: 12px;
+      }
+
+      .source-item span {
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .body-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 18px;
+        align-items: start;
+      }
+
+      .main-stack,
+      .side-stack {
+        display: grid;
+        gap: 14px;
+        min-width: 0;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 14px;
+      }
+
+      .section-title {
+        font-size: 18px;
+        font-weight: 760;
+        letter-spacing: -0.024em;
+      }
+
+      .section-note {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .timeline {
+        display: grid;
+        position: relative;
+        gap: 0;
+        padding: 2px 0;
+      }
+
+      .timeline::before {
+        content: "";
+        position: absolute;
+        top: 12px;
+        bottom: 14px;
+        left: 84px;
+        width: 2px;
+        border-radius: 999px;
+        background: linear-gradient(var(--route-document), var(--route-qna), var(--route-risk));
+        opacity: 0.64;
+      }
+
+      .timeline-row {
+        position: relative;
+        display: grid;
+        grid-template-columns: 66px 20px minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: start;
+        padding-bottom: 18px;
+      }
+
+      .timeline-row:last-child {
+        padding-bottom: 0;
+      }
+
+      .date {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .dot {
+        position: relative;
+        z-index: 1;
+        width: 13px;
+        height: 13px;
+        margin-top: 2px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 4px var(--surface), 0 0 0 7px var(--accent-soft);
+      }
+
+      .dot.warn {
+        background: var(--warn);
+        box-shadow: 0 0 0 4px var(--surface), 0 0 0 7px var(--warn-soft);
+      }
+
+      .dot.risk {
+        background: var(--risk);
+        box-shadow: 0 0 0 4px var(--surface), 0 0 0 7px var(--risk-soft);
+      }
+
+      .event {
+        min-width: 0;
+      }
+
+      .event strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .event span {
+        display: block;
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.38;
+      }
+
+      .preview-row {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .preview-card {
+        min-width: 0;
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-sm);
+        background: var(--surface);
+        padding: 12px;
+      }
+
+      .preview-card span {
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .preview-card strong {
+        display: block;
+        margin-top: 6px;
+        font-size: 20px;
+        font-variant-numeric: tabular-nums;
+        font-weight: 780;
+        letter-spacing: -0.024em;
+      }
+
+      .preview-card p {
+        margin-top: 8px;
+        color: var(--ink-soft);
+        font-size: 11px;
+        line-height: 1.4;
+      }
+
+      .detail-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .detail-list.after-quote {
+        margin-top: 12px;
+      }
+
+      .detail-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px;
+        align-items: start;
+        border-top: 1px solid var(--border-soft);
+        padding-top: 10px;
+      }
+
+      .detail-row:first-child {
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .detail-row strong {
+        display: block;
+        font-size: 12px;
+        line-height: 1.25;
+      }
+
+      .detail-row span {
+        display: block;
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.35;
+      }
+
+      .inspector-card {
+        display: grid;
+        gap: 14px;
+      }
+
+      .inspector-meta {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .inspector-meta div,
+      .inspector-action {
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-sm);
+        background: var(--surface-subtle);
+        padding: 9px;
+      }
+
+      .inspector-meta span,
+      .inspector-action span {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .inspector-meta strong,
+      .inspector-action strong {
+        display: block;
+        margin-top: 3px;
+        font-size: 12px;
+      }
+
+      .inspector-actions {
+        display: grid;
+        gap: 8px;
+      }
+
+      .source-review-flow {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .source-review-flow::before {
+        content: "";
+        position: absolute;
+        top: 18px;
+        right: 12%;
+        left: 12%;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--route-document), var(--route-qna), var(--route-review));
+        opacity: 0.58;
+      }
+
+      .flow-step {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        justify-items: center;
+        gap: 6px;
+        min-width: 0;
+        text-align: center;
+      }
+
+      .flow-step::before {
+        content: "";
+        width: 34px;
+        height: 34px;
+        border: 2px solid var(--route-token, var(--route-core));
+        border-radius: 50%;
+        background: var(--surface);
+        box-shadow: 0 0 0 5px var(--surface);
+      }
+
+      .flow-step strong {
+        font-size: 11px;
+        line-height: 1.15;
+      }
+
+      .flow-step span {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 9px;
+        line-height: 1.2;
+        text-transform: uppercase;
+      }
+
+      .t-node-marker {
+        display: inline-grid;
+        width: 16px;
+        height: 16px;
+        place-items: center;
+        border: 2px solid var(--route-token, var(--route-core));
+        border-radius: 50%;
+        background: var(--surface);
+        box-shadow: 0 0 0 3px color-mix(in oklab, var(--route-token, var(--route-core)) 12%, transparent);
+      }
+
+      .t-node-marker::before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--route-token, var(--route-core));
+      }
+
+      .qna-thread {
+        display: grid;
+        gap: 10px;
+      }
+
+      .qna-message {
+        display: grid;
+        gap: 5px;
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-md);
+        background: var(--surface);
+        padding: 12px;
+      }
+
+      .qna-message.answer {
+        background: var(--surface-raised);
+      }
+
+      .qna-message header {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 650;
+      }
+
+      .qna-message p {
+        color: var(--ink-soft);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .thread-impact {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .thread-impact div {
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-sm);
+        background: var(--surface-subtle);
+        padding: 9px;
+      }
+
+      .thread-impact span {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .thread-impact strong {
+        display: block;
+        margin-top: 3px;
+        font-size: 12px;
+      }
+
+      .table-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .filter-chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 24px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-xs);
+        background: var(--surface-subtle);
+        color: var(--ink-soft);
+        font-size: 11px;
+        font-weight: 650;
+        padding: 0 8px;
+        white-space: nowrap;
+      }
+
+      td.action {
+        white-space: nowrap;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+
+      th {
+        border-bottom: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 740;
+        letter-spacing: 0.055em;
+        padding: 0 10px 8px 0;
+        text-align: left;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      td {
+        border-bottom: 1px solid var(--border-soft);
+        padding: 11px 10px 11px 0;
+        vertical-align: top;
+      }
+
+      td:last-child,
+      th:last-child {
+        padding-right: 0;
+      }
+
+      td.num,
+      th.num {
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .item-title {
+        display: block;
+        font-weight: 720;
+      }
+
+      .item-meta {
+        display: block;
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .quote {
+        border-radius: var(--radius-md);
+        background: var(--surface-subtle);
+        color: var(--ink-soft);
+        font-family: var(--font-evidence);
+        font-size: 16px;
+        line-height: 1.45;
+        padding: 14px;
+      }
+
+      .status-list {
+        display: grid;
+        gap: 9px;
+      }
+
+      .status-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px;
+        align-items: center;
+        border-top: 1px solid var(--border-soft);
+        padding-top: 9px;
+        font-size: 12px;
+      }
+
+      .status-row:first-child {
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .specialist-board {
+        display: grid;
+        gap: 14px;
+        background: var(--canvas);
+        padding: 22px;
+      }
+
+      .specialist-header {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .specialist-header h2 {
+        max-width: 620px;
+        font-size: 30px;
+        font-weight: 780;
+        letter-spacing: -0.032em;
+        line-height: 1.04;
+      }
+
+      .specialist-header p {
+        margin-top: 8px;
+        max-width: 700px;
+        color: var(--ink-soft);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .specialist-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .section-route-mini {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 0;
+        position: relative;
+        padding: 10px 6px 2px;
+      }
+
+      .section-route-mini::before {
+        content: "";
+        position: absolute;
+        top: 18px;
+        right: 48px;
+        left: 48px;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--route-document), var(--route-qna), var(--route-financials), var(--route-risk), var(--route-review));
+        opacity: 0.6;
+      }
+
+      .mini-stop {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        justify-items: center;
+        gap: 6px;
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 10px;
+        text-align: center;
+      }
+
+      .network-map {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr 1fr;
+        gap: 10px;
+        align-items: stretch;
+      }
+
+      .network-cluster {
+        display: grid;
+        gap: 8px;
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-lg);
+        background: var(--surface);
+        padding: 12px;
+      }
+
+      .network-cluster header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .network-cluster h3 {
+        font-size: 14px;
+        letter-spacing: -0.012em;
+      }
+
+      .network-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-top: 1px solid var(--border-soft);
+        padding-top: 8px;
+        color: var(--ink-soft);
+        font-size: 12px;
+      }
+
+      .specialist-card {
+        display: grid;
+        align-content: start;
+        gap: 12px;
+        min-height: 245px;
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-lg);
+        background: var(--surface);
+        box-shadow: var(--shadow-card);
+        padding: 14px;
+      }
+
+      .specialist-node {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .specialist-node::before {
+        content: "";
+        width: 14px;
+        height: 14px;
+        border: 3px solid var(--route-token, var(--route-core));
+        border-radius: 50%;
+        background: var(--surface);
+        box-shadow: 0 0 0 4px color-mix(in oklab, var(--route-token, var(--route-core)) 12%, transparent);
+      }
+
+      .specialist-node strong {
+        font-size: 14px;
+      }
+
+      .specialist-card p {
+        color: var(--ink-soft);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .specialist-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .specialist-list div {
+        display: grid;
+        gap: 3px;
+        border-top: 1px solid var(--border-soft);
+        padding-top: 8px;
+      }
+
+      .specialist-list div:first-child {
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .specialist-list span {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 9px;
+        font-weight: 650;
+        text-transform: uppercase;
+      }
+
+      .specialist-list strong {
+        font-size: 12px;
+        line-height: 1.25;
+      }
+
+      .dark-preview {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        align-items: stretch;
+      }
+
+      .dark-card {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        background: var(--surface);
+        box-shadow: var(--shadow-card);
+        color: var(--ink);
+        padding: 18px;
+      }
+
+      .dark-card h3 {
+        font-size: 18px;
+        font-weight: 760;
+        letter-spacing: -0.02em;
+      }
+
+      .dark-card p {
+        margin-top: 8px;
+        color: var(--ink-soft);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .phone-wrap {
+        display: flex;
+        justify-content: center;
+      }
+
+      .mobile-pair {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 30px;
+        align-items: start;
+        width: min(920px, 100%);
+        margin: 0 auto;
+      }
+
+      .mobile-sample {
+        display: grid;
+        gap: 10px;
+        justify-items: center;
+        min-width: 0;
+      }
+
+      .phone-sample-label {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        width: min(390px, 100%);
+        color: oklch(48% 0.028 242);
+        font-family: var(--font-mono);
+        font-size: 10px;
+        font-weight: 650;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .phone {
+        width: min(390px, 100%);
+        border-radius: 30px;
+        background: oklch(12% 0.018 244);
+        box-shadow: var(--shadow-frame);
+        padding: 12px;
+      }
+
+      .phone-screen {
+        overflow: hidden;
+        border-radius: 22px;
+        background: var(--canvas);
+        color: var(--ink);
+      }
+
+      .mobile-content {
+        display: grid;
+        gap: 12px;
+        padding: 16px;
+      }
+
+      .mobile-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .mobile-title {
+        display: grid;
+        gap: 12px;
+      }
+
+      .mobile-title h2 {
+        font-size: 34px;
+        font-weight: 780;
+        letter-spacing: -0.034em;
+        line-height: 1.02;
+      }
+
+      .mobile-title p {
+        color: var(--ink-soft);
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .mobile-context {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .mobile-context div {
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-sm);
+        background: var(--surface);
+        padding: 9px;
+      }
+
+      .mobile-context span,
+      .mobile-context strong {
+        display: block;
+      }
+
+      .mobile-context span {
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .mobile-context strong {
+        margin-top: 3px;
+        font-size: 12px;
+      }
+
+      .mobile-route {
+        display: grid;
+        gap: 8px;
+        overflow-x: auto;
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-md);
+        background: var(--surface);
+        padding: 11px;
+      }
+
+      .mobile-route-track {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(50px, 1fr));
+        gap: 0;
+        min-width: 0;
+      }
+
+      .mobile-route-track::before {
+        content: "";
+        position: absolute;
+        top: 13px;
+        right: 24px;
+        left: 24px;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--route-document), var(--route-qna), var(--route-financials), var(--route-risk));
+        opacity: 0.66;
+      }
+
+      .mobile-node {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        justify-items: center;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 10px;
+        line-height: 1.15;
+        text-align: center;
+      }
+
+      .mobile-node::before {
+        content: "";
+        width: 28px;
+        height: 28px;
+        border: 2px solid var(--route-token, var(--route-core));
+        border-radius: 50%;
+        background: var(--surface);
+        box-shadow: 0 0 0 4px var(--surface);
+      }
+
+      .mobile-node.blocked::before {
+        background: color-mix(in oklab, var(--route-token) 13%, var(--surface));
+        box-shadow:
+          0 0 0 4px var(--surface),
+          0 0 0 7px color-mix(in oklab, var(--route-token) 16%, transparent);
+      }
+
+      .mobile-tabs {
+        display: flex;
+        gap: 7px;
+        overflow: hidden;
+      }
+
+      .mobile-tabs span {
+        flex: 0 0 auto;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: var(--surface);
+        font-size: 11px;
+        font-weight: 650;
+        padding: 7px 10px;
+      }
+
+      .mobile-tabs .active {
+        background: var(--ink);
+        color: var(--canvas);
+      }
+
+      .mobile-card {
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-lg);
+        background: var(--surface);
+        box-shadow: 0 1px 2px oklch(18% 0.018 245 / 0.06);
+        padding: 15px;
+      }
+
+      .mobile-card.emphasis {
+        background: var(--surface-raised);
+      }
+
+      .mobile-card h3 {
+        font-size: 19px;
+        font-weight: 760;
+        letter-spacing: -0.024em;
+      }
+
+      .mobile-card p {
+        margin-top: 8px;
+        color: var(--ink-soft);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .mobile-list {
+        display: grid;
+        gap: 9px;
+        margin-top: 12px;
+      }
+
+      .mobile-list div {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+        border-top: 1px solid var(--border-soft);
+        padding-top: 9px;
+        font-size: 12px;
+      }
+
+      .mobile-list span {
+        min-width: 0;
+      }
+
+      .mobile-list strong {
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+
+      @media (max-width: 1180px) {
+        .brief,
+        .overview-grid,
+        .body-grid,
+        .dark-preview {
+          grid-template-columns: 1fr;
+        }
+
+        .desktop-shell {
+          grid-template-columns: 210px minmax(0, 1fr);
+        }
+
+        .metric-grid,
+        .preview-row,
+        .route-edges,
+        .specialist-grid,
+        .network-map {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 760px) {
+        .page {
+          padding: 20px 12px 34px;
+        }
+
+        .desktop-only {
+          display: none;
+        }
+
+        .brief {
+          gap: 16px;
+        }
+
+        h1 {
+          font-size: 34px;
+        }
+
+        .frame-label {
+          font-size: 10px;
+        }
+
+        .route-edges {
+          grid-template-columns: 1fr;
+        }
+
+        .section-route-mini,
+        .network-map {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (min-width: 761px) {
+        .mobile-only {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="brief app-boundary">
+        <div>
+          <p class="kicker">TRAM V1 / mock UI MVP canonico</p>
+          <h1>Mock canonico per la control room del Tender.</h1>
+          <p class="brief-copy">
+            Sotto questa nota inizia la schermata applicativa: un’unica direzione
+            visuale per dashboard, rete del Tender, fonti, Q&A, Financials protetti
+            e validazioni.
+          </p>
+        </div>
+        <aside class="brief-card">
+          <strong>Cosa stiamo giudicando</strong>
+          <p>
+            Layout, densità e gerarchia applicativa. I contenuti restano fixture
+            sintetiche e non rappresentano documentazione reale o valori economici
+            effettivi.
+          </p>
+        </aside>
+      </section>
+
+      <section class="mock-section desktop-only">
+        <div class="frame-label">
+          <span>Dashboard desktop</span>
+          <span>modalità chiara / 1440px</span>
+        </div>
+
+        <div class="app-frame desktop-shell theme-light">
+          <aside class="sidebar" aria-label="Navigazione mock">
+            <div class="brand">
+              <div class="mark"><span>T-node</span></div>
+              <div>
+                <strong>TRAM</strong>
+                <span>Analisi tender</span>
+              </div>
+            </div>
+
+            <div class="side-group">
+              <p class="side-heading">Tender</p>
+              <div class="tender-card">
+                <div class="tender-id">
+                  <span>tender_id</span>
+                  <span>TRM-2030-OM</span>
+                </div>
+                <div>
+                  <strong>Metro Nord O&M 2030</strong>
+                  <span>Revised tender · uso interno</span>
+                </div>
+                <div class="tender-health">
+                  <div class="health-row">
+                    <span>Copertura fonti</span>
+                    <strong>68%</strong>
+                  </div>
+                  <div class="health-bar" aria-hidden="true"><span style="--value: 68%"></span></div>
+                  <div class="health-row">
+                    <span>Validazioni aperte</span>
+                    <strong>7</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <nav class="side-group nav-rail">
+              <p class="side-heading">Area di lavoro</p>
+              <a class="nav-item active route-core" href="#"><span>Dashboard</span><span class="count">2 blocchi</span></a>
+              <a class="nav-item route-document" href="#"><span>Documenti</span><span class="count">3 note</span></a>
+              <a class="nav-item route-core" href="#"><span>Timeline</span><span class="count">1 impatto</span></a>
+              <a class="nav-item route-core" href="#"><span>Deliverables</span><span class="count">8</span></a>
+              <a class="nav-item route-review" href="#"><span>Requisiti</span><span class="count">12</span></a>
+              <a class="nav-item route-financials" href="#"><span>Financials</span><span class="count">Protetto</span></a>
+              <a class="nav-item route-risk" href="#"><span>Criticità</span><span class="count">5</span></a>
+              <a class="nav-item route-qna" href="#"><span>Q&A</span><span class="count">4 thread</span></a>
+              <a class="nav-item route-review" href="#"><span>Da validare</span><span class="count">7</span></a>
+            </nav>
+
+            <div class="sidebar-updates">
+              <p class="side-heading">Ultimi aggiornamenti</p>
+              <div class="update-row">
+                <strong>Q&A 1 ricevuto</strong>
+                <span>Impatto su timeline e deliverables</span>
+              </div>
+              <div class="update-row">
+                <strong>Workbook Financials protetto</strong>
+                <span>Solo revisione locale</span>
+              </div>
+            </div>
+
+            <div class="sidebar-note">
+              Demo sanificata. Nessun documento reale, nessun valore economico,
+              nessun invio automatico di Q&A.
+            </div>
+          </aside>
+
+          <section class="main">
+            <header class="topbar">
+              <p class="breadcrumb">Tender / Metro Nord O&M 2030 / Dashboard</p>
+              <div class="top-actions">
+                <button class="btn secondary">Apri validazioni</button>
+                <button class="btn">Apri fonte</button>
+              </div>
+            </header>
+
+            <div class="workspace">
+              <section class="overview-grid">
+                <div class="panel pad summary-card">
+                  <div class="tag-row">
+                    <span class="tag info">Revised tender</span>
+                    <span class="tag risk">Validazione richiesta</span>
+                    <span class="tag">Metro O&M</span>
+                    <span class="tag warn">Q&A da incorporare</span>
+                  </div>
+
+                  <div>
+                    <h2 class="summary-title">Metro Nord O&M 2030</h2>
+                    <p class="summary-copy">
+                      Il quadro è consultabile, ma non ancora consolidabile: Q&A
+                      modifica una scadenza, tre documenti richiedono verifica e
+                      Financials resta in revisione locale senza valori esposti.
+                    </p>
+                  </div>
+
+                  <div class="metric-grid" aria-label="Metriche principali">
+                    <div class="metric">
+                      <span>Scadenza offerta</span>
+                      <strong>18 giorni</strong>
+                    </div>
+                    <div class="metric">
+                      <span>Fonti da verificare</span>
+                      <strong>3</strong>
+                    </div>
+                    <div class="metric">
+                      <span>Blocchi attivi</span>
+                      <strong>2</strong>
+                    </div>
+                    <div class="metric">
+                      <span>Azioni aperte</span>
+                      <strong>7</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <aside class="panel pad evidence-card">
+                  <div>
+                    <p class="evidence-title">Fonte aperta</p>
+                    <h3>La risposta Q&A prevale sulla scadenza iniziale.</h3>
+                    <p>
+                      La fonte collegata modifica la lettura del calendario. Serve
+                      validazione umana prima di consolidare timeline e deliverables.
+                    </p>
+                  </div>
+
+                  <div class="source-list">
+                    <div class="source-item">
+                      <strong>Registro Q&A, riga 2</strong>
+                      <span>Fonte Q&A correttiva</span>
+                    </div>
+                    <div class="source-item">
+                      <strong>Istruzioni, sezione 2.1</strong>
+                      <span>Fonte istruzioni</span>
+                    </div>
+                  </div>
+                </aside>
+              </section>
+
+              <section class="panel pad route-map" aria-label="Rete operativa del Tender">
+                <div class="route-map-header">
+                  <div class="route-map-title">
+                    <p class="evidence-title">Percorso Tender</p>
+                    <h3>Rete operativa del Tender</h3>
+                    <p>I nodi servono a capire cosa è consultabile, cosa blocca il consolidamento e dove intervenire.</p>
+                  </div>
+                  <span class="tag risk">Criticità aperte</span>
+                </div>
+
+                <div class="route-line" aria-label="Nodi principali">
+                  <div class="route-stop route-document" data-state="open">
+                    <div class="route-stop-node">DOC</div>
+                    <strong>Documenti</strong>
+                    <span class="service-status">da verificare</span>
+                  </div>
+                  <div class="route-stop route-core" data-state="open">
+                    <div class="route-stop-node">TIME</div>
+                    <strong>Timeline</strong>
+                    <span class="service-status">Q&A collegata</span>
+                  </div>
+                  <div class="route-stop route-core" data-state="open">
+                    <div class="route-stop-node">DEL</div>
+                    <strong>Deliverables</strong>
+                    <span class="service-status">allineati</span>
+                  </div>
+                  <div class="route-stop route-review" data-state="open">
+                    <div class="route-stop-node">REQ</div>
+                    <strong>Requisiti</strong>
+                    <span class="service-status">proposto</span>
+                  </div>
+                  <div class="route-stop route-qna review-link" data-state="blocked">
+                    <div class="route-stop-node">QA</div>
+                    <strong>Q&A</strong>
+                    <span class="service-status">validazione</span>
+                  </div>
+                  <div class="route-stop route-financials" data-state="blocked">
+                    <div class="route-stop-node">FIN</div>
+                    <strong>Financials</strong>
+                    <span class="service-status">bloccato</span>
+                  </div>
+                  <div class="route-stop route-core" data-state="open">
+                    <div class="route-stop-node">COST</div>
+                    <strong>Cost driver</strong>
+                    <span class="service-status">candidato</span>
+                  </div>
+                  <div class="route-stop route-risk alert-link" data-state="blocked">
+                    <div class="route-stop-node">CRIT</div>
+                    <strong>Criticità</strong>
+                    <span class="service-status">critico</span>
+                  </div>
+                </div>
+
+                <div class="route-edges">
+                  <div class="route-edge"><span>Q&A</span><strong>Confermare la nuova scadenza.</strong></div>
+                  <div class="route-edge"><span>Fonti</span><strong>3 riferimenti da controllare prima del via libera.</strong></div>
+                  <div class="route-edge"><span>FIN</span><strong>Workbook in revisione locale, senza valori esposti.</strong></div>
+                  <div class="route-edge"><span>CRIT</span><strong>2 criticità alte bloccano il consolidamento.</strong></div>
+                </div>
+
+                <div class="network-map" aria-label="Mappa logica compatta del Tender">
+                  <div class="network-cluster route-document">
+                    <header><h3>Fonti</h3><span class="t-node-marker"></span></header>
+                    <div class="network-row"><span class="line-code">DOC</span><strong>Documenti e versioni</strong></div>
+                    <div class="network-row"><span class="line-code">SRC</span><strong>Estratto verificabile</strong></div>
+                  </div>
+                  <div class="network-cluster route-qna">
+                    <header><h3>Da consolidare</h3><span class="t-node-marker"></span></header>
+                    <div class="network-row"><span class="line-code">QA</span><strong>Risposte collegate alla timeline</strong></div>
+                    <div class="network-row"><span class="line-code">REV</span><strong>Validazione umana richiesta</strong></div>
+                  </div>
+                  <div class="network-cluster route-risk">
+                    <header><h3>Blocchi</h3><span class="t-node-marker"></span></header>
+                    <div class="network-row"><span class="line-code">FIN</span><strong>Financials bloccati</strong></div>
+                    <div class="network-row"><span class="line-code">CRIT</span><strong>Criticità candidate</strong></div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="body-grid">
+                <div class="main-stack">
+                  <div class="panel pad">
+                    <div class="section-header">
+                      <div>
+                        <h3 class="section-title">Prossime decisioni</h3>
+                        <p class="section-note">Solo gli elementi che cambiano stato, scadenze o lavoro dell’offerta.</p>
+                      </div>
+                      <span class="tag risk">2 blocchi</span>
+                    </div>
+
+                    <div class="timeline">
+                      <div class="timeline-row">
+                        <div class="date">12 mag</div>
+                        <div class="dot"></div>
+                        <div class="event">
+                          <strong>Fonti principali mappate</strong>
+                          <span>Tre riferimenti restano da controllare prima del consolidamento.</span>
+                        </div>
+                        <span class="tag good">Mappato</span>
+                      </div>
+                      <div class="timeline-row">
+                        <div class="date">14 mag</div>
+                        <div class="dot warn"></div>
+                        <div class="event">
+                          <strong>Scadenza aggiornata da Q&A</strong>
+                          <span>Da validare e propagare a timeline e deliverables.</span>
+                        </div>
+                        <span class="tag warn">Da validare</span>
+                      </div>
+                      <div class="timeline-row">
+                        <div class="date">31 mag</div>
+                        <div class="dot risk"></div>
+                        <div class="event">
+                          <strong>Invio offerta</strong>
+                          <span>La data non va marcata come confermata finché la Q&A non è validata.</span>
+                        </div>
+                        <span class="tag risk">Bloccante</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="preview-row">
+                    <div class="preview-card">
+                      <span>Deliverables</span>
+                      <strong>8</strong>
+                      <p>8 totali, 2 da confermare dopo la validazione della scadenza.</p>
+                    </div>
+                    <div class="preview-card">
+                      <span>Q&A</span>
+                      <strong>4</strong>
+                      <p>1 risposta cambia la timeline, 1 allegato resta mancante.</p>
+                    </div>
+                    <div class="preview-card">
+                      <span>Financials</span>
+                      <strong>Protetto</strong>
+                      <p>Revisione locale aperta, valori economici non mostrati.</p>
+                    </div>
+                    <div class="preview-card">
+                      <span>CRIT</span>
+                      <strong>5</strong>
+                      <p>2 alte bloccano il consolidamento, 3 restano in coda.</p>
+                    </div>
+                  </div>
+
+                  <div class="panel pad">
+                    <div class="section-header">
+                      <div>
+                        <h3 class="section-title">Q&A con impatto</h3>
+                        <p class="section-note">Thread sintetico collegato a fonte, scadenza e azioni.</p>
+                      </div>
+                      <span class="tag warn">Da incorporare</span>
+                    </div>
+
+                    <div class="qna-thread">
+                      <div class="qna-message">
+                        <header>
+                          <span>Bidder · domanda 1</span>
+                          <span>Registro Q&A, riga 2</span>
+                        </header>
+                        <p>La scadenza indicata nelle istruzioni resta valida dopo il revised tender?</p>
+                      </div>
+                      <div class="qna-message answer">
+                        <header>
+                          <span>Stazione appaltante · risposta ricevuta</span>
+                          <span>Prevale su istruzioni 2.1</span>
+                        </header>
+                        <p>La risposta aggiorna la lettura della scadenza e richiede revisione di timeline e deliverables collegati.</p>
+                      </div>
+                      <div class="thread-impact">
+                        <div><span>Impatto</span><strong>Timeline</strong></div>
+                        <div><span>Stato</span><strong>Da validare</strong></div>
+                        <div><span>Azione</span><strong>Aggiorna fonti</strong></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel pad">
+                    <div class="section-header">
+                      <div>
+                        <h3 class="section-title">Priorità da validare</h3>
+                        <p class="section-note">Coda corta per la dashboard, dettaglio completo in Da validare.</p>
+                      </div>
+                      <span class="tag">7 voci</span>
+                    </div>
+
+                    <div class="table-toolbar" aria-label="Filtri validazione">
+                      <span class="filter-chip">Rischio: alto</span>
+                      <span class="filter-chip">Stato: aperto</span>
+                      <span class="filter-chip">Fonte collegata</span>
+                    </div>
+
+                    <table aria-label="Priorità da validare">
+                      <thead>
+                        <tr>
+                          <th>Elemento</th>
+                          <th>Area</th>
+                          <th>Rischio</th>
+                          <th>Stato</th>
+                          <th>Fonte</th>
+                          <th>Azione</th>
+                          <th class="num">Età</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <span class="item-title">Scadenza corretta da Q&A</span>
+                            <span class="item-meta">Q&A scadenza</span>
+                          </td>
+                          <td>Timeline</td>
+                          <td><span class="tag risk">Alta</span></td>
+                          <td><span class="tag warn">Aperto</span></td>
+                          <td>Registro Q&A</td>
+                          <td class="action">Valida fonte</td>
+                          <td class="num">2g</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span class="item-title">Allegato mancante nel registro</span>
+                            <span class="item-meta">Q&A allegato</span>
+                          </td>
+                          <td>Q&A</td>
+                          <td><span class="tag warn">Media</span></td>
+                          <td><span class="tag warn">Aperto</span></td>
+                          <td>Riga 5</td>
+                          <td class="action">Carica allegato</td>
+                          <td class="num">1g</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span class="item-title">Meccanismo di remunerazione in revisione locale</span>
+                            <span class="item-meta">Financials locale</span>
+                          </td>
+                          <td>Financials</td>
+                          <td><span class="tag risk">Alta</span></td>
+                          <td><span class="tag risk">Protetto</span></td>
+                          <td>Workbook</td>
+                          <td class="action">Revisione locale</td>
+                          <td class="num">4g</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <aside class="side-stack">
+                  <div class="panel pad inspector-card">
+                    <div class="section-header">
+                      <div>
+                        <h3 class="section-title">Inspector fonte</h3>
+                        <p class="section-note">Fonte, impatto, stato e prossima azione.</p>
+                      </div>
+                      <span class="tag risk">Bloccante</span>
+                    </div>
+                    <div class="inspector-meta">
+                      <div>
+                        <span>Documento</span>
+                        <strong>Registro Q&A</strong>
+                      </div>
+                      <div>
+                        <span>Riferimento</span>
+                        <strong>Riga 2</strong>
+                      </div>
+                      <div>
+                        <span>Impatto</span>
+                        <strong>Timeline</strong>
+                      </div>
+                      <div>
+                        <span>Stato</span>
+                        <strong>Da validare</strong>
+                      </div>
+                    </div>
+                    <p class="quote">
+                      “Le risposte Q&A approvate prevalgono sulle indicazioni
+                      precedenti se incompatibili.”
+                    </p>
+                    <div class="source-review-flow" aria-label="Relazione fonte review">
+                      <div class="flow-step route-document"><span>Fonte</span><strong>Q&A riga 2</strong></div>
+                      <div class="flow-step route-qna"><span>Impatto</span><strong>Timeline</strong></div>
+                      <div class="flow-step route-review"><span>Review</span><strong>Da validare</strong></div>
+                    </div>
+                    <div class="inspector-actions">
+                      <div class="inspector-action">
+                        <span>Prossima azione</span>
+                        <strong>Valida Q&A e aggiorna scadenza</strong>
+                      </div>
+                      <div class="inspector-action">
+                        <span>Collegamenti</span>
+                        <strong>Timeline, Deliverables, Da validare</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel pad">
+                    <div class="section-header">
+                      <div>
+                        <h3 class="section-title">Documenti attivi</h3>
+                        <p class="section-note">Versioni e integrazioni che cambiano il quadro.</p>
+                      </div>
+                    </div>
+                    <div class="status-list">
+                      <div class="status-row">
+                        <span>Istruzioni ai concorrenti</span>
+                        <span class="tag good">Vigente</span>
+                      </div>
+                      <div class="status-row">
+                        <span>Schema contratto O&M</span>
+                        <span class="tag warn">Da verificare</span>
+                      </div>
+                      <div class="status-row">
+                        <span>Registro Q&A</span>
+                        <span class="tag warn">Da incorporare</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel pad">
+                    <div class="section-header">
+                      <div>
+                        <h3 class="section-title">Policy dati e AI</h3>
+                        <p class="section-note">Cosa può uscire dal perimetro locale.</p>
+                      </div>
+                    </div>
+                    <div class="status-list">
+                      <div class="status-row">
+                        <span>Pubblico</span>
+                        <span class="tag good">Ammesso</span>
+                      </div>
+                      <div class="status-row">
+                        <span>Uso interno</span>
+                        <span class="tag warn">Da approvare</span>
+                      </div>
+                      <div class="status-row">
+                        <span>Financials protetto</span>
+                        <span class="tag risk">Bloccato</span>
+                      </div>
+                    </div>
+                  </div>
+                </aside>
+              </section>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="mock-section desktop-only">
+        <div class="frame-label">
+          <span>Dashboard desktop</span>
+          <span>modalità scura / 1440px</span>
+        </div>
+
+        <div class="app-frame desktop-shell theme-dark">
+          <aside class="sidebar" aria-label="Navigazione mock modalità scura">
+            <div class="brand">
+              <div class="mark"><span>T-node</span></div>
+              <div>
+                <strong>TRAM</strong>
+                <span>Analisi tender</span>
+              </div>
+            </div>
+
+            <div class="side-group">
+              <p class="side-heading">Tender</p>
+              <div class="tender-card">
+                <div class="tender-id">
+                  <span>tender_id</span>
+                  <span>TRM-2030-OM</span>
+                </div>
+                <div>
+                  <strong>Metro Nord O&M 2030</strong>
+                  <span>Revised tender · uso interno</span>
+                </div>
+                <div class="tender-health">
+                  <div class="health-row">
+                    <span>Copertura fonti</span>
+                    <strong>68%</strong>
+                  </div>
+                  <div class="health-bar" aria-hidden="true"><span style="--value: 68%"></span></div>
+                  <div class="health-row">
+                    <span>Validazioni aperte</span>
+                    <strong>7</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <nav class="side-group nav-rail">
+              <p class="side-heading">Area di lavoro</p>
+              <a class="nav-item active route-core" href="#"><span>Dashboard</span><span class="count">2 blocchi</span></a>
+              <a class="nav-item route-document" href="#"><span>Documenti</span><span class="count">3 note</span></a>
+              <a class="nav-item route-core" href="#"><span>Timeline</span><span class="count">1 impatto</span></a>
+              <a class="nav-item route-core" href="#"><span>Deliverables</span><span class="count">8</span></a>
+              <a class="nav-item route-review" href="#"><span>Requisiti</span><span class="count">12</span></a>
+              <a class="nav-item route-financials" href="#"><span>Financials</span><span class="count">Protetto</span></a>
+              <a class="nav-item route-risk" href="#"><span>Criticità</span><span class="count">5</span></a>
+              <a class="nav-item route-qna" href="#"><span>Q&A</span><span class="count">4 thread</span></a>
+              <a class="nav-item route-review" href="#"><span>Da validare</span><span class="count">7</span></a>
+            </nav>
+
+            <div class="sidebar-updates">
+              <p class="side-heading">Ultimi aggiornamenti</p>
+              <div class="update-row">
+                <strong>Q&A 1 ricevuto</strong>
+                <span>Impatto su timeline e deliverables</span>
+              </div>
+              <div class="update-row">
+                <strong>Workbook Financials protetto</strong>
+                <span>Solo revisione locale</span>
+              </div>
+            </div>
+
+            <div class="sidebar-note">
+              Modalità scura completa: stessi dati, stessi stati, stesso pannello fonte.
+            </div>
+          </aside>
+
+          <section class="main">
+            <header class="topbar">
+              <p class="breadcrumb">Tender / Metro Nord O&M 2030 / Dashboard</p>
+              <div class="top-actions">
+                <button class="btn secondary">Apri validazioni</button>
+                <button class="btn">Apri fonte</button>
+              </div>
+            </header>
+
+            <div class="workspace">
+              <section class="overview-grid">
+                <div class="panel pad summary-card">
+                  <div class="tag-row">
+                    <span class="tag info">Revised tender</span>
+                    <span class="tag risk">Validazione richiesta</span>
+                    <span class="tag">Metro O&M</span>
+                    <span class="tag warn">Q&A da incorporare</span>
+                  </div>
+
+                  <div>
+                    <h2 class="summary-title">Metro Nord O&M 2030</h2>
+                    <p class="summary-copy">
+                      Il quadro è consultabile, ma non ancora consolidabile: Q&A
+                      modifica una scadenza, tre documenti richiedono verifica e
+                      Financials resta in revisione locale senza valori esposti.
+                    </p>
+                  </div>
+
+                  <div class="metric-grid" aria-label="Metriche principali modalità scura">
+                    <div class="metric">
+                      <span>Scadenza offerta</span>
+                      <strong>18 giorni</strong>
+                    </div>
+                    <div class="metric">
+                      <span>Fonti da verificare</span>
+                      <strong>3</strong>
+                    </div>
+                    <div class="metric">
+                      <span>Blocchi attivi</span>
+                      <strong>2</strong>
+                    </div>
+                    <div class="metric">
+                      <span>Azioni aperte</span>
+                      <strong>7</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <aside class="panel pad evidence-card">
+                  <div>
+                    <p class="evidence-title">Fonte aperta</p>
+                    <h3>La risposta Q&A prevale sulla scadenza iniziale.</h3>
+                    <p>
+                      La fonte collegata modifica la lettura del calendario. Serve
+                      validazione umana prima di consolidare timeline e deliverables.
+                    </p>
+                  </div>
+
+                  <div class="source-list">
+                    <div class="source-item">
+                      <strong>Registro Q&A, riga 2</strong>
+                      <span>Fonte Q&A correttiva</span>
+                    </div>
+                    <div class="source-item">
+                      <strong>Istruzioni, sezione 2.1</strong>
+                      <span>Fonte istruzioni</span>
+                    </div>
+                  </div>
+                </aside>
+              </section>
+
+              <section class="panel pad route-map" aria-label="Rete operativa del Tender modalità scura">
+                <div class="route-map-header">
+                  <div class="route-map-title">
+                    <p class="evidence-title">Percorso Tender</p>
+                    <h3>Rete operativa del Tender</h3>
+                    <p>I nodi servono a capire cosa è consultabile, cosa blocca il consolidamento e dove intervenire.</p>
+                  </div>
+                  <span class="tag risk">Criticità aperte</span>
+                </div>
+
+                <div class="route-line" aria-label="Nodi principali modalità scura">
+                  <div class="route-stop route-document" data-state="open">
+                    <div class="route-stop-node">DOC</div>
+                    <strong>Documenti</strong>
+                    <span class="service-status">da verificare</span>
+                  </div>
+                  <div class="route-stop route-core" data-state="open">
+                    <div class="route-stop-node">TIME</div>
+                    <strong>Timeline</strong>
+                    <span class="service-status">Q&A collegata</span>
+                  </div>
+                  <div class="route-stop route-core" data-state="open">
+                    <div class="route-stop-node">DEL</div>
+                    <strong>Deliverables</strong>
+                    <span class="service-status">allineati</span>
+                  </div>
+                  <div class="route-stop route-review" data-state="open">
+                    <div class="route-stop-node">REQ</div>
+                    <strong>Requisiti</strong>
+                    <span class="service-status">proposto</span>
+                  </div>
+                  <div class="route-stop route-qna review-link" data-state="blocked">
+                    <div class="route-stop-node">QA</div>
+                    <strong>Q&A</strong>
+                    <span class="service-status">validazione</span>
+                  </div>
+                  <div class="route-stop route-financials" data-state="blocked">
+                    <div class="route-stop-node">FIN</div>
+                    <strong>Financials</strong>
+                    <span class="service-status">bloccato</span>
+                  </div>
+                  <div class="route-stop route-core" data-state="open">
+                    <div class="route-stop-node">COST</div>
+                    <strong>Cost driver</strong>
+                    <span class="service-status">candidato</span>
+                  </div>
+                  <div class="route-stop route-risk alert-link" data-state="blocked">
+                    <div class="route-stop-node">CRIT</div>
+                    <strong>Criticità</strong>
+                    <span class="service-status">critico</span>
+                  </div>
+                </div>
+
+                <div class="route-edges">
+                  <div class="route-edge"><span>Q&A</span><strong>Confermare la nuova scadenza.</strong></div>
+                  <div class="route-edge"><span>Fonti</span><strong>3 riferimenti da controllare prima del via libera.</strong></div>
+                  <div class="route-edge"><span>FIN</span><strong>Workbook in revisione locale, senza valori esposti.</strong></div>
+                  <div class="route-edge"><span>CRIT</span><strong>2 criticità alte bloccano il consolidamento.</strong></div>
+                </div>
+
+                <div class="network-map" aria-label="Mappa logica compatta del Tender modalità scura">
+                  <div class="network-cluster route-document">
+                    <header><h3>Fonti</h3><span class="t-node-marker"></span></header>
+                    <div class="network-row"><span class="line-code">DOC</span><strong>Documenti e versioni</strong></div>
+                    <div class="network-row"><span class="line-code">SRC</span><strong>Estratto verificabile</strong></div>
+                  </div>
+                  <div class="network-cluster route-qna">
+                    <header><h3>Da consolidare</h3><span class="t-node-marker"></span></header>
+                    <div class="network-row"><span class="line-code">QA</span><strong>Risposte collegate alla timeline</strong></div>
+                    <div class="network-row"><span class="line-code">REV</span><strong>Validazione umana richiesta</strong></div>
+                  </div>
+                  <div class="network-cluster route-risk">
+                    <header><h3>Blocchi</h3><span class="t-node-marker"></span></header>
+                    <div class="network-row"><span class="line-code">FIN</span><strong>Financials bloccati</strong></div>
+                    <div class="network-row"><span class="line-code">CRIT</span><strong>Criticità candidate</strong></div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="body-grid">
+                <div class="main-stack">
+                  <div class="panel pad">
+                    <div class="section-header">
+                      <div>
+                        <h3 class="section-title">Prossime decisioni</h3>
+                        <p class="section-note">Solo gli elementi che cambiano stato, scadenze o lavoro dell’offerta.</p>
+                      </div>
+                      <span class="tag risk">2 blocchi</span>
+                    </div>
+
+                    <div class="timeline">
+                      <div class="timeline-row">
+                        <div class="date">12 mag</div>
+                        <div class="dot"></div>
+                        <div class="event">
+                          <strong>Fonti principali mappate</strong>
+                          <span>Tre riferimenti restano da controllare prima del consolidamento.</span>
+                        </div>
+                        <span class="tag good">Mappato</span>
+                      </div>
+                      <div class="timeline-row">
+                        <div class="date">14 mag</div>
+                        <div class="dot warn"></div>
+                        <div class="event">
+                          <strong>Scadenza aggiornata da Q&A</strong>
+                          <span>Da validare e propagare a timeline e deliverables.</span>
+                        </div>
+                        <span class="tag warn">Da validare</span>
+                      </div>
+                      <div class="timeline-row">
+                        <div class="date">31 mag</div>
+                        <div class="dot risk"></div>
+                        <div class="event">
+                          <strong>Invio offerta</strong>
+                          <span>La data non va marcata come confermata finché la Q&A non è validata.</span>
+                        </div>
+                        <span class="tag risk">Bloccante</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="preview-row">
+                    <div class="preview-card">
+                      <span>Deliverables</span>
+                      <strong>8</strong>
+                      <p>8 totali, 2 da confermare dopo la validazione della scadenza.</p>
+                    </div>
+                    <div class="preview-card">
+                      <span>Q&A</span>
+                      <strong>4</strong>
+                      <p>1 risposta cambia la timeline, 1 allegato resta mancante.</p>
+                    </div>
+                    <div class="preview-card">
+                      <span>Financials</span>
+                      <strong>Protetto</strong>
+                      <p>Revisione locale aperta, valori economici non mostrati.</p>
+                    </div>
+                    <div class="preview-card">
+                      <span>CRIT</span>
+                      <strong>5</strong>
+                      <p>2 alte bloccano il consolidamento, 3 restano in coda.</p>
+                    </div>
+                  </div>
+
+                  <div class="panel pad">
+                    <div class="section-header">
+                      <div>
+                        <h3 class="section-title">Q&A con impatto</h3>
+                        <p class="section-note">Thread sintetico collegato a fonte, scadenza e azioni.</p>
+                      </div>
+                      <span class="tag warn">Da incorporare</span>
+                    </div>
+
+                    <div class="qna-thread">
+                      <div class="qna-message">
+                        <header>
+                          <span>Bidder · domanda 1</span>
+                          <span>Registro Q&A, riga 2</span>
+                        </header>
+                        <p>La scadenza indicata nelle istruzioni resta valida dopo il revised tender?</p>
+                      </div>
+                      <div class="qna-message answer">
+                        <header>
+                          <span>Stazione appaltante · risposta ricevuta</span>
+                          <span>Prevale su istruzioni 2.1</span>
+                        </header>
+                        <p>La risposta aggiorna la lettura della scadenza e richiede revisione di timeline e deliverables collegati.</p>
+                      </div>
+                      <div class="thread-impact">
+                        <div><span>Impatto</span><strong>Timeline</strong></div>
+                        <div><span>Stato</span><strong>Da validare</strong></div>
+                        <div><span>Azione</span><strong>Aggiorna fonti</strong></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel pad">
+                    <div class="section-header">
+                      <div>
+                        <h3 class="section-title">Priorità da validare</h3>
+                        <p class="section-note">Coda corta per la dashboard, dettaglio completo in Da validare.</p>
+                      </div>
+                      <span class="tag">7 voci</span>
+                    </div>
+
+                    <div class="table-toolbar" aria-label="Filtri validazione modalità scura">
+                      <span class="filter-chip">Rischio: alto</span>
+                      <span class="filter-chip">Stato: aperto</span>
+                      <span class="filter-chip">Fonte collegata</span>
+                    </div>
+
+                    <table aria-label="Priorità da validare modalità scura">
+                      <thead>
+                        <tr>
+                          <th>Elemento</th>
+                          <th>Area</th>
+                          <th>Rischio</th>
+                          <th>Stato</th>
+                          <th>Fonte</th>
+                          <th>Azione</th>
+                          <th class="num">Età</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <span class="item-title">Scadenza corretta da Q&A</span>
+                            <span class="item-meta">Q&A scadenza</span>
+                          </td>
+                          <td>Timeline</td>
+                          <td><span class="tag risk">Alta</span></td>
+                          <td><span class="tag warn">Aperto</span></td>
+                          <td>Registro Q&A</td>
+                          <td class="action">Valida fonte</td>
+                          <td class="num">2g</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span class="item-title">Allegato mancante nel registro</span>
+                            <span class="item-meta">Q&A allegato</span>
+                          </td>
+                          <td>Q&A</td>
+                          <td><span class="tag warn">Media</span></td>
+                          <td><span class="tag warn">Aperto</span></td>
+                          <td>Riga 5</td>
+                          <td class="action">Carica allegato</td>
+                          <td class="num">1g</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <span class="item-title">Meccanismo di remunerazione in revisione locale</span>
+                            <span class="item-meta">Financials locale</span>
+                          </td>
+                          <td>Financials</td>
+                          <td><span class="tag risk">Alta</span></td>
+                          <td><span class="tag risk">Protetto</span></td>
+                          <td>Workbook</td>
+                          <td class="action">Revisione locale</td>
+                          <td class="num">4g</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <aside class="side-stack">
+                  <div class="panel pad inspector-card">
+                    <div class="section-header">
+                      <div>
+                        <h3 class="section-title">Inspector fonte</h3>
+                        <p class="section-note">Fonte, impatto, stato e prossima azione.</p>
+                      </div>
+                      <span class="tag risk">Bloccante</span>
+                    </div>
+                    <div class="inspector-meta">
+                      <div>
+                        <span>Documento</span>
+                        <strong>Registro Q&A</strong>
+                      </div>
+                      <div>
+                        <span>Riferimento</span>
+                        <strong>Riga 2</strong>
+                      </div>
+                      <div>
+                        <span>Impatto</span>
+                        <strong>Timeline</strong>
+                      </div>
+                      <div>
+                        <span>Stato</span>
+                        <strong>Da validare</strong>
+                      </div>
+                    </div>
+                    <p class="quote">
+                      “Le risposte Q&A approvate prevalgono sulle indicazioni
+                      precedenti se incompatibili.”
+                    </p>
+                    <div class="source-review-flow" aria-label="Relazione fonte review modalità scura">
+                      <div class="flow-step route-document"><span>Fonte</span><strong>Q&A riga 2</strong></div>
+                      <div class="flow-step route-qna"><span>Impatto</span><strong>Timeline</strong></div>
+                      <div class="flow-step route-review"><span>Review</span><strong>Da validare</strong></div>
+                    </div>
+                    <div class="inspector-actions">
+                      <div class="inspector-action">
+                        <span>Prossima azione</span>
+                        <strong>Valida Q&A e aggiorna scadenza</strong>
+                      </div>
+                      <div class="inspector-action">
+                        <span>Collegamenti</span>
+                        <strong>Timeline, Deliverables, Da validare</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel pad">
+                    <div class="section-header">
+                      <div>
+                        <h3 class="section-title">Documenti attivi</h3>
+                        <p class="section-note">Versioni e integrazioni che cambiano il quadro.</p>
+                      </div>
+                    </div>
+                    <div class="status-list">
+                      <div class="status-row">
+                        <span>Istruzioni ai concorrenti</span>
+                        <span class="tag good">Vigente</span>
+                      </div>
+                      <div class="status-row">
+                        <span>Schema contratto O&M</span>
+                        <span class="tag warn">Da verificare</span>
+                      </div>
+                      <div class="status-row">
+                        <span>Registro Q&A</span>
+                        <span class="tag warn">Da incorporare</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="panel pad">
+                    <div class="section-header">
+                      <div>
+                        <h3 class="section-title">Policy dati e AI</h3>
+                        <p class="section-note">Cosa può uscire dal perimetro locale.</p>
+                      </div>
+                    </div>
+                    <div class="status-list">
+                      <div class="status-row">
+                        <span>Pubblico</span>
+                        <span class="tag good">Ammesso</span>
+                      </div>
+                      <div class="status-row">
+                        <span>Uso interno</span>
+                        <span class="tag warn">Da approvare</span>
+                      </div>
+                      <div class="status-row">
+                        <span>Financials protetto</span>
+                        <span class="tag risk">Bloccato</span>
+                      </div>
+                    </div>
+                  </div>
+                </aside>
+              </section>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="mock-section desktop-only">
+        <div class="frame-label">
+          <span>Viste specialistiche derivate</span>
+          <span>stessa grammatica della dashboard</span>
+        </div>
+        <div class="app-frame theme-light">
+          <div class="specialist-board">
+            <div class="specialist-header">
+              <div>
+                <p class="evidence-title">Derivazione viste</p>
+                <h2>Le sezioni dedicate ereditano nodi, stati e fonte aperta.</h2>
+                <p>
+                  Ogni vista specialistica resta dentro la stessa rete del Tender:
+                  non cambia linguaggio visivo, cambia solo il livello di dettaglio.
+                </p>
+              </div>
+              <span class="tag info">Mock unico</span>
+            </div>
+
+            <div class="section-route-mini" aria-label="Route strip persistente viste specialistiche">
+              <div class="mini-stop route-document"><span class="t-node-marker"></span><strong>DOC</strong></div>
+              <div class="mini-stop route-qna"><span class="t-node-marker"></span><strong>Q&A</strong></div>
+              <div class="mini-stop route-financials"><span class="t-node-marker"></span><strong>FIN</strong></div>
+              <div class="mini-stop route-risk"><span class="t-node-marker"></span><strong>CRIT</strong></div>
+              <div class="mini-stop route-review"><span class="t-node-marker"></span><strong>REV</strong></div>
+            </div>
+
+            <div class="specialist-grid">
+              <article class="specialist-card route-document">
+                <div class="specialist-node"><strong>Documenti</strong></div>
+                <p>Vista di famiglie, versioni, stato documenti e accesso alla fonte.</p>
+                <div class="specialist-list">
+                  <div><span>Focus</span><strong>Vigente, superato, da verificare</strong></div>
+                  <div><span>Azione</span><strong>Apri fonte e collega review</strong></div>
+                  <div><span>Stato</span><strong>3 documenti da verificare</strong></div>
+                </div>
+              </article>
+
+              <article class="specialist-card route-qna">
+                <div class="specialist-node"><strong>Q&A</strong></div>
+                <p>Registro compatto, filtrabile, con impatto su scadenze e deliverables.</p>
+                <div class="specialist-list">
+                  <div><span>Focus</span><strong>Thread, risposta, effetto corrente</strong></div>
+                  <div><span>Azione</span><strong>Incorpora risposta approvata</strong></div>
+                  <div><span>Stato</span><strong>1 risposta bloccante</strong></div>
+                </div>
+              </article>
+
+              <article class="specialist-card route-financials">
+                <div class="specialist-node"><strong>Financials</strong></div>
+                <p>Superficie sobria per workbook e payment mechanism, senza valori non validati.</p>
+                <div class="specialist-list">
+                  <div><span>Focus</span><strong>Sensibilità, fonte, review locale</strong></div>
+                  <div><span>Azione</span><strong>Apri in revisione controllata</strong></div>
+                  <div><span>Stato</span><strong>Accesso protetto</strong></div>
+                </div>
+              </article>
+
+              <article class="specialist-card route-risk">
+                <div class="specialist-node"><strong>Criticità</strong></div>
+                <p>Criticità candidate: gap, incoerenze e blocchi non diventano verità.</p>
+                <div class="specialist-list">
+                  <div><span>Focus</span><strong>Contrasto fonti, rischio, impatto</strong></div>
+                  <div><span>Azione</span><strong>Assegna review o chiarimento</strong></div>
+                  <div><span>Stato</span><strong>2 criticità alte</strong></div>
+                </div>
+              </article>
+
+              <article class="specialist-card route-review">
+                <div class="specialist-node"><strong>Da validare</strong></div>
+                <p>Coda di lavoro umano, ordinata per blocco, rischio e fonte collegata.</p>
+                <div class="specialist-list">
+                  <div><span>Focus</span><strong>Fonte → impatto → decisione</strong></div>
+                  <div><span>Azione</span><strong>Conferma, correggi o contesta</strong></div>
+                  <div><span>Stato</span><strong>7 voci aperte</strong></div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mock-section mobile-only">
+        <div class="frame-label">
+          <span>Dashboard mobile</span>
+          <span>390px</span>
+        </div>
+        <div class="phone-wrap theme-light">
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="mobile-content">
+                <div class="mobile-top">
+                  <div class="brand">
+                    <div class="mark"><span>T-node</span></div>
+                    <div>
+                      <strong>TRAM</strong>
+                      <span>Dashboard</span>
+                    </div>
+                  </div>
+                  <span class="tag risk">2 blocchi</span>
+                </div>
+
+                <section class="mobile-title">
+                  <div class="tag-row">
+                    <span class="tag info">Revised tender</span>
+                    <span class="tag">Uso interno</span>
+                  </div>
+                  <h2>Metro Nord O&M 2030</h2>
+                  <p>
+                    Sintesi di consultazione: stato, prossima scadenza,
+                    validazioni bloccanti e fonte aperta.
+                  </p>
+                </section>
+
+                <div class="mobile-context">
+                  <div>
+                    <span>tender_id</span>
+                    <strong>TRM-2030-OM</strong>
+                  </div>
+                  <div>
+                    <span>Stato</span>
+                    <strong>Da validare</strong>
+                  </div>
+                </div>
+
+                <div class="mobile-route" aria-label="Percorso Tender mobile">
+                  <div class="mobile-route-track">
+                    <span class="mobile-node route-document">DOC</span>
+                    <span class="mobile-node route-qna blocked">QA</span>
+                    <span class="mobile-node route-core">TIME</span>
+                    <span class="mobile-node route-financials blocked">FIN</span>
+                    <span class="mobile-node route-risk blocked">CRIT</span>
+                  </div>
+                </div>
+
+                <div class="mobile-tabs">
+                  <span class="active">Sintesi</span>
+                  <span>Q&A</span>
+                  <span>Timeline</span>
+                  <span>Validazione</span>
+                </div>
+
+                <article class="mobile-card emphasis">
+                  <h3>La dashboard richiede validazione.</h3>
+                  <p>
+                    Q&A e Financials impediscono di consolidare il quadro come
+                    validato internamente.
+                  </p>
+                  <div class="mobile-list">
+                    <div><span>Scadenza offerta</span><strong>18 giorni</strong></div>
+                    <div><span>Blocchi attivi</span><strong>2</strong></div>
+                    <div><span>Azioni aperte</span><strong>7</strong></div>
+                  </div>
+                </article>
+
+                <article class="mobile-card">
+                  <h3>Fonte aperta</h3>
+                  <p>
+                    Registro Q&A, riga 2. La risposta modifica la lettura della
+                    scadenza iniziale.
+                  </p>
+                  <div class="mobile-list">
+                    <div><span>Impatto</span><strong>Timeline</strong></div>
+                    <div><span>Stato</span><strong>Da validare</strong></div>
+                  </div>
+                </article>
+
+                <article class="mobile-card">
+                  <h3>Priorità</h3>
+                  <div class="mobile-list">
+                    <div><span>Scadenza corretta da Q&A</span><strong>Alta</strong></div>
+                    <div><span>Meccanismo remunerazione</span><strong>Alta</strong></div>
+                    <div><span>Allegato mancante</span><strong>Media</strong></div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mock-section mobile-only">
+        <div class="frame-label">
+          <span>Dashboard mobile</span>
+          <span>modalità scura / 390px</span>
+        </div>
+        <div class="phone-wrap theme-dark">
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="mobile-content">
+                <div class="mobile-top">
+                  <div class="brand">
+                    <div class="mark"><span>T-node</span></div>
+                    <div>
+                      <strong>TRAM</strong>
+                      <span>Dashboard</span>
+                    </div>
+                  </div>
+                  <span class="tag risk">2 blocchi</span>
+                </div>
+
+                <section class="mobile-title">
+                  <div class="tag-row">
+                    <span class="tag info">Revised tender</span>
+                    <span class="tag">Uso interno</span>
+                  </div>
+                  <h2>Metro Nord O&M 2030</h2>
+                  <p>
+                    Sintesi di consultazione: stato, prossima scadenza,
+                    validazioni bloccanti e fonte aperta.
+                  </p>
+                </section>
+
+                <div class="mobile-context">
+                  <div>
+                    <span>tender_id</span>
+                    <strong>TRM-2030-OM</strong>
+                  </div>
+                  <div>
+                    <span>Stato</span>
+                    <strong>Da validare</strong>
+                  </div>
+                </div>
+
+                <div class="mobile-route" aria-label="Percorso Tender mobile modalità scura">
+                  <div class="mobile-route-track">
+                    <span class="mobile-node route-document">DOC</span>
+                    <span class="mobile-node route-qna blocked">QA</span>
+                    <span class="mobile-node route-core">TIME</span>
+                    <span class="mobile-node route-financials blocked">FIN</span>
+                    <span class="mobile-node route-risk blocked">CRIT</span>
+                  </div>
+                </div>
+
+                <div class="mobile-tabs">
+                  <span class="active">Sintesi</span>
+                  <span>Q&A</span>
+                  <span>Timeline</span>
+                  <span>Validazione</span>
+                </div>
+
+                <article class="mobile-card emphasis">
+                  <h3>La dashboard richiede validazione.</h3>
+                  <p>
+                    Q&A e Financials impediscono di consolidare il quadro come
+                    validato internamente.
+                  </p>
+                  <div class="mobile-list">
+                    <div><span>Scadenza offerta</span><strong>18 giorni</strong></div>
+                    <div><span>Blocchi attivi</span><strong>2</strong></div>
+                    <div><span>Azioni aperte</span><strong>7</strong></div>
+                  </div>
+                </article>
+
+                <article class="mobile-card">
+                  <h3>Fonte aperta</h3>
+                  <p>
+                    Registro Q&A, riga 2. La risposta modifica la lettura della
+                    scadenza iniziale.
+                  </p>
+                  <div class="mobile-list">
+                    <div><span>Impatto</span><strong>Timeline</strong></div>
+                    <div><span>Stato</span><strong>Da validare</strong></div>
+                  </div>
+                </article>
+
+                <article class="mobile-card">
+                  <h3>Priorità</h3>
+                  <div class="mobile-list">
+                    <div><span>Scadenza corretta da Q&A</span><strong>Alta</strong></div>
+                    <div><span>Meccanismo remunerazione</span><strong>Alta</strong></div>
+                    <div><span>Allegato mancante</span><strong>Media</strong></div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mock-section desktop-only">
+        <div class="frame-label">
+          <span>Dashboard mobile</span>
+          <span>modalità chiara e scura affiancate / 390px</span>
+        </div>
+        <div class="mobile-pair">
+          <div class="mobile-sample">
+            <div class="phone-sample-label">
+              <span>Modalità chiara</span>
+              <span>390px</span>
+            </div>
+            <div class="phone-wrap theme-light">
+              <div class="phone">
+                <div class="phone-screen">
+                  <div class="mobile-content">
+                <div class="mobile-top">
+                  <div class="brand">
+                    <div class="mark"><span>T-node</span></div>
+                    <div>
+                      <strong>TRAM</strong>
+                      <span>Dashboard</span>
+                    </div>
+                  </div>
+                  <span class="tag risk">2 blocchi</span>
+                </div>
+
+                <section class="mobile-title">
+                  <div class="tag-row">
+                    <span class="tag info">Revised tender</span>
+                    <span class="tag">Uso interno</span>
+                  </div>
+                  <h2>Metro Nord O&M 2030</h2>
+                  <p>
+                    Sintesi di consultazione: stato, prossima scadenza,
+                    validazioni bloccanti e fonte aperta.
+                  </p>
+                </section>
+
+                <div class="mobile-context">
+                  <div>
+                    <span>tender_id</span>
+                    <strong>TRM-2030-OM</strong>
+                  </div>
+                  <div>
+                    <span>Stato</span>
+                    <strong>Da validare</strong>
+                  </div>
+                </div>
+
+                <div class="mobile-route" aria-label="Percorso Tender mobile affiancato">
+                  <div class="mobile-route-track">
+                    <span class="mobile-node route-document">DOC</span>
+                    <span class="mobile-node route-qna blocked">QA</span>
+                    <span class="mobile-node route-core">TIME</span>
+                    <span class="mobile-node route-financials blocked">FIN</span>
+                    <span class="mobile-node route-risk blocked">CRIT</span>
+                  </div>
+                </div>
+
+                <div class="mobile-tabs">
+                  <span class="active">Sintesi</span>
+                  <span>Q&A</span>
+                  <span>Timeline</span>
+                  <span>Validazione</span>
+                </div>
+
+                <article class="mobile-card emphasis">
+                  <h3>La dashboard richiede validazione.</h3>
+                  <p>
+                    Q&A e Financials impediscono di consolidare il quadro come
+                    validato internamente.
+                  </p>
+                  <div class="mobile-list">
+                    <div><span>Scadenza offerta</span><strong>18 giorni</strong></div>
+                    <div><span>Blocchi attivi</span><strong>2</strong></div>
+                    <div><span>Azioni aperte</span><strong>7</strong></div>
+                  </div>
+                </article>
+
+                <article class="mobile-card">
+                  <h3>Fonte aperta</h3>
+                  <p>
+                    Registro Q&A, riga 2. La risposta modifica la lettura della
+                    scadenza iniziale.
+                  </p>
+                  <div class="mobile-list">
+                    <div><span>Impatto</span><strong>Timeline</strong></div>
+                    <div><span>Stato</span><strong>Da validare</strong></div>
+                  </div>
+                </article>
+
+                <article class="mobile-card">
+                  <h3>Priorità</h3>
+                  <div class="mobile-list">
+                    <div><span>Scadenza corretta da Q&A</span><strong>Alta</strong></div>
+                    <div><span>Meccanismo remunerazione</span><strong>Alta</strong></div>
+                    <div><span>Allegato mancante</span><strong>Media</strong></div>
+                  </div>
+                </article>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mobile-sample">
+            <div class="phone-sample-label">
+              <span>Modalità scura</span>
+              <span>390px</span>
+            </div>
+            <div class="phone-wrap theme-dark">
+              <div class="phone">
+                <div class="phone-screen">
+                  <div class="mobile-content">
+                <div class="mobile-top">
+                  <div class="brand">
+                    <div class="mark"><span>T-node</span></div>
+                    <div>
+                      <strong>TRAM</strong>
+                      <span>Dashboard</span>
+                    </div>
+                  </div>
+                  <span class="tag risk">2 blocchi</span>
+                </div>
+
+                <section class="mobile-title">
+                  <div class="tag-row">
+                    <span class="tag info">Revised tender</span>
+                    <span class="tag">Uso interno</span>
+                  </div>
+                  <h2>Metro Nord O&M 2030</h2>
+                  <p>
+                    Sintesi di consultazione: stato, prossima scadenza,
+                    validazioni bloccanti e fonte aperta.
+                  </p>
+                </section>
+
+                <div class="mobile-context">
+                  <div>
+                    <span>tender_id</span>
+                    <strong>TRM-2030-OM</strong>
+                  </div>
+                  <div>
+                    <span>Stato</span>
+                    <strong>Da validare</strong>
+                  </div>
+                </div>
+
+                <div class="mobile-route" aria-label="Percorso Tender mobile scuro affiancato">
+                  <div class="mobile-route-track">
+                    <span class="mobile-node route-document">DOC</span>
+                    <span class="mobile-node route-qna blocked">QA</span>
+                    <span class="mobile-node route-core">TIME</span>
+                    <span class="mobile-node route-financials blocked">FIN</span>
+                    <span class="mobile-node route-risk blocked">CRIT</span>
+                  </div>
+                </div>
+
+                <div class="mobile-tabs">
+                  <span class="active">Sintesi</span>
+                  <span>Q&A</span>
+                  <span>Timeline</span>
+                  <span>Validazione</span>
+                </div>
+
+                <article class="mobile-card emphasis">
+                  <h3>La dashboard richiede validazione.</h3>
+                  <p>
+                    Q&A e Financials impediscono di consolidare il quadro come
+                    validato internamente.
+                  </p>
+                  <div class="mobile-list">
+                    <div><span>Scadenza offerta</span><strong>18 giorni</strong></div>
+                    <div><span>Blocchi attivi</span><strong>2</strong></div>
+                    <div><span>Azioni aperte</span><strong>7</strong></div>
+                  </div>
+                </article>
+
+                <article class="mobile-card">
+                  <h3>Fonte aperta</h3>
+                  <p>
+                    Registro Q&A, riga 2. La risposta modifica la lettura della
+                    scadenza iniziale.
+                  </p>
+                  <div class="mobile-list">
+                    <div><span>Impatto</span><strong>Timeline</strong></div>
+                    <div><span>Stato</span><strong>Da validare</strong></div>
+                  </div>
+                </article>
+
+                <article class="mobile-card">
+                  <h3>Priorità</h3>
+                  <div class="mobile-list">
+                    <div><span>Scadenza corretta da Q&A</span><strong>Alta</strong></div>
+                    <div><span>Meccanismo remunerazione</span><strong>Alta</strong></div>
+                    <div><span>Allegato mancante</span><strong>Media</strong></div>
+                  </div>
+                </article>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
