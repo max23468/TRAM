@@ -241,8 +241,6 @@ Criteri di uscita:
 | S7 - Timeline e deliverable | da fare | T2/T3 navigabili e collegati a fonti | Scadenze e deliverable mostrano stato/fonte |
 | S8 - Viste T4-T8 | da fare | Requisiti, financials, cost driver, criticità, Q&A | Dati proposti non appaiono come verità validata |
 | S9 - Audit e data policy | da fare | AI gate, provider, policy, eventi audit | Stati AI/policy visibili e fail-closed |
-| S10 - Responsive e stati limite | da fare | Mobile, empty, error, blocked, stale, quota esaurita | Nessun overflow o messaggio tecnico crudo |
-| S11 - Self-review e hardening MVP | da fare | Pulizia widget, naming UI, regressioni fixture | Verifica locale e browser smoke prima del pilot |
 
 ## Rotte MVP
 
