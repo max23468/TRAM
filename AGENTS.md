@@ -76,7 +76,7 @@ Se il task tocca una decisione stabile, aggiornare anche il documento che la gov
 
 ## Stato attuale del progetto
 
-- TRAM è in fase MVP iniziale, con app locale Next.js e consolidamento documentale in corso.
+- TRAM è in fase MVP iniziale, con app locale Next.js e documentazione consolidata in 12 Markdown governanti.
 - Non introdurre runtime, provider, deploy o pipeline produttive finché il piano e la relativa documentazione non sono sufficientemente chiari o finché il maintainer non lo chiede esplicitamente.
 - La cartella TRAM è una repo Git locale inizializzata.
 - Esiste una chiave locale `ssh-key-tram.key`: trattarla come segreto, non leggerla se non necessario, non copiarla, non committarla.
@@ -133,8 +133,8 @@ Regole:
 - Ogni chiamata AI deve salvare provider, modello, endpoint, prompt version, input hash, output hash, consumo stimato, costo stimato, quota residua se disponibile, fonte e motivazione.
 - Ogni prompt AI deve rispettare la policy consolidata in `docs/AI_AND_DOCUMENT_PIPELINE.md`.
 - Per T1 L0 stage-aware v0.4, la route promossa è Gemini + normalizzatore deterministico post-AI + resolver deterministico; Mistral resta candidato ma non affidabile se il tier gratuito è saturo.
-- Per T2 timeline v0.1, date, orari, durate, timezone, conflitti e stato review sono responsabilità di parser/regole; AI può normalizzare nome evento, natura, ruolo e incertezze su envelope minimizzato.
-- Per T3 deliverable v0.1, parser/regole individuano deliverable, codici, obbligatorietà, limiti pagina, formati, pesi, deadline e fonti; AI può normalizzare nome, tipo, area di submission, dominio O&M, dipendenze e incertezze, ma non deve consolidare requisiti formali, valori economici o contenuti sensibili.
+- Per T2 timeline, date, orari, durate, timezone, conflitti e stato review sono responsabilità di parser/regole; AI può normalizzare nome evento, natura, ruolo e incertezze su envelope minimizzato.
+- Per T3 deliverable, parser/regole individuano deliverable, codici, obbligatorietà, limiti pagina, formati, pesi, deadline e fonti; AI può normalizzare nome, tipo, area di submission, dominio O&M, dipendenze e incertezze, ma non deve consolidare requisiti formali, valori economici o contenuti sensibili.
 - Per T4 requisiti O&M e KPI non finanziari, parser/regole individuano clausole, requisiti, formule, target e fonti; AI può normalizzare famiglia, dominio O&M, clustering e incertezze, ma non deve alterare testo, formule, soglie o obbligatorietà.
 - Per T5 financials, pricing e payment mechanism, parser/regole individuano item, formule, strutture, valori e fonti; AI può analizzare Financials come gli altri domini del Tender su input ammessi, minimizzati e governati da policy Tender/provider. T5 non è sensibile per categoria: scala a blocco solo quando contiene dati interni, offerta preparata, dati personali, clausole incompatibili o altro L2 effettivo.
 - Per T6 cost driver, AI può proporre famiglie costo e dipendenze solo su input ammessi; non deve inventare importi, stime o assunzioni economiche.
@@ -201,7 +201,7 @@ Python 3.12 è scelta intenzionale per stabilità delle librerie native/document
 - Evitare forme semplificate come `perche`, `piu`, `attivita` nei testi italiani.
 - Tutti i file Markdown devono avere nomi base univoci anche se in cartelle diverse.
 - Non creare `README.md`, `notes.md`, `plan.md`, `roadmap.md` o `index.md` duplicabili se non esplicitamente deciso.
-- Usare nomi descrittivi, per esempio `tram-v1-free-ai-strategy.md`.
+- Usare nomi descrittivi e univoci, per esempio `AI_AND_DOCUMENT_PIPELINE.md` o un ADR numerato quando serve dettaglio stabile.
 - Non creare documenti duplicati: integrare documenti esistenti quando la decisione appartiene a una sezione già presente.
 - Se uno step viene saltato, annotarlo come debito o decisione da recuperare.
 - Per modifiche solo documentali, la verifica minima è rilettura, coerenza dei link e controllo naming.

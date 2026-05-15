@@ -6,7 +6,7 @@ Lo scopo iniziale non è “fare parlare i PDF”, ma trasformare pacchetti docu
 
 ## Stato
 
-TRAM è in fase MVP iniziale. Esiste una prima app Next.js con fixture sintetiche e navigazione tender, ma il progetto resta governato da documentazione e validazione manuale: nessuna pipeline produttiva, invio AI esterno, deploy o pubblicazione su GitHub va considerata implicita.
+TRAM è in fase MVP iniziale, con roadmap viva fino a V1.4 e perimetro futuro V2/V3 già tracciato. Esiste una prima app Next.js con fixture sintetiche e navigazione tender, ma il progetto resta governato da documentazione e validazione manuale: nessuna pipeline produttiva, invio AI esterno, deploy o pubblicazione su GitHub va considerata implicita.
 
 Repository locale:
 
@@ -42,3 +42,4 @@ npm run verify
 - Non inviare dati a provider AI esterni senza minimizzazione, policy provider e consenso operativo.
 - Non creare automazioni produttive, deploy, release o runtime esterni senza runbook approvato.
 - Le estrazioni non sono verità applicativa: ogni dato critico richiede fonte, stato e review.
+- L’archivio storico dei Markdown rimossi serve solo per tracciabilità: le decisioni operative devono stare nei documenti governanti indicati sopra.

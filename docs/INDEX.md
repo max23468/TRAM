@@ -21,6 +21,19 @@ Questo indice è il punto di ingresso per la documentazione viva di TRAM. I vecc
 - I documenti storici assorbiti non devono guidare nuove decisioni se non tramite il contenuto consolidato qui.
 - Lo storico dei documenti rimossi resta recuperabile da Git.
 
+## Copertura Del Consolidamento
+
+I documenti storici sono stati assorbiti per famiglie, non copiati uno a uno. La copertura governante è questa:
+
+- Product brief, perimetro, benchmark package, procurement stage taxonomy e policy di ricerca dominio: [`CONTEXT.md`](CONTEXT.md).
+- Roadmap MVP, criteri di successo, criteri di fallimento, milestone V1.1-V1.4, V2 e V3: [`ROADMAP.md`](../ROADMAP.md).
+- Architettura MVP, data model, data contract, ruoli, permessi, resolver di versioni documentali e ADR normalizer: [`ARCHITECTURE.md`](ARCHITECTURE.md) e [`decisions/0001-normalizer-runtime-placement.md`](decisions/0001-normalizer-runtime-placement.md).
+- Strategia AI gratuita, provider, routing T1-T8, prompt schema, benchmark, normalizzazione, privacy, minimizzazione e audit delle chiamate: [`AI_AND_DOCUMENT_PIPELINE.md`](AI_AND_DOCUMENT_PIPELINE.md).
+- Wireframe funzionali, dashboard, review queue, indicatori, design degli stati, source inspector, UX mobile e visual audit widget: [`UX_REVIEW_WORKFLOW.md`](UX_REVIEW_WORKFLOW.md).
+- Toolchain documentale locale, sviluppo app, storage runtime, Git, segreti, OCI/VPS futuro e verifiche documentali: [`OPERATIONS.md`](OPERATIONS.md).
+- Brand light, direzione visiva, pattern TPL, tono, componenti e accessibilità: [`BRAND.md`](BRAND.md).
+- Decisioni accettate, decisioni rinviate e debiti da recuperare: [`DECISIONS.md`](DECISIONS.md).
+
 ## Cartelle
 
 - `docs/decisions/`: ADR puntuali numerati quando serve una decisione stabile dettagliata.

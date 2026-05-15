@@ -56,6 +56,45 @@ Il primo MVP non include:
 - workflow approvativi multilivello;
 - piattaforma enterprise multi-tenant completa.
 
+## Criteri Di Successo MVP
+
+Il primo MVP è riuscito se:
+
+- un utente interno capisce rapidamente stato, priorità e rischi di un Tender senza leggere l’intero pacchetto;
+- la document map distingue documenti correnti, superati, dubbi, addendum, redline e conflitti di versione;
+- T1, T2 e T3 funzionano end-to-end almeno su fixture e mini pacchetto sintetico;
+- T4-T8 sono rappresentati con stati, fonti, policy AI e review coerenti anche se l’automazione è ancora parziale;
+- ogni dato mostrato in dashboard ha fonte, stato, rischio e accesso alla review;
+- i valori economici, i requisiti mandatory, le contraddizioni e i chiarimenti non vengono consolidati senza validazione umana;
+- l’utente può vedere perché un dato è bloccato, stale, contestato o da chiarire;
+- l’AI gratuita resta entro budget/quota e si sospende in modo esplicito quando non può procedere;
+- nessun dato reale o riservato finisce in Git, log, fixture pubblicabili o screenshot non approvati;
+- il prototipo è navigabile su desktop e mobile senza overflow o stati incoerenti.
+
+## Criteri Di Fallimento
+
+Il primo MVP va considerato insufficiente se:
+
+- TRAM si comporta come chat generica sui PDF;
+- la dashboard nasconde fonti, stati o incertezze;
+- un dato critico appare come verità senza review;
+- la V1 dipende da provider paid, quote non controllate o invio di documenti completi a LLM;
+- T2/T3 perdono date, formati, obbligatorietà o deadline perché delegate all’AI;
+- T5 mostra importi, formule o meccanismi economici non validati come headline direzionale;
+- T8 permette invio automatico o export di chiarimenti senza approvazione;
+- i pacchetti benchmark reali vengono trasformati in fixture o log senza sanificazione;
+- l’aggiunta di V2/V3 complica l’MVP prima che la V1 sia affidabile.
+
+## Gate Di Avanzamento
+
+- Da Fase 4 a Fase 5: shell, overview, document map, review queue e source/audit panel devono essere navigabili su fixture, con test locali verdi.
+- Da Fase 5 a Fase 6: ingestion locale, hash, parser issues e source reference devono funzionare senza loggare contenuti integrali.
+- Da V1.1 a V1.2: T1/T2/T3 devono avere metriche minime su falsi positivi, falsi negativi e blocchi manuali.
+- Da V1.2 a V1.3: T4/T6 devono avere normalizzazione controllata, review e collegamento a fonti prima di rafforzare T5/T7/T8.
+- Da V1.3 a V1.4: financials, criticità e Q&A devono essere human-first, auditabili e protetti da policy dati.
+- Da V1 a V2: TRAM deve leggere, versionare e validare bene la gara prima di confrontare l’offerta.
+- Da V2 a V3: le offerte e i feedback storici devono avere policy privacy, comparabilità e spiegabilità prima del benchmark cross-gara.
+
 ## Fasi
 
 | Fase | Stato | Obiettivo | Output principale | Done quando |
@@ -202,6 +241,8 @@ Criteri di uscita:
 | S7 - Timeline e deliverable | da fare | T2/T3 navigabili e collegati a fonti | Scadenze e deliverable mostrano stato/fonte |
 | S8 - Viste T4-T8 | da fare | Requisiti, financials, cost driver, criticità, Q&A | Dati proposti non appaiono come verità validata |
 | S9 - Audit e data policy | da fare | AI gate, provider, policy, eventi audit | Stati AI/policy visibili e fail-closed |
+| S10 - Responsive e stati limite | da fare | Mobile, empty, error, blocked, stale, quota esaurita | Nessun overflow o messaggio tecnico crudo |
+| S11 - Self-review e hardening MVP | da fare | Pulizia widget, naming UI, regressioni fixture | Verifica locale e browser smoke prima del pilot |
 
 ## Rotte MVP
 

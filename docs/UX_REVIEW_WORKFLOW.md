@@ -21,6 +21,21 @@ TRAM deve essere un’app operativa, non una landing page e non una chat generic
 - review queue;
 - audit/source view.
 
+## Rotte E Obiettivo Utente
+
+- `/tenders`: capire quali gare richiedono attenzione, filtrare per stato, priorità, owner, scadenze e blocker.
+- `/tenders/:tender_id/overview`: vedere sintesi direzionale, criticità, prossime scadenze, stato documenti, review aperte e azioni prioritarie.
+- `/tenders/:tender_id/documents`: ispezionare document map, versioni, famiglie, addendum, documenti superati e parser issues.
+- `/tenders/:tender_id/timeline`: vedere eventi, deadline, milestone, submission, addendum, Q&A e conflitti temporali.
+- `/tenders/:tender_id/deliverables`: gestire deliverable, obbligatorietà, formato, owner, deadline, fonte e stato.
+- `/tenders/:tender_id/requirements`: navigare requisiti O&M, KPI, mandatory, compliance, safety, customer experience e fonte.
+- `/tenders/:tender_id/financials`: leggere financials, payment mechanism, penali, incentivi e stati di review senza esporre valori non validati in overview.
+- `/tenders/:tender_id/cost-drivers`: vedere driver di costo collegati a requisiti, KPI, risorse, asset, personale e rischi.
+- `/tenders/:tender_id/contradictions`: lavorare su contraddizioni candidate e punti da verificare.
+- `/tenders/:tender_id/queries`: gestire Q&A, domande candidate, bozze, approvazione, risposte e incorporazione.
+- `/tenders/:tender_id/review`: validare, correggere, contestare e chiudere item.
+- `/tenders/:tender_id/audit`: consultare eventi, AI gate, parser run, review, policy e source lineage.
+
 ## Pattern Di Schermata
 
 Le viste devono privilegiare:
@@ -36,6 +51,39 @@ Le viste devono privilegiare:
 
 Card e componenti incorniciati vanno usati per item ripetuti, modali o tool realmente separati, non come decorazione generale.
 
+La dashboard gara deve essere direzionale, non un mosaico di preview T1-T8. Ogni widget deve rispondere a una domanda operativa:
+
+- cosa richiede attenzione ora;
+- cosa è cambiato dopo nuovi documenti;
+- quali scadenze o deliverable sono bloccanti;
+- quali dati sono proposti ma non validati;
+- quali rischi sono critici;
+- quale fonte sostiene o blocca il dato;
+- quale azione può fare l’utente.
+
+Widget approvati per l’overview:
+
+- stato Tender e validazione complessiva;
+- prossime scadenze;
+- documenti correnti/superati/da verificare;
+- review critiche;
+- deliverable bloccanti;
+- requisiti/KPI ad alto impatto;
+- financials con stato e rischio, non valori non validati;
+- cost driver critici;
+- contraddizioni candidate;
+- Q&A in attesa;
+- attività/audit recente.
+
+Widget da evitare o rinviare:
+
+- score sintetici non spiegabili;
+- grafici decorativi;
+- “AI confidence” come metrica primaria;
+- preview lunghe di tutte le viste;
+- stime economiche o qualità offerta non disponibili;
+- benchmark cross-gara in V1.
+
 ## Review Queue
 
 La review queue è core prodotto. Deve permettere di:
@@ -50,6 +98,51 @@ La review queue è core prodotto. Deve permettere di:
 
 Output critici, contraddizioni, payment mechanism, penali, KPI, requisiti mandatory, rischio economico, compliance e chiarimenti/Q&A richiedono review umana.
 
+### Campi Review Item
+
+Ogni item deve avere:
+
+- id stabile;
+- Tender e task/domain;
+- titolo utente;
+- descrizione breve;
+- severità;
+- priorità;
+- stato;
+- fonte primaria;
+- estratto o riferimento;
+- dato proposto;
+- dato precedente se sostituito;
+- motivo dell’apertura;
+- owner o ruolo richiesto;
+- azioni ammesse;
+- audit delle modifiche;
+- link alla vista specialistica.
+
+### Ordinamento
+
+Priorità di default:
+
+1. blocker policy, privacy, AI o fonte mancante;
+2. critical financials, mandatory, compliance, Q&A e scadenze;
+3. conflitti documentali e currentness;
+4. dati ad alto impatto non validati;
+5. normalizzazioni o label migliorabili;
+6. debito informativo a bassa urgenza.
+
+### Azioni
+
+- Confermare.
+- Correggere.
+- Contestare.
+- Segnare da chiarire.
+- Marcare superato.
+- Marcare non applicabile.
+- Collegare a domanda Q&A.
+- Aprire fonte.
+- Vedere audit.
+- Riaprire dopo nuovo documento.
+
 ## Stati Visibili
 
 Ogni dato mostrato deve rendere visibile:
@@ -60,6 +153,65 @@ Ogni dato mostrato deve rendere visibile:
 - rischio o impatto;
 - se è validato o solo proposto.
 
+La UI deve distinguere chiaramente:
+
+- validato;
+- proposto;
+- da validare;
+- contestato;
+- da chiarire;
+- superato;
+- stale per nuovo documento;
+- bloccato da policy;
+- bloccato da quota;
+- non applicabile.
+
+Le label utente devono essere italiane e comprensibili. Codici come `T1`, `L0`, `currentness`, `needs_review` o `blocked_by_policy` restano nel modello e nei documenti tecnici, non come testo primario.
+
+## Source Inspector E Audit
+
+Ogni dato rilevante deve poter aprire un pannello fonte con:
+
+- documento;
+- versione;
+- pagina, sezione, tabella, cella o riga;
+- estratto minimo;
+- parser/AI/regola che ha generato il dato;
+- stato review;
+- eventuali documenti sostituiti o collegati;
+- eventi audit;
+- azioni disponibili.
+
+Il source inspector deve funzionare come punto di controllo, non come visualizzazione decorativa. Se la fonte manca, l’item deve essere bloccato o marcato da review.
+
+## Indicatori P0/P1
+
+Indicatori P0 da coprire prima:
+
+- stato Tender;
+- prossima deadline critica;
+- numero review critiche;
+- documenti da verificare;
+- addendum non assorbiti;
+- deliverable obbligatori aperti;
+- requisiti/KPI mandatory non validati;
+- financials bloccati o da review;
+- contraddizioni candidate critiche;
+- Q&A in attesa di approvazione o risposta.
+
+Indicatori P1:
+
+- copertura documentale per famiglia;
+- avanzamento review;
+- qualità fonte;
+- burden di validazione;
+- distribuzione severità;
+- aging review;
+- provider/AI gate status;
+- parser issues per tipo documento.
+
+Indicatori calcolati devono indicare formula, dipendenze, fonte e comportamento quando una dipendenza è stale o contestata.
+
 ## Lingua E Design
 
 - UI in italiano.
@@ -69,6 +221,64 @@ Ogni dato mostrato deve rendere visibile:
 - Responsive desktop e mobile.
 - Palette non monotematica e niente gradienti decorativi non necessari.
 
+Termini consigliati:
+
+- `Gare` o `Tender` secondo contesto, evitando oscillazioni nello stesso livello UI;
+- `Documenti`;
+- `Scadenze`;
+- `Deliverables`;
+- `Requisiti`;
+- `Financials`;
+- `Cost driver`;
+- `Criticità`;
+- `Q&A`;
+- `Da validare`;
+- `Registro attività`;
+- `Fonte`;
+- `Stato documenti`;
+- `Vigente`;
+- `Superato`;
+- `Da verificare`.
+
+Termini da evitare nella UI primaria:
+
+- `fixture`;
+- `slice`;
+- `currentness`;
+- codici task come titolo;
+- classi privacy nude;
+- stati raw in inglese;
+- copy promozionale.
+
+## Responsive, Empty Ed Error States
+
+Ogni vista deve avere:
+
+- stato vuoto utile;
+- stato caricamento;
+- stato errore;
+- stato bloccato;
+- stato stale;
+- stato quota esaurita se AI o job dipendono da provider;
+- layout mobile senza overflow;
+- tabelle trasformabili in liste dense o righe espandibili;
+- azioni principali sempre raggiungibili.
+
+Su mobile la priorità è: stato, prossima azione, fonte, review. Non tentare di mostrare ogni colonna desktop.
+
 ## Primo Slice
 
 Il primo slice utile deve dimostrare che l’utente può entrare in un Tender e navigare tra overview, documenti, timeline, deliverable, requisiti, review e fonti usando fixture sintetiche.
+
+Accettazione del primo slice:
+
+- tutte le route previste caricano;
+- overview non usa widget ridondanti o decorativi;
+- almeno un item apre fonte e audit;
+- almeno un item può mostrare azioni review;
+- document map mostra vigente/superato/da verificare;
+- timeline e deliverables mostrano deadline e stato;
+- Financials non espone valori non validati come verità;
+- Q&A non consente invio automatico;
+- stati raw non appaiono nella UI primaria;
+- desktop e mobile sono leggibili.
