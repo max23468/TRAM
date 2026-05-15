@@ -68,6 +68,92 @@ Il primo MVP non include:
 | Fase 5 - Ingestion e parsing locale | da fare | Collegare app a pipeline documentale locale | Inventario, hash, parsing, source reference, parser issues | Ogni file produce metadati o errore tracciabile senza loggare contenuti integrali |
 | Fase 6 - Estrazioni T1-T8 e pilot | da fare | Validare TRAM su pacchetti reali/rappresentativi | Estrazioni controllate, review, gate AI, feedback utenti | Tre utenti interni completano un giro utile con dati e rischi tracciati |
 
+## Roadmap Dopo Il Primo MVP
+
+### V1.1 - Stabilizzazione T1/T2/T3
+
+Focus:
+
+- document map più robusta;
+- confronto MPP/PDF per timeline;
+- checklist deliverable più affidabile;
+- fixture estese oltre dataset compatto;
+- smoke end-to-end su mini pacchetto sintetico.
+
+### V1.2 - Requisiti, KPI E Cost Driver
+
+Focus:
+
+- T4 requisiti/KPI filtrabili;
+- T6 cost driver con link a requisiti, Financials e review;
+- normalizzatori T4/T6;
+- policy L1 più chiara;
+- quality metrics per falsi positivi e falsi negativi.
+
+### V1.3 - Financials, Criticità E Q&A
+
+Focus:
+
+- T5 parser locale più robusto su workbook e meccanismo di remunerazione;
+- T7 regole sulle criticità più forti;
+- T8 Q&A con registro, template domanda, approvazione e gestione risposta;
+- protezioni L2 e audit accessi;
+- export manuale controllato, se approvato.
+
+### V1.4 - Pilot Operativo E Hardening
+
+Focus:
+
+- onboarding primi tre utenti;
+- ruoli e permessi applicativi;
+- backup e retention;
+- logging e audit;
+- performance su pacchetti più grandi;
+- scelta hosting condiviso e storage.
+
+## V2 - Confronto Offerta-Gara
+
+V2 inizia solo quando la V1 sa leggere e validare bene la documentazione di gara. Il suo scopo è confrontare un’offerta preparata o in preparazione con il Tender.
+
+Possibili superfici:
+
+- verifica copertura requisiti;
+- gap tra offerta e capitolato;
+- coerenza tra proposta tecnica, economica e amministrativa;
+- alert su obblighi non indirizzati;
+- suggerimenti per rafforzare l’offerta;
+- controllo coerenza tra deliverable richiesti e sezioni dell’offerta;
+- confronto tra payment mechanism, rischi economici e assunzioni d’offerta.
+
+Guardrail:
+
+- l’offerta preparata è L2 per default finché non viene definita una policy specifica;
+- nessun provider esterno riceve contenuti d’offerta senza decisione esplicita;
+- TRAM non deve trasformarsi in autore autonomo dell’offerta;
+- suggerimenti e gap restano soggetti a giudizio umano.
+
+## V3 - Memoria Storica E Benchmark Cross-Gara
+
+V3 mette in relazione più gare, più offerte e feedback storici. Non è prerequisito per V1 e non va anticipata nel codice se complica il modello MVP.
+
+Possibili superfici:
+
+- pattern ricorrenti tra gare;
+- best practice emerse da offerte precedenti;
+- feedback storici riutilizzabili;
+- suggerimenti per nuove offerte;
+- proposte Q&A o modifiche documentali basate su casi analoghi;
+- benchmark interni;
+- confronto tra tender simili per requisiti, KPI, payment mechanism, rischi e deliverable.
+
+Guardrail:
+
+- niente apprendimento opaco o non revisionato;
+- separare benchmark storici da verità del Tender corrente;
+- distinguere sempre casi comparabili e non comparabili;
+- proteggere dati interni, offerte precedenti, feedback utenti e informazioni commerciali;
+- ogni suggerimento cross-gara deve essere spiegabile e validabile.
+
 ## Fase 4 - Prototipo Applicativo Su Fixture
 
 La Fase 4 è la fase corrente.
