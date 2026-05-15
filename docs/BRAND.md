@@ -33,4 +33,4 @@ I richiami al trasporto pubblico possono emergere in modo funzionale: linee, per
 
 ## Artefatti
 
-Il mock HTML in `docs/design/tram-v1-mvp-ui-mock.html` resta un artefatto di design e non una fonte governante. Le decisioni assorbite da quel mock vanno riportate in questo documento o in `docs/UX_REVIEW_WORKFLOW.md`.
+Il mock HTML in `docs/assets/mvp-ui-mock.html` resta un artefatto di design e non una fonte governante. Le decisioni assorbite da quel mock vanno riportate in questo documento o in `docs/UX_REVIEW_WORKFLOW.md`.

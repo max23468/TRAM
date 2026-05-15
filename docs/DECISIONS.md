@@ -16,7 +16,7 @@ Questo documento è il punto di ingresso per decisioni stabili e decisioni pende
 
 ## ADR
 
-- `docs/decisions/tram-adr-001-normalizer-runtime-placement-v0-1.md`: sede runtime dei normalizzatori AI.
+- `docs/decisions/0001-normalizer-runtime-placement.md`: sede runtime dei normalizzatori AI.
 
 ## Decisioni Pendenti
 
