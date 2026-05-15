@@ -208,7 +208,9 @@ Feedback dry-run UX su fixture:
 
 Prossimo pilot reale/rappresentativo:
 
-- scegliere un pacchetto locale da `data/packages/` o un working extract da `data/working/`;
+- pacchetto scelto: `data/packages/copenhagen-m1-m4-om`;
+- inventario locale generato in `data/working/copenhagen-m1-m4-om/inventory/`, area esclusa da Git;
+- baseline inventario CPH: 59 file, di cui 51 PDF, 6 DOCX, 1 MPP e 1 XLSX;
 - non committare documenti, OCR, estratti grezzi, screenshot o contenuti riservati;
 - usare parsing locale e fixture derivate/minimizzate solo quando non espongono contenuti sensibili;
 - raccogliere feedback osservabile su dati effettivi: document map, timeline, deliverable, fonti e Da validare.
