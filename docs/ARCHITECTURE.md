@@ -29,6 +29,7 @@ App locale:
 - Tailwind CSS;
 - Vitest;
 - ESLint;
+- storage adapter `filesystem | oci`;
 - fixture sintetiche in `data/fixtures/`.
 
 Comandi principali:
@@ -66,6 +67,12 @@ Ogni dato rilevante deve avere uno stato esplicito:
 I pacchetti gara, estrazioni, OCR, tabelle, working extract, export e dati sensibili non devono stare in Git. Lo storage documentale deve essere separato dal repository.
 
 La chiave locale `ssh-key-tram.key` è un segreto: non leggerla, non copiarla, non committarla.
+
+Lo storage applicativo è già astratto in `src/lib/storage/`:
+
+- `filesystem` è il driver locale di default, con root `.local/tram-storage`;
+- `oci` è predisposto ma fail-closed finché mancano bucket, IAM e runbook approvati;
+- le storage key non sicure vengono rifiutate.
 
 ## Configurazioni Applicative
 

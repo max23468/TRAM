@@ -21,6 +21,8 @@ npm run verify
 
 `npm run verify` esegue lint, typecheck, test e build.
 
+Verifica tecnica più recente sul branch `codex/docs-consolidation`: `npm run verify` completato con lint, typecheck, 16 test Vitest e build Next passati.
+
 ## Git
 
 - Controllare sempre `git status --short` prima di modifiche.
@@ -39,6 +41,7 @@ Esclusi da `.gitignore`:
 - `.next/`;
 - `.playwright-cli/`;
 - `node_modules/`;
+- `.local/`;
 - `data/packages/`;
 - `data/keys/`;
 - `data/private/`;

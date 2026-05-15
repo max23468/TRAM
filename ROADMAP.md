@@ -4,7 +4,7 @@ Questo documento governa priorità, milestone e debiti visibili. I dettagli tecn
 
 ## Stato Corrente
 
-Fase attuale: **M0 - Fondazioni**.
+Fase attuale: **M1 - Tender Shell**.
 
 TRAM ha già:
 
@@ -13,13 +13,14 @@ TRAM ha già:
 - branch `codex/docs-consolidation`;
 - app Next.js iniziale con fixture sintetiche;
 - policy `.gitignore` per escludere dati sensibili e runtime locali;
-- documentazione governante consolidata da 85 a 13 Markdown.
+- documentazione governante consolidata;
+- verifica locale `npm run verify` passata sul branch `codex/docs-consolidation`.
 
 ## Milestone
 
 | Milestone | Stato | Obiettivo | Deliverable | Done quando |
 | --- | --- | --- | --- | --- |
-| M0 - Fondazioni | in corso | Stabilizzare repo, documenti vivi e regole operative | Git locale, documenti governanti, runbook, decision log | `AGENTS.md` e `docs/INDEX.md` puntano al set minimo vivo |
+| M0 - Fondazioni | completata | Stabilizzare repo, documenti vivi e regole operative | Git locale, documenti governanti, runbook, decision log | `AGENTS.md` e `docs/INDEX.md` puntano al set minimo vivo e `npm run verify` passa |
 | M1 - Tender Shell | parzialmente avviata | Navigazione app e tender demo con fixture | Tender list, overview, pagine sezione, layout base | L’app è navigabile con fixture e passa verifica locale |
 | M2 - Document Map | da fare | Inventario documenti, versioni, currentness e fonti | Document list, source refs, stato versione | Ogni documento demo mostra versione, famiglia e fonte |
 | M3 - Review Queue | da fare | Validazione umana dei dati proposti | Queue, stati, correzioni, contestazioni | Un dato proposto può essere confermato, corretto o contestato |
@@ -31,6 +32,7 @@ TRAM ha già:
 
 - Formalizzare la policy release quando TRAM sarà pubblicata su GitHub.
 - Definire eventuale `CHANGELOG.md` solo quando inizierà un flusso release reale.
+- Completare M1 con una verifica browser della navigazione Tender Shell.
 
 ## Regola Di Aggiornamento
 
