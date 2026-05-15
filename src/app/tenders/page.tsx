@@ -195,6 +195,26 @@ export default async function TendersPage({ searchParams }: TendersPageProps) {
         ))}
       </nav>
 
+      <section className="rounded-lg border border-primary/30 bg-secondary p-5">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+          <div>
+            <Badge variant="success">Pilot reale</Badge>
+            <h2 className="mt-3 text-lg font-semibold">CPH M1/M4 O&amp;M</h2>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+              Apri document map, file originali e testo estratto dai documenti pubblici della
+              procedura Copenhagen.
+            </p>
+          </div>
+          <Link
+            className="inline-flex items-center justify-center gap-2 rounded-md border border-primary bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            href="/pilot/copenhagen-m1-m4-om"
+          >
+            Apri pilot CPH
+            <ArrowRight aria-hidden="true" size={15} />
+          </Link>
+        </div>
+      </section>
+
       <section className="grid gap-4">
         {filteredModels.map((model) => (
           <Link
