@@ -4,7 +4,9 @@ Questo documento governa priorità, milestone, criteri di uscita e debiti visibi
 
 ## Stato Corrente
 
-Fase corrente: **Fase 4 - Prototipo applicativo su fixture**.
+Fase corrente: **Fase 7 - Pilot interno e stabilizzazione MVP**, avviata con piano operativo.
+
+Fase appena chiusa: **Fase 6 - Estrazioni T1-T8 e pilot-ready**.
 
 Fasi già chiuse o assorbite:
 
@@ -20,7 +22,7 @@ Verifica tecnica più recente:
 npm run verify
 ```
 
-Esito: lint, typecheck, 16 test Vitest e build Next passati sul branch `codex/docs-consolidation`.
+Esito: lint, typecheck, 41 test Vitest e build Next passati sul branch locale corrente.
 
 ## Perimetro MVP/V0
 
@@ -29,7 +31,7 @@ Il primo MVP TRAM è una **V0 operativa interna**: navigabile, verificabile e ut
 Tutte le aree `T1`-`T8` devono essere visibili o rappresentate, ma non tutte hanno lo stesso livello di automazione:
 
 - `T1`, `T2`, `T3`: nucleo end-to-end.
-- `T4`, `T6`: aree V1 controllate, AI solo su input ammessi e minimizzati.
+- `T4`, `T6`: aree MVP controllate, AI solo su input ammessi e minimizzati.
 - `T5`: dominio Tender analizzabile con parser/regole e AI ammessa solo secondo data policy e gate.
 - `T7`: candidate issues rules/review-first, non verità automatica.
 - `T8`: Q&A human-first, senza invio automatico.
@@ -78,20 +80,22 @@ Il primo MVP va considerato insufficiente se:
 - TRAM si comporta come chat generica sui PDF;
 - la dashboard nasconde fonti, stati o incertezze;
 - un dato critico appare come verità senza review;
-- la V1 dipende da provider paid, quote non controllate o invio di documenti completi a LLM;
+- l’MVP dipende da provider paid, quote non controllate o invio di documenti completi a LLM;
 - T2/T3 perdono date, formati, obbligatorietà o deadline perché delegate all’AI;
 - T5 mostra importi, formule o meccanismi economici non validati come headline direzionale;
 - T8 permette invio automatico o export di chiarimenti senza approvazione;
 - i pacchetti benchmark reali vengono trasformati in fixture o log senza sanificazione;
-- l’aggiunta di V2/V3 complica l’MVP prima che la V1 sia affidabile.
+- l’aggiunta di V2/V3 complica l’MVP prima che il nucleo T1/T2/T3 sia affidabile.
 
 ## Gate Di Avanzamento
 
 - Da Fase 4 a Fase 5: shell, overview, document map, review queue e source/audit panel devono essere navigabili su fixture, con test locali verdi.
 - Da Fase 5 a Fase 6: ingestion locale, hash, parser issues e source reference devono funzionare senza loggare contenuti integrali.
-- Da V1.1 a V1.2: T1/T2/T3 devono avere metriche minime su falsi positivi, falsi negativi e blocchi manuali.
-- Da V1.2 a V1.3: T4/T6 devono avere normalizzazione controllata, review e collegamento a fonti prima di rafforzare T5/T7/T8.
-- Da V1.3 a V1.4: financials, criticità e Q&A devono essere human-first, auditabili e protetti da policy dati.
+- Da Fase 6 a Fase 7: estrazioni candidate, review gate e readiness devono essere visibili; il pilot reale resta da eseguire.
+- Da Fase 7 a Fase 8: T1/T2/T3 devono avere metriche minime su falsi positivi, falsi negativi e blocchi manuali.
+- Da Fase 8 a Fase 9: T4/T6 devono avere normalizzazione controllata, review e collegamento a fonti prima di rafforzare T5/T7/T8.
+- Da Fase 9 a Fase 10: financials, criticità e Q&A devono essere human-first, auditabili e protetti da policy dati.
+- Da Fase 10 a V1: pilot interno, policy dati, hardening e runbook devono essere sufficienti per chiamarla prima versione operativa.
 - Da V1 a V2: TRAM deve leggere, versionare e validare bene la gara prima di confrontare l’offerta.
 - Da V2 a V3: le offerte e i feedback storici devono avere policy privacy, comparabilità e spiegabilità prima del benchmark cross-gara.
 
@@ -103,13 +107,94 @@ Il primo MVP va considerato insufficiente se:
 | Fase 1 - Wireframe e visual direction | chiusa | Disegnare esperienza applicativa reale | Route, mock, direzione brand/UI, richiamo TPL | Dashboard e viste minime hanno struttura, stati, fonti e direzione visuale |
 | Fase 2 - Fixture applicative | chiusa | Creare dati sintetici non riservati | Fixture pack con tender, indicatori, source reference, review, audit | Le fixture coprono stati dashboard, T1-T8, ruoli e route minime |
 | Fase 3 - Data contract | chiusa | Rendere implementabili wireframe e fixture | Shape dati, mapping route-vista-indicatori, effetti review | Ogni componente previsto ha dati sufficienti e test di copertura |
-| Fase 4 - Prototipo su fixture | in corso | Costruire prima esperienza navigabile | Dashboard aggregata, dashboard gara, T1-T8, review, fonte/audit | L’utente capisce gara, priorità, fonti, blocker e può navigare le sezioni |
-| Fase 5 - Ingestion e parsing locale | da fare | Collegare app a pipeline documentale locale | Inventario, hash, parsing, source reference, parser issues | Ogni file produce metadati o errore tracciabile senza loggare contenuti integrali |
-| Fase 6 - Estrazioni T1-T8 e pilot | da fare | Validare TRAM su pacchetti reali/rappresentativi | Estrazioni controllate, review, gate AI, feedback utenti | Tre utenti interni completano un giro utile con dati e rischi tracciati |
+| Fase 4 - Prototipo su fixture | chiusa | Costruire prima esperienza navigabile | Dashboard aggregata, dashboard gara, T1-T8, review, fonte/audit | L’utente capisce gara, priorità, fonti, blocker e può navigare le sezioni |
+| Fase 5 - Ingestion e parsing locale | chiusa | Collegare app a pipeline documentale locale | Inventario, hash, parsing, source reference, parser issues | Ogni file produce metadati o errore tracciabile senza loggare contenuti integrali |
+| Fase 6 - Estrazioni T1-T8 e pilot | chiusa/pilot-ready | Validare TRAM su pacchetti reali/rappresentativi | Estrazioni controllate, review, gate AI, feedback utenti | Lato prodotto/codice pronto; pilot reale con tre utenti resta debito operativo |
+| Fase 7 - Pilot interno e stabilizzazione MVP | in corso | Validare il flusso con utenti e stabilizzare T1/T2/T3 | Scenario pilot, feedback, bugfix, metriche T1/T2/T3 | Tre utenti interni completano un giro utile e i problemi P0/P1 sono tracciati |
+| Fase 8 - Robustezza T1/T2/T3 | da fare | Rendere affidabile il nucleo end-to-end | Document map, timeline, deliverable, metriche errore | T1/T2/T3 reggono mini pacchetto sintetico e pacchetto rappresentativo controllato |
+| Fase 9 - Estensioni T4-T8 controllate | da fare | Rafforzare requisiti, financials, cost driver, criticità e Q&A | Normalizzazioni, review, policy, Q&A human-first | T4-T8 restano review-first e non consolidano dati critici senza validazione |
+| Fase 10 - Preparazione V1 operativa | da fare | Hardening, policy, ruoli e runbook prima della V1 | Policy dati, runbook, backup, ruoli, checklist release | Si può decidere consapevolmente se chiamare TRAM V1 |
 
-## Roadmap Dopo Il Primo MVP
+## Roadmap MVP Prima Della V1
 
-### V1.1 - Stabilizzazione T1/T2/T3
+### Fase 7 - Pilot Interno E Stabilizzazione MVP
+
+Focus:
+
+- scenario pilot interno;
+- checklist per tre utenti;
+- raccolta feedback su overview, document map, review, audit e source inspector;
+- classificazione problemi P0/P1/P2;
+- bugfix e cleanup prima di rafforzare i parser;
+- decisione esplicita su cosa manca per chiamare il prodotto V1.
+
+Il pilot deve verificare:
+
+- comprensione rapida dello stato Tender;
+- utilità della dashboard aggregata e della dashboard gara;
+- leggibilità della document map;
+- capacità di trovare fonte, stato, rischio e review item;
+- chiarezza di timeline, deliverable, requisiti, financials, cost driver, criticità e Q&A;
+- comprensione del blocco AI quando policy, quota o privacy non consentono procedere;
+- assenza di ambiguità tra dato proposto, dato confermato e dato da chiarire.
+
+Scenario pilot per ogni utente:
+
+1. Aprire la lista Tender.
+2. Identificare la gara più critica e spiegare perché.
+3. Entrare nella dashboard gara.
+4. Trovare una fonte collegata a un indicatore operativo.
+5. Aprire document map e verificare documenti vigenti, superati o da verificare.
+6. Aprire timeline e deliverable e individuare almeno un item da review.
+7. Aprire financials o cost driver e confermare che i valori critici non sono mostrati come verità validata.
+8. Aprire criticità e Q&A e verificare che non esista invio automatico.
+9. Usare la coda review per simulare conferma, correzione, contestazione e richiesta chiarimento.
+10. Aprire audit e spiegare se il pilot è pronto, bloccato o incompleto.
+
+Checklist di osservazione:
+
+- tempo per capire lo stato generale della gara;
+- passaggi in cui l’utente cerca una fonte e non la trova;
+- label o stati non chiari;
+- punti in cui un candidato sembra erroneamente dato validato;
+- dati critici privi di contesto sufficiente;
+- overflow, clipping, problemi mobile o navigazione confusa;
+- azioni review che non comunicano effetto o limite;
+- aspettative spontanee su export, confronto offerta o benchmark storico.
+
+Classificazione feedback:
+
+- `P0`: blocca comprensione, sicurezza dati, review umana o fonte; va risolto prima di dichiarare MVP stabile.
+- `P1`: riduce molto utilità o fiducia, ma non espone dati né trasforma proposte in verità.
+- `P2`: miglioramento di chiarezza, wording, densità o comfort operativo.
+
+Ogni feedback deve avere sezione o route, descrizione osservabile, severità e decisione: fix immediato, backlog MVP, backlog V1 o fuori perimetro. Screenshot solo se non contengono dati riservati.
+
+Criteri di uscita Fase 7:
+
+- tre utenti interni completano lo scenario;
+- tutti i `P0` sono risolti o trasformati in stop condition esplicita;
+- i `P1` hanno decisione owner e priorità;
+- la roadmap registra cosa resta prima della V1;
+- `npm run verify` passa dopo eventuali fix;
+- eventuali smoke browser desktop/mobile vengono ripetuti se cambiano superfici UI.
+
+Debiti non coperti:
+
+- il pilot non misura ancora accuratezza robusta T1/T2/T3 su pacchetti estesi: quello resta Fase 8;
+- il pilot non introduce provider AI esterni né benchmark paid;
+- il pilot non abilita invio Q&A, export ufficiali o confronto offerta-gara.
+
+### Slice Operative Fase 7
+
+| Slice | Stato | Obiettivo | Verifica minima |
+| --- | --- | --- | --- |
+| F7-S1 - Piano pilot interno | completata | Definire scenario, checklist, classificazione feedback e criteri di uscita | Roadmap aggiornata |
+| F7-S2 - Sessioni con tre utenti | da fare | Eseguire scenario controllato e raccogliere feedback osservabile | Tre schede feedback classificate P0/P1/P2 senza dati riservati |
+| F7-S3 - Triage stabilizzazione | da fare | Decidere fix immediati, backlog MVP, backlog V1 e fuori perimetro | Tutti i P0/P1 hanno decisione owner/priorità |
+| F7-S4 - Fix e verifica post-pilot | da fare | Correggere problemi bloccanti e ripetere gate proporzionati | `npm run verify` e smoke UI se cambiano superfici applicative |
+
+### Fase 8 - Robustezza T1/T2/T3
 
 Focus:
 
@@ -119,7 +204,7 @@ Focus:
 - fixture estese oltre dataset compatto;
 - smoke end-to-end su mini pacchetto sintetico.
 
-### V1.2 - Requisiti, KPI E Cost Driver
+### Fase 9 - Estensioni T4-T8 Controllate
 
 Focus:
 
@@ -129,7 +214,7 @@ Focus:
 - policy L1 più chiara;
 - quality metrics per falsi positivi e falsi negativi.
 
-### V1.3 - Financials, Criticità E Q&A
+#### Sottofocus Fase 9 - Financials, Criticità E Q&A
 
 Focus:
 
@@ -139,20 +224,33 @@ Focus:
 - protezioni L2 e audit accessi;
 - export manuale controllato, se approvato.
 
-### V1.4 - Pilot Operativo E Hardening
+### Fase 10 - Preparazione V1 Operativa
 
 Focus:
 
-- onboarding primi tre utenti;
+- decisione sul perimetro minimo V1;
 - ruoli e permessi applicativi;
 - backup e retention;
 - logging e audit;
 - performance su pacchetti più grandi;
 - scelta hosting condiviso e storage.
 
+## V1 - Prima Versione Operativa
+
+V1 inizia solo quando l’MVP è stato validato con pilot interno e il maintainer decide esplicitamente che il perimetro è pronto per essere chiamato V1.
+
+Condizioni minime:
+
+- pilot interno completato con feedback tracciato;
+- T1/T2/T3 affidabili su pacchetti sintetici e rappresentativi controllati;
+- T4-T8 presenti come flussi controllati e review-first;
+- policy dati e provider chiare;
+- nessun dato reale in Git, log o screenshot non approvati;
+- runbook operativo sufficiente per ambiente condiviso o locale controllato.
+
 ## V2 - Confronto Offerta-Gara
 
-V2 inizia solo quando la V1 sa leggere e validare bene la documentazione di gara. Il suo scopo è confrontare un’offerta preparata o in preparazione con il Tender.
+V2 inizia solo quando V1 sa leggere e validare bene la documentazione di gara. Il suo scopo è confrontare un’offerta preparata o in preparazione con il Tender.
 
 Possibili superfici:
 
@@ -195,7 +293,7 @@ Guardrail:
 
 ## Fase 4 - Prototipo Applicativo Su Fixture
 
-La Fase 4 è la fase corrente.
+La Fase 4 è chiusa.
 
 Prima di ampliare le viste specialistiche, la dashboard gara va razionalizzata rispetto al mock canonico: il mock è una base visuale, non un port completo da copiare. Ogni widget deve avere utilità operativa, fonte dati e azione o stato chiaro.
 
@@ -232,15 +330,82 @@ Criteri di uscita:
 | Slice | Stato | Obiettivo | Verifica minima |
 | --- | --- | --- | --- |
 | S0 - Setup progetto e guardrail | completata | Base Next.js, npm, fixture, `.gitignore`, storage adapter, test | `npm run verify` passa |
-| S1 - Fixture e data contract direzionali | completata/parziale | Fixture sintetiche, route contract, review actions, AI gate | Test fixture e storage passano |
-| S2 - Shell UI e route | parzialmente avviata | Layout comune, sidebar, route principali, stati controllati | Tutte le route previste caricano senza pagina rotta |
-| S3 - Dashboard aggregata | da verificare | Lista gare, filtri, stato, blocker, accesso overview | Browser smoke su `/tenders` |
-| S4 - Overview gara | da verificare | Dashboard direzionale con widget utili e fonti | Browser smoke su `/tenders/:id/overview` |
-| S5 - Document map T1 | da fare | Stato documenti, versioni, fonte, review | Documenti fixture navigabili e fonte apribile |
-| S6 - Review queue e fonte | da fare | Azioni review e source/audit panel | Azioni visibili e stati coerenti |
-| S7 - Timeline e deliverable | da fare | T2/T3 navigabili e collegati a fonti | Scadenze e deliverable mostrano stato/fonte |
-| S8 - Viste T4-T8 | da fare | Requisiti, financials, cost driver, criticità, Q&A | Dati proposti non appaiono come verità validata |
-| S9 - Audit e data policy | da fare | AI gate, provider, policy, eventi audit | Stati AI/policy visibili e fail-closed |
+| S1 - Fixture e data contract direzionali | completata | Fixture sintetiche, route contract, review actions, AI gate | `npm run verify` passa con test fixture e data contract |
+| S2 - Shell UI e route | completata | Layout comune, sidebar, route principali, stati controllati | Tutte le route previste caricano senza pagina rotta |
+| S3 - Dashboard aggregata | completata | Lista gare, filtri, stato, blocker, accesso overview | Smoke Playwright desktop/mobile su `/tenders` |
+| S4 - Overview gara | completata | Dashboard direzionale con widget utili e fonti | Smoke Playwright desktop/mobile su `/tenders/:id/overview` |
+| S5 - Document map T1 | completata | Stato documenti, versioni, fonte, review | Smoke Playwright desktop/mobile: documenti fixture navigabili e fonti apribili |
+| S6 - Review queue e fonte | completata | Azioni review e source/audit panel | Smoke Playwright desktop/mobile: azioni visibili, stato locale coerente e fonte collegata |
+| S7 - Timeline e deliverable | completata | T2/T3 navigabili e collegati a fonti | Smoke Playwright desktop/mobile: scadenze e deliverable mostrano stato, fonte e review collegata |
+| S8 - Viste T4-T8 | completata | Requisiti, financials, cost driver, criticità, Q&A | Smoke Playwright desktop/mobile: dati proposti mostrano stato, fonte e review senza apparire come verità validata |
+| S9 - Audit e data policy | completata | AI gate, provider, policy, eventi audit | Smoke Safari desktop e Playwright WebKit desktop/mobile: stati AI/policy visibili e fail-closed |
+
+## Fase 5 - Ingestion E Parsing Locale
+
+La Fase 5 è chiusa. L’obiettivo è collegare TRAM a una pipeline locale controllata che inventaria pacchetti, produce metadati verificabili e prepara parser issues senza loggare contenuti integrali dei documenti.
+
+Include:
+
+- inventario locale di pacchetto con hash, dimensioni, mime type e path relativo;
+- storage key sicure e compatibili con lo storage adapter;
+- piano parser per PDF, DOCX, XLSX, XLS, MPP, CSV/testo;
+- parser issues applicative per file vuoti, formati non supportati, OCR da verificare e path non sicuri;
+- nessuna chiamata AI esterna;
+- nessun output committabile contenente documenti, OCR, tabelle estratte o contenuti integrali;
+- test su fixture sintetiche generate a runtime.
+
+Criteri di uscita:
+
+- ogni file produce metadati o issue tracciabile;
+- l’hash SHA-256 è disponibile per deduplica e audit;
+- il contenuto dei file non viene serializzato nell’inventario;
+- i formati non supportati non rompono la pipeline ma aprono issue bloccante;
+- i PDF entrano in stato di verifica OCR prima delle source reference;
+- i test locali coprono casi felici e failure path principali.
+
+## Slice Operative Fase 5
+
+| Slice | Stato | Obiettivo | Verifica minima |
+| --- | --- | --- | --- |
+| F5-S1 - Inventario pacchetto locale | completata | Scanner directory con hash, metadati, storage key, parser plan e parser issues | `npm run typecheck && npm run test` passa con fixture sintetiche runtime |
+| F5-S2 - Persistenza ingestion locale | completata | Salvare inventario e parser issues in storage/app state locale escluso da Git | `npm run typecheck && npm run test` passa; nessun output in repo; storage key validate e test fail-closed |
+| F5-S3 - Parser tecnici minimi | completata | Estrarre metadati tecnici da PDF/DOCX/XLSX/XLS/MPP senza contenuti integrali nei log | `npm run typecheck && npm run test` passa su PDF, testo/CSV, Office ZIP, XLS/MPP e firme incoerenti |
+| F5-S4 - Source reference preliminari | completata | Creare source reference tecniche da pagine, file, line range o container rilevabili | `npm run typecheck && npm run test` passa; ogni source reference ha documento, locator e stato review |
+| F5-S5 - UI ingestion status | completata | Mostrare stato ingestion/parsing e issue nella document map | Smoke Playwright WebKit desktop/mobile su documenti, fonti e drawer verso review |
+
+## Fase 6 - Estrazioni T1-T8 E Pilot
+
+La Fase 6 è chiusa lato prodotto/codice e resta pilot-ready. L’obiettivo è produrre estrazioni candidate controllate su base ingestion/source reference, aprire review dove serve, bloccare claim non supportati e preparare un pilot interno senza inviare dati a provider esterni.
+
+Include:
+
+- extraction run con candidati, stato, fonte, rischio, confidenza e policy AI;
+- estrattori deterministici T1-T3 su metadati e source reference;
+- estrattori controllati T4-T8 come candidati review-first;
+- gate review e metriche qualità minime;
+- superficie pilot-ready su fixture sintetiche;
+- debito esplicito per il pilot reale con utenti interni.
+
+Criteri di uscita:
+
+- ogni candidato T1-T8 ha fonte e stato;
+- nessun candidato diventa verità validata senza review;
+- T2/T3 non inventano date, formati o obbligatorietà;
+- T5 non inventa importi o formule;
+- T8 non abilita invio automatico;
+- output senza fonte o con policy bloccante apre review/blocker;
+- metriche minime mostrano coverage, burden review e claim non supportati;
+- il pilot reale resta tracciato se non ancora eseguito con utenti.
+
+## Slice Operative Fase 6
+
+| Slice | Stato | Obiettivo | Verifica minima |
+| --- | --- | --- | --- |
+| F6-S1 - Extraction run contract | completata | Modellare candidati, run, stato review e policy AI locale/fail-closed | `npm run typecheck && npm run test` passa |
+| F6-S2 - Estrattori T1-T3 | completata | Generare candidati document envelope, timeline e deliverable senza delegare campi formali all’AI | `npm run typecheck && npm run test` passa; nessuna data/formato/obbligatorietà inventata |
+| F6-S3 - Estrattori T4-T8 | completata | Generare candidati requisiti, financials, cost driver, criticità e Q&A come review-first | `npm run typecheck && npm run test` passa; nessun importo/formula/invio automatico |
+| F6-S4 - Review gate e metriche | completata | Calcolare blocker, burden review, source coverage e unsupported claim count | `npm run typecheck && npm run test` passa su metriche e gate bloccanti |
+| F6-S5 - Pilot-ready surface | completata | Mostrare stato estrazioni/pilot e debiti residui in UI/roadmap | Smoke Playwright WebKit desktop/mobile su audit e drawer verso documenti |
 
 ## Rotte MVP
 
@@ -295,9 +460,8 @@ Le fixture devono coprire:
 
 ## Debiti Visibili
 
-- Verifica browser reale della Tender Shell.
-- Razionalizzare widget overview rispetto al mock, evitando preview ridondanti.
-- Completare document map e review queue come prime viste affidabili.
+- Verifica browser reale della Tender Shell: smoke desktop Safari completato il 2026-05-15 su `/tenders`, `/overview`, `/documents`, `/review` e `/audit`; smoke automatico completato su tutte le 12 route MVP; smoke Playwright WebKit desktop/mobile completato per S9; navigazione mobile a drawer verificata. Ripetere verifica responsive dopo le prossime patch UI.
+- Pilot reale Fase 7 con tre utenti interni non ancora eseguito: la UI mostra readiness e metriche, ma il feedback utente va raccolto prima di considerare validato l’MVP e prima di aprire una vera V1.
 - Formalizzare policy release quando TRAM sarà pubblicata su GitHub.
 - Decidere se introdurre `CHANGELOG.md` solo quando inizierà un flusso release reale.
 

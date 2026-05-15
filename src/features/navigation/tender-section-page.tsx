@@ -13,13 +13,15 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { DismissibleNotice } from "@/components/ui/dismissible-notice";
 import { QnaRegisterView } from "@/features/navigation/qna-register-view";
+import { ReviewQueueView } from "@/features/navigation/review-queue-view";
 import { TenderSideNav } from "@/features/navigation/tender-side-nav";
 import { TenderRouteStrip } from "@/features/navigation/tender-route-strip";
 import {
   getSourceReferenceById,
   getTenderOverviewModel,
+  type TramAiGateDecision,
+  type TramAuditEvent,
   type TramClarificationThread,
-  type TramDocument,
   type TramIndicator,
   type TramReviewItem,
   type TramSourceReference
@@ -65,16 +67,102 @@ const privacyLabels: Record<string, string> = {
   L2: "Accesso ristretto"
 };
 
+const aiAnalysisLabels: Record<string, string> = {
+  allowed_minimized: "Analisi minimizzata ammessa",
+  review_after_ai: "Review dopo analisi richiesta"
+};
+
+const aiGateDecisionLabels: Record<TramAiGateDecision["decision"], string> = {
+  allowed_l0_minimized: "Ammesso L0 minimizzato",
+  blocked_l2_effective: "Bloccato L2 effettivo",
+  pending_l1_owner_approval: "In attesa owner L1",
+  provider_policy_stale: "Policy provider scaduta",
+  quota_exhausted: "Quota gratuita esaurita"
+};
+
+const auditEventTypeLabels: Record<TramAuditEvent["event_type"], string> = {
+  access: "Accesso",
+  ai_call: "Chiamata AI",
+  ai_gate: "Gate AI",
+  error: "Errore",
+  parsing: "Parsing",
+  policy: "Policy",
+  validation: "Validazione"
+};
+
+const auditStatusLabels: Record<TramAuditEvent["status"], string> = {
+  blocked: "Bloccato",
+  completed: "Completato",
+  failed: "Fallito",
+  not_started: "Non avviato",
+  running: "In corso",
+  suspended: "Sospeso"
+};
+
+const quotaStatusLabels: Record<TramAiGateDecision["quota_status"], string> = {
+  available: "Disponibile",
+  exhausted: "Esaurita",
+  not_applicable: "Non applicabile",
+  unknown: "Da verificare"
+};
+
+const riskLabels: Record<TramReviewItem["risk"] | "low" | "medium" | "high" | "critical", string> = {
+  low: "Basso",
+  medium: "Medio",
+  high: "Alto",
+  critical: "Critico"
+};
+
+const taskLabels: Record<string, string> = {
+  T1: "Documenti",
+  T2: "Timeline",
+  T3: "Deliverables",
+  T4: "Requisiti",
+  T5: "Financials",
+  T6: "Cost driver",
+  T7: "Criticità",
+  T8: "Q&A"
+};
+
 const documentStateLabels: Record<string, string> = {
   current: "Vigente",
   under_review: "Da verificare",
   superseded: "Superato"
 };
 
+const ingestionStatusLabels: Record<string, string> = {
+  metadata_extracted: "Metadati estratti",
+  needs_ocr_check: "Verifica OCR",
+  needs_review: "Issue da review"
+};
+
+const parserKindLabels: Record<string, string> = {
+  pdf: "PDF",
+  spreadsheet: "Workbook",
+  text: "Testo"
+};
+
+const parserIssueLabels: Record<string, string> = {
+  parser_requires_ocr_check: "OCR da verificare",
+  parser_requires_review: "Review parser richiesta"
+};
+
+const sensitivityLabels: Record<string, string> = {
+  low: "Bassa",
+  medium: "Media",
+  high: "Alta"
+};
+
 const indicatorValueLabels: Record<string, string> = {
+  human_review_required: "Validazione umana richiesta",
+  missing_schedule: "Calendario non caricato",
+  not_applicable: "Non applicabile",
+  pending_l1_approval: "Approvazione interna richiesta",
+  pending_owner_approval: "Approvazione owner richiesta",
   qna_changes_pending_review: "Q&A da incorporare",
   partial_missing_attachment: "Set parziale, allegato mancante",
   stale: "Documenti non allineati",
+  stale_due_to_new_docs: "Nuovi documenti da incorporare",
   blocked_l2: "AI esterna bloccata"
 };
 
@@ -154,6 +242,30 @@ function threadVariant(status: TramClarificationThread["status"]): BadgeVariant 
   return "muted";
 }
 
+function aiGateVariant(decision: TramAiGateDecision["decision"]): BadgeVariant {
+  if (decision === "allowed_l0_minimized") {
+    return "success";
+  }
+
+  if (decision === "pending_l1_owner_approval") {
+    return "default";
+  }
+
+  return "risk";
+}
+
+function auditStatusVariant(status: TramAuditEvent["status"]): BadgeVariant {
+  if (status === "completed") {
+    return "success";
+  }
+
+  if (["blocked", "failed", "suspended"].includes(status)) {
+    return "risk";
+  }
+
+  return "muted";
+}
+
 function getIndicator(indicators: TramIndicator[], key: string) {
   return indicators.find((indicator) => indicator.key === key);
 }
@@ -164,6 +276,22 @@ function humanizeIndicatorValue(value: string) {
 
 function formatStatus(status: string) {
   return statusLabels[status] ?? status;
+}
+
+function formatRisk(risk: TramReviewItem["risk"] | "low" | "medium" | "high" | "critical") {
+  return riskLabels[risk] ?? risk;
+}
+
+function formatTask(task: string) {
+  return taskLabels[task] ?? task;
+}
+
+function formatDateTime(value: string) {
+  return new Intl.DateTimeFormat("it-IT", {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone: "Europe/Rome"
+  }).format(new Date(value));
 }
 
 function getSourceLabel(sourceReferenceId: string) {
@@ -270,7 +398,7 @@ function DashboardView({ model }: { model: TenderOverviewModel }) {
         title: item.title,
         detail: `${formatStatus(item.status)} · ${getSourceLabel(item.source_reference_id)}`,
         href: sectionHref(model.tender.id, "review"),
-        badge: item.risk,
+        badge: formatRisk(item.risk),
         badgeVariant: riskVariant(item.risk)
       })),
     ...model.clarificationThreads
@@ -403,7 +531,7 @@ function FullSectionView({
   if (section === "documents") {
     return (
       <SectionBlock id="documents" title="Documenti" description="Famiglie, versioni e stato di aggiornamento del set caricato.">
-        <DocumentsList documents={model.documents} />
+        <DocumentsList model={model} />
       </SectionBlock>
     );
   }
@@ -411,7 +539,7 @@ function FullSectionView({
   if (section === "timeline") {
     return (
       <SectionBlock id="timeline" title="Timeline" description="Eventi principali e scadenze da tenere sotto controllo.">
-        <TimelineList events={model.timelineEvents} />
+        <TimelineView model={model} />
       </SectionBlock>
     );
   }
@@ -419,17 +547,7 @@ function FullSectionView({
   if (section === "deliverables") {
     return (
       <SectionBlock id="deliverables" title="Deliverables" description="Cosa deve essere preparato e in quale busta o area di submission.">
-        <SimpleGrid>
-          {model.deliverables.map((deliverable) => (
-            <SimpleItem
-              key={deliverable.id}
-              title={deliverable.title}
-              meta={`${deliverable.envelope} · ${getSourceLabel(deliverable.source_reference_id)}`}
-              badge={formatStatus(deliverable.status)}
-              badgeVariant={statusVariant(deliverable.status)}
-            />
-          ))}
-        </SimpleGrid>
+        <DeliverablesView model={model} />
       </SectionBlock>
     );
   }
@@ -437,17 +555,7 @@ function FullSectionView({
   if (section === "requirements") {
     return (
       <SectionBlock id="requirements" title="Requisiti" description="Requisiti operativi e KPI non economici emersi dalla documentazione.">
-        <SimpleGrid>
-          {model.requirements.map((requirement) => (
-            <SimpleItem
-              key={requirement.id}
-              title={requirement.title}
-              meta={`${requirement.domain} · ${getSourceLabel(requirement.source_reference_id)}`}
-              badge={formatStatus(requirement.status)}
-              badgeVariant={riskVariant(requirement.risk)}
-            />
-          ))}
-        </SimpleGrid>
+        <RequirementsView model={model} />
       </SectionBlock>
     );
   }
@@ -455,17 +563,7 @@ function FullSectionView({
   if (section === "financials") {
     return (
       <SectionBlock id="financials" title="Financials" description="Meccanismo di remunerazione, struttura dei prezzi e voci economiche collegate a fonti e stato di validazione.">
-        <SimpleGrid>
-          {model.financialItems.map((item) => (
-            <SimpleItem
-              key={item.id}
-              title={item.title}
-              meta={`Sensibilità ${item.sensitivity} · ${getSourceLabel(item.source_reference_id)}`}
-              badge={formatStatus(item.status)}
-              badgeVariant="risk"
-            />
-          ))}
-        </SimpleGrid>
+        <FinancialsView model={model} />
       </SectionBlock>
     );
   }
@@ -473,17 +571,7 @@ function FullSectionView({
   if (section === "cost-drivers") {
     return (
       <SectionBlock id="cost-drivers" title="Cost driver" description="Fattori che possono influenzare costo, rischio o effort dell’offerta.">
-        <SimpleGrid>
-          {model.costDrivers.map((driver) => (
-            <SimpleItem
-              key={driver.id}
-              title={driver.title}
-              meta={`${driver.category} · ${getSourceLabel(driver.source_reference_id)}`}
-              badge={formatStatus(driver.status)}
-              badgeVariant={statusVariant(driver.status)}
-            />
-          ))}
-        </SimpleGrid>
+        <CostDriversView model={model} />
       </SectionBlock>
     );
   }
@@ -491,17 +579,7 @@ function FullSectionView({
   if (section === "contradictions") {
     return (
       <SectionBlock id="contradictions" title="Criticità" description="Incoerenze, gap e conflitti candidati: non diventano verità finché non passano da validazione.">
-        <div className="grid gap-3">
-          {model.contradictions.map((contradiction) => (
-            <SimpleItem
-              key={contradiction.id}
-              title={contradiction.title}
-              meta={contradiction.source_reference_ids.map(getSourceLabel).join(" · ")}
-              badge={formatStatus(contradiction.status)}
-              badgeVariant={riskVariant(contradiction.risk)}
-            />
-          ))}
-        </div>
+        <ContradictionsView model={model} />
       </SectionBlock>
     );
   }
@@ -509,11 +587,7 @@ function FullSectionView({
   if (section === "review") {
     return (
       <SectionBlock id="review" title="Da validare" description="Coda prioritaria per validare, bloccare o correggere dati proposti.">
-        <div className="grid gap-3">
-          {model.reviewItems.map((item) => (
-            <ReviewItemRow key={item.id} item={item} />
-          ))}
-        </div>
+        <ReviewQueueView items={model.reviewItems} sourceReferences={model.sourceReferences} />
       </SectionBlock>
     );
   }
@@ -521,7 +595,7 @@ function FullSectionView({
   if (section === "audit") {
     return (
       <SectionBlock id="audit" title="Registro attività" description="Eventi applicativi e policy sul dataset demo.">
-        <AuditContent />
+        <AuditContent model={model} />
       </SectionBlock>
     );
   }
@@ -586,53 +660,525 @@ function ClarificationsContent({
   );
 }
 
-function DocumentsList({ documents }: { documents: TramDocument[] }) {
+function DocumentsList({ model }: { model: TenderOverviewModel }) {
+  const ingestionByDocument = new Map(
+    model.ingestionDocumentStatuses.map((status) => [status.document_id, status])
+  );
+  const sourceReferencesByDocument = model.sourceReferences.reduce<
+    Record<string, TramSourceReference[]>
+  >((groups, sourceReference) => {
+    groups[sourceReference.document_id] ??= [];
+    groups[sourceReference.document_id].push(sourceReference);
+    return groups;
+  }, {});
+  const reviewItemsByDocument = model.reviewItems.reduce<Record<string, TramReviewItem[]>>(
+    (groups, item) => {
+      const sourceReference = getSourceReferenceById(item.source_reference_id);
+
+      if (!sourceReference) {
+        return groups;
+      }
+
+      groups[sourceReference.document_id] ??= [];
+      groups[sourceReference.document_id].push(item);
+      return groups;
+    },
+    {}
+  );
+  const ingestionSummary = {
+    issueCount: model.ingestionDocumentStatuses.filter((status) => status.issue_codes.length > 0)
+      .length,
+    metadataCount: model.ingestionDocumentStatuses.filter(
+      (status) => status.status === "metadata_extracted"
+    ).length,
+    sourceReferenceCount: model.ingestionDocumentStatuses.reduce(
+      (total, status) => total + status.source_reference_count,
+      0
+    )
+  };
+
   return (
     <div className="grid gap-3">
-      {documents.map((document) => (
-        <div key={document.id} className="grid gap-2 rounded-lg border border-border bg-card p-4 md:grid-cols-[1fr_auto]">
-          <div>
-            <p className="text-sm font-medium">{document.title}</p>
-            <p className="mt-1 font-mono text-xs text-muted-foreground">
-              {document.family} · {document.version}
-            </p>
-          </div>
-          <Badge variant={document.currentness === "current" ? "success" : "muted"}>
-            {documentStateLabels[document.currentness] ?? document.currentness}
-          </Badge>
+      <section className="rounded-lg border border-border bg-card p-4">
+        <div className="grid gap-3 sm:grid-cols-3">
+          <InfoRow label="Metadati estratti" value={String(ingestionSummary.metadataCount)} />
+          <InfoRow label="Issue parser" value={String(ingestionSummary.issueCount)} />
+          <InfoRow label="Source reference" value={String(ingestionSummary.sourceReferenceCount)} />
         </div>
+        <p className="mt-3 text-xs leading-5 text-muted-foreground">
+          Stato ingestion demo: mostra metadati e issue, non contenuti integrali dei documenti.
+        </p>
+      </section>
+
+      {model.documents.map((document) => {
+        const sourceReferences = sourceReferencesByDocument[document.id] ?? [];
+        const reviewItems = reviewItemsByDocument[document.id] ?? [];
+        const ingestionStatus = ingestionByDocument.get(document.id);
+
+        return (
+          <article key={document.id} className="rounded-lg border border-border bg-card p-4">
+            <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
+              <div>
+                <p className="text-sm font-medium">{document.title}</p>
+                <p className="mt-1 font-mono text-xs text-muted-foreground">
+                  {document.family} · {document.version}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2 md:justify-end">
+                <Badge variant={document.currentness === "current" ? "success" : "muted"}>
+                  {documentStateLabels[document.currentness] ?? document.currentness}
+                </Badge>
+                {reviewItems.length > 0 ? (
+                  <Badge variant="risk">{reviewItems.length} review</Badge>
+                ) : null}
+                {ingestionStatus ? (
+                  <Badge
+                    variant={ingestionStatus.status === "needs_review" ? "risk" : "muted"}
+                  >
+                    {ingestionStatusLabels[ingestionStatus.status] ?? ingestionStatus.status}
+                  </Badge>
+                ) : null}
+              </div>
+            </div>
+
+            {ingestionStatus ? (
+              <div className="mt-4 grid gap-3 rounded-md border border-border bg-muted p-3 text-sm sm:grid-cols-3">
+                <InfoRow
+                  label="Parser"
+                  value={parserKindLabels[ingestionStatus.parser_kind] ?? ingestionStatus.parser_kind}
+                />
+                <InfoRow
+                  label="Source ref."
+                  value={String(ingestionStatus.source_reference_count)}
+                />
+                <InfoRow
+                  label="Issue"
+                  value={
+                    ingestionStatus.issue_codes.length === 0
+                      ? "Nessuna"
+                      : ingestionStatus.issue_codes
+                          .map((issue) => parserIssueLabels[issue] ?? issue)
+                          .join(", ")
+                  }
+                />
+              </div>
+            ) : null}
+
+            <details className="mt-4 rounded-md border border-border bg-muted px-3 py-2">
+              <summary className="cursor-pointer text-sm font-medium">
+                Apri fonti ({sourceReferences.length})
+              </summary>
+              <div className="mt-3 grid gap-2">
+                {sourceReferences.map((sourceReference) => (
+                  <div
+                    key={sourceReference.id}
+                    className="rounded-md border border-border bg-background p-3"
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <p className="text-sm font-medium">
+                        {sourceReference.label}, p. {sourceReference.page}
+                      </p>
+                      {reviewItems.some(
+                        (item) => item.source_reference_id === sourceReference.id
+                      ) ? (
+                        <Link
+                          className="text-sm font-medium text-primary hover:underline"
+                          href={sectionHref(model.tender.id, "review")}
+                        >
+                          Apri review
+                        </Link>
+                      ) : null}
+                    </div>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                      {sourceReference.synthetic_excerpt}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </details>
+          </article>
+        );
+      })}
+    </div>
+  );
+}
+
+function getReviewItemsForSource(
+  reviewItems: TramReviewItem[],
+  sourceReferenceId: string
+) {
+  return reviewItems.filter((item) => item.source_reference_id === sourceReferenceId);
+}
+
+function SourceExcerpt({
+  reviewItems,
+  source,
+  tenderId
+}: {
+  reviewItems: TramReviewItem[];
+  source: TramSourceReference | undefined;
+  tenderId: string;
+}) {
+  return (
+    <div className="mt-3 rounded-md border border-border bg-muted px-3 py-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="text-xs font-medium text-muted-foreground">
+          {source ? `${source.label}, p. ${source.page}` : "Fonte demo non trovata"}
+        </p>
+        {reviewItems.length > 0 ? (
+          <Link
+            className="text-sm font-medium text-primary hover:underline"
+            href={sectionHref(tenderId, "review")}
+          >
+            Apri review
+          </Link>
+        ) : null}
+      </div>
+      <p className="mt-2 text-sm leading-6 text-muted-foreground">
+        {source?.synthetic_excerpt ?? "Nessun estratto sintetico collegato."}
+      </p>
+      {reviewItems.length > 0 ? (
+        <div className="mt-3 flex flex-wrap gap-2">
+          {reviewItems.map((item) => (
+            <Badge key={item.id} variant={riskVariant(item.risk)}>
+              {formatRisk(item.risk)}
+            </Badge>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function TimelineView({ model }: { model: TenderOverviewModel }) {
+  return (
+    <ol className="relative grid gap-4 before:absolute before:bottom-3 before:left-[9px] before:top-3 before:w-px before:bg-border">
+      {model.timelineEvents.map((event) => {
+        const source = getSourceReferenceById(event.source_reference_id);
+        const reviewItems = getReviewItemsForSource(model.reviewItems, event.source_reference_id);
+
+        return (
+          <li key={event.id} className="relative pl-8">
+            <span className="absolute left-0 top-4 h-[19px] w-[19px] rounded-full border border-primary bg-background ring-4 ring-background" />
+            <article className="rounded-lg border border-border bg-card p-4">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs font-medium uppercase text-muted-foreground">
+                    {event.date_label}
+                  </p>
+                  <h3 className="mt-1 text-sm font-semibold leading-5">{event.title}</h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant={riskVariant(event.impact)}>{formatRisk(event.impact)}</Badge>
+                  <Badge variant={statusVariant(event.status)}>{formatStatus(event.status)}</Badge>
+                </div>
+              </div>
+              <SourceExcerpt
+                reviewItems={reviewItems}
+                source={source}
+                tenderId={model.tender.id}
+              />
+            </article>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+function DeliverablesView({ model }: { model: TenderOverviewModel }) {
+  const groups = model.deliverables.reduce<Record<string, typeof model.deliverables>>(
+    (currentGroups, deliverable) => {
+      currentGroups[deliverable.envelope] ??= [];
+      currentGroups[deliverable.envelope].push(deliverable);
+      return currentGroups;
+    },
+    {}
+  );
+
+  return (
+    <div className="grid gap-4">
+      {Object.entries(groups).map(([envelope, deliverables]) => (
+        <section key={envelope} className="rounded-lg border border-border bg-card p-4">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="font-mono text-xs uppercase text-muted-foreground">Busta</p>
+              <h3 className="mt-1 text-base font-semibold">{envelope}</h3>
+            </div>
+            <Badge variant="muted">{deliverables.length} deliverable</Badge>
+          </div>
+
+          <div className="grid gap-3">
+            {deliverables.map((deliverable) => {
+              const source = getSourceReferenceById(deliverable.source_reference_id);
+              const reviewItems = getReviewItemsForSource(
+                model.reviewItems,
+                deliverable.source_reference_id
+              );
+
+              return (
+                <article
+                  key={deliverable.id}
+                  className="rounded-md border border-border bg-background p-4"
+                >
+                  <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
+                    <div>
+                      <h4 className="text-sm font-semibold leading-5">{deliverable.title}</h4>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {source ? `${source.label}, p. ${source.page}` : "Fonte demo non trovata"}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2 md:justify-end">
+                      <Badge variant={statusVariant(deliverable.status)}>
+                        {formatStatus(deliverable.status)}
+                      </Badge>
+                      {reviewItems.length > 0 ? (
+                        <Badge variant="risk">{reviewItems.length} review</Badge>
+                      ) : null}
+                    </div>
+                  </div>
+
+                  <SourceExcerpt
+                    reviewItems={reviewItems}
+                    source={source}
+                    tenderId={model.tender.id}
+                  />
+                </article>
+              );
+            })}
+          </div>
+        </section>
       ))}
     </div>
   );
 }
 
-function TimelineList({
-  events
-}: {
-  events: TenderOverviewModel["timelineEvents"];
-}) {
+function RequirementsView({ model }: { model: TenderOverviewModel }) {
+  const groups = model.requirements.reduce<Record<string, typeof model.requirements>>(
+    (currentGroups, requirement) => {
+      currentGroups[requirement.domain] ??= [];
+      currentGroups[requirement.domain].push(requirement);
+      return currentGroups;
+    },
+    {}
+  );
+
   return (
-    <ol className="relative grid gap-4 before:absolute before:bottom-3 before:left-[9px] before:top-3 before:w-px before:bg-border">
-      {events.map((event) => (
-        <li key={event.id} className="relative pl-8">
-          <span className="absolute left-0 top-4 h-[19px] w-[19px] rounded-full border border-primary bg-background ring-4 ring-background" />
-          <article className="rounded-lg border border-border bg-card p-4">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <p className="text-xs font-medium uppercase text-muted-foreground">
-                  {event.date_label}
-                </p>
-                <h3 className="mt-1 text-sm font-semibold leading-5">{event.title}</h3>
-              </div>
-              <Badge variant={riskVariant(event.impact)}>{formatStatus(event.status)}</Badge>
+    <div className="grid gap-4">
+      {Object.entries(groups).map(([domain, requirements]) => (
+        <section key={domain} className="rounded-lg border border-border bg-card p-4">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="font-mono text-xs uppercase text-muted-foreground">Dominio</p>
+              <h3 className="mt-1 text-base font-semibold">{domain}</h3>
             </div>
-            <p className="mt-2 text-xs leading-5 text-muted-foreground">
-              {getSourceLabel(event.source_reference_id)}
-            </p>
-          </article>
-        </li>
+            <Badge variant="muted">{requirements.length} requisiti</Badge>
+          </div>
+
+          <div className="grid gap-3">
+            {requirements.map((requirement) => {
+              const source = getSourceReferenceById(requirement.source_reference_id);
+              const reviewItems = getReviewItemsForSource(
+                model.reviewItems,
+                requirement.source_reference_id
+              );
+
+              return (
+                <article
+                  key={requirement.id}
+                  className="rounded-md border border-border bg-background p-4"
+                >
+                  <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
+                    <div>
+                      <h4 className="text-sm font-semibold leading-5">{requirement.title}</h4>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {source ? `${source.label}, p. ${source.page}` : "Fonte demo non trovata"}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2 md:justify-end">
+                      <Badge variant={statusVariant(requirement.status)}>
+                        {formatStatus(requirement.status)}
+                      </Badge>
+                      <Badge variant={riskVariant(requirement.risk)}>
+                        {formatRisk(requirement.risk)}
+                      </Badge>
+                    </div>
+                  </div>
+
+                  <SourceExcerpt
+                    reviewItems={reviewItems}
+                    source={source}
+                    tenderId={model.tender.id}
+                  />
+                </article>
+              );
+            })}
+          </div>
+        </section>
       ))}
-    </ol>
+    </div>
+  );
+}
+
+function FinancialsView({ model }: { model: TenderOverviewModel }) {
+  return (
+    <div className="grid gap-4">
+      <div className="rounded-lg border border-amber-300 bg-amber-50 p-4 text-amber-950">
+        <h3 className="text-sm font-semibold">Valori economici non consolidati</h3>
+        <p className="mt-1 text-sm leading-6">
+          Questa vista mostra struttura, stato, gate e fonte. Non espone importi o formule come
+          verità validata finché non passano da review umana.
+        </p>
+      </div>
+
+      <div className="grid gap-3">
+        {model.financialItems.map((item) => {
+          const source = getSourceReferenceById(item.source_reference_id);
+          const reviewItems = getReviewItemsForSource(model.reviewItems, item.source_reference_id);
+
+          return (
+            <article key={item.id} className="rounded-lg border border-border bg-card p-4">
+              <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
+                <div>
+                  <h3 className="text-sm font-semibold leading-5">{item.title}</h3>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Sensibilità {sensitivityLabels[item.sensitivity]} ·{" "}
+                    {privacyLabels[item.privacy_level]}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2 md:justify-end">
+                  <Badge variant={statusVariant(item.status)}>{formatStatus(item.status)}</Badge>
+                  <Badge variant="muted">
+                    {aiAnalysisLabels[item.ai_analysis_status] ?? item.ai_analysis_status}
+                  </Badge>
+                </div>
+              </div>
+
+              <SourceExcerpt
+                reviewItems={reviewItems}
+                source={source}
+                tenderId={model.tender.id}
+              />
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function CostDriversView({ model }: { model: TenderOverviewModel }) {
+  const groups = model.costDrivers.reduce<Record<string, typeof model.costDrivers>>(
+    (currentGroups, driver) => {
+      currentGroups[driver.category] ??= [];
+      currentGroups[driver.category].push(driver);
+      return currentGroups;
+    },
+    {}
+  );
+
+  return (
+    <div className="grid gap-4">
+      {Object.entries(groups).map(([category, drivers]) => (
+        <section key={category} className="rounded-lg border border-border bg-card p-4">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="font-mono text-xs uppercase text-muted-foreground">Famiglia costo</p>
+              <h3 className="mt-1 text-base font-semibold">{category}</h3>
+            </div>
+            <Badge variant="muted">{drivers.length} driver</Badge>
+          </div>
+
+          <div className="grid gap-3">
+            {drivers.map((driver) => {
+              const source = getSourceReferenceById(driver.source_reference_id);
+              const reviewItems = getReviewItemsForSource(model.reviewItems, driver.source_reference_id);
+
+              return (
+                <article
+                  key={driver.id}
+                  className="rounded-md border border-border bg-background p-4"
+                >
+                  <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
+                    <div>
+                      <h4 className="text-sm font-semibold leading-5">{driver.title}</h4>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {source ? `${source.label}, p. ${source.page}` : "Fonte demo non trovata"}
+                      </p>
+                    </div>
+                    <Badge variant={statusVariant(driver.status)}>
+                      {formatStatus(driver.status)}
+                    </Badge>
+                  </div>
+
+                  <SourceExcerpt
+                    reviewItems={reviewItems}
+                    source={source}
+                    tenderId={model.tender.id}
+                  />
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      ))}
+    </div>
+  );
+}
+
+function ContradictionsView({ model }: { model: TenderOverviewModel }) {
+  return (
+    <div className="grid gap-3">
+      {model.contradictions.map((contradiction) => {
+        const sources = contradiction.source_reference_ids
+          .map((sourceReferenceId) => getSourceReferenceById(sourceReferenceId))
+          .filter((source): source is TramSourceReference => source !== undefined);
+        const reviewItems = contradiction.source_reference_ids.flatMap((sourceReferenceId) =>
+          getReviewItemsForSource(model.reviewItems, sourceReferenceId)
+        );
+
+        return (
+          <article key={contradiction.id} className="rounded-lg border border-border bg-card p-4">
+            <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
+              <div>
+                <h3 className="text-sm font-semibold leading-5">{contradiction.title}</h3>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Candidata finché non viene validata o respinta in review.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2 md:justify-end">
+                <Badge variant={riskVariant(contradiction.risk)}>
+                  {formatRisk(contradiction.risk)}
+                </Badge>
+                <Badge variant={statusVariant(contradiction.status)}>
+                  {formatStatus(contradiction.status)}
+                </Badge>
+              </div>
+            </div>
+
+            <div className="mt-3 grid gap-2">
+              {sources.map((source) => (
+                <SourceExcerpt
+                  key={source.id}
+                  reviewItems={getReviewItemsForSource(model.reviewItems, source.id)}
+                  source={source}
+                  tenderId={model.tender.id}
+                />
+              ))}
+            </div>
+
+            {reviewItems.length > 0 ? (
+              <Link
+                className="mt-3 inline-flex rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                href={sectionHref(model.tender.id, "review")}
+              >
+                Apri review collegata
+              </Link>
+            ) : null}
+          </article>
+        );
+      })}
+    </div>
   );
 }
 
@@ -700,13 +1246,15 @@ function SourceInspector({
             {reviewItem?.title ?? "Nessun blocker selezionato"}
           </h2>
         </div>
-        {reviewItem ? <Badge variant={riskVariant(reviewItem.risk)}>{reviewItem.risk}</Badge> : null}
+        {reviewItem ? (
+          <Badge variant={riskVariant(reviewItem.risk)}>{formatRisk(reviewItem.risk)}</Badge>
+        ) : null}
       </div>
 
       <div className="mt-4 grid gap-3 text-sm">
         <InfoRow label="Riferimento" value={source ? `${source.label}, p. ${source.page}` : "Fonte demo non trovata"} />
         <InfoRow label="Stato" value={reviewItem ? formatStatus(reviewItem.status) : "Nessuna azione"} />
-        <InfoRow label="Impatto" value={reviewItem?.task ?? "Dashboard"} />
+        <InfoRow label="Impatto" value={reviewItem ? formatTask(reviewItem.task) : "Dashboard"} />
       </div>
 
       <blockquote className="mt-4 rounded-md border border-border bg-muted px-3 py-3 text-sm leading-6 text-muted-foreground">
@@ -778,32 +1326,6 @@ function MetricCard({
   );
 }
 
-function SimpleGrid({ children }: { children: ReactNode }) {
-  return <div className="grid gap-3 md:grid-cols-2">{children}</div>;
-}
-
-function SimpleItem({
-  title,
-  meta,
-  badge,
-  badgeVariant
-}: {
-  title: string;
-  meta: string;
-  badge: string;
-  badgeVariant: BadgeVariant;
-}) {
-  return (
-    <article className="rounded-lg border border-border bg-card p-4">
-      <div className="flex items-start justify-between gap-3">
-        <h3 className="text-sm font-semibold leading-5">{title}</h3>
-        <Badge variant={badgeVariant}>{badge}</Badge>
-      </div>
-      <p className="mt-2 text-xs leading-5 text-muted-foreground">{meta}</p>
-    </article>
-  );
-}
-
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div>
@@ -818,7 +1340,7 @@ function ReviewItemRow({ item, compact = false }: { item: TramReviewItem; compac
     <div className="rounded-lg border border-border bg-card p-4">
       <div className="flex items-center justify-between gap-3">
         <p className="text-sm font-medium">{item.title}</p>
-        <Badge variant={riskVariant(item.risk)}>{item.risk}</Badge>
+        <Badge variant={riskVariant(item.risk)}>{formatRisk(item.risk)}</Badge>
       </div>
       <p className="mt-1 text-xs leading-5 text-muted-foreground">
         {formatStatus(item.status)} · {getSourceLabel(item.source_reference_id)}
@@ -830,13 +1352,230 @@ function ReviewItemRow({ item, compact = false }: { item: TramReviewItem; compac
   );
 }
 
-function AuditContent() {
+function AuditContent({ model }: { model: TenderOverviewModel }) {
+  const latestGate = [...model.aiGateDecisions].sort(
+    (left, right) => Date.parse(right.created_at) - Date.parse(left.created_at)
+  )[0];
+  const sortedEvents = [...model.auditEvents].sort(
+    (left, right) => Date.parse(right.created_at) - Date.parse(left.created_at)
+  );
+  const externalUseStatus = getIndicator(model.indicators, "ai.external_use.status");
+  const lastGateStatus = getIndicator(model.indicators, "audit.last_gate");
+  const blockingEvents = model.auditEvents.filter((event) =>
+    ["blocked", "failed", "suspended"].includes(event.status)
+  );
+  const estimatedCost = model.aiGateDecisions.reduce(
+    (total, decision) => total + (decision.estimated_cost ?? 0),
+    0
+  );
+
   return (
-    <div className="rounded-lg border border-border bg-card p-4">
-      <p className="text-sm text-muted-foreground">
-        In questa demo il registro attività resta minimale: creazione tender, blocchi policy e
-        aggiornamenti futuri verranno visualizzati qui con attore, timestamp e motivo.
-      </p>
+    <div className="grid gap-4">
+      <div className="rounded-lg border border-border bg-card p-4">
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <AuditMetric
+            label="Ultimo gate"
+            value={latestGate ? aiGateDecisionLabels[latestGate.decision] : "Nessun gate"}
+            detail={latestGate ? `${formatTask(latestGate.task)} · ${formatDateTime(latestGate.created_at)}` : "Nessuna decisione registrata"}
+          />
+          <AuditMetric
+            label="Uso AI esterna"
+            value={externalUseStatus ? humanizeIndicatorValue(externalUseStatus.value) : "Non dichiarato"}
+            detail={externalUseStatus ? formatStatus(externalUseStatus.status) : "Serve policy esplicita"}
+          />
+          <AuditMetric
+            label="Eventi bloccanti"
+            value={String(blockingEvents.length)}
+            detail={lastGateStatus ? humanizeIndicatorValue(lastGateStatus.value) : "Fail-closed se policy mancante"}
+          />
+          <AuditMetric
+            label="Costo stimato"
+            value={`€ ${estimatedCost.toFixed(2)}`}
+            detail="Cap free, nessun fallback paid"
+          />
+        </div>
+      </div>
+
+      {blockingEvents.length > 0 ? (
+        <div className="rounded-lg border border-amber-300 bg-amber-50 p-4 text-amber-950">
+          <h3 className="text-sm font-semibold">Gate fail-closed attivo</h3>
+          <p className="mt-1 text-sm leading-6">
+            Le decisioni non ammesse restano bloccate o sospese finché owner, quota o policy
+            provider non vengono validati. La demo non passa automaticamente a provider a pagamento.
+          </p>
+        </div>
+      ) : null}
+
+      <section className="rounded-lg border border-border bg-card p-4">
+        <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="font-mono text-xs uppercase text-muted-foreground">Pilot</p>
+            <h3 className="mt-1 text-base font-semibold">Readiness estrazioni</h3>
+          </div>
+          <Badge
+            variant={
+              model.pilotReadiness.status === "ready_for_internal_pilot" ? "success" : "risk"
+            }
+          >
+            {model.pilotReadiness.status === "ready_for_internal_pilot"
+              ? "Pronto per pilot interno"
+              : "Bloccato"}
+          </Badge>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-4">
+          <InfoRow
+            label="Candidati"
+            value={String(model.pilotReadiness.metrics.candidateCount)}
+          />
+          <InfoRow
+            label="Coverage fonti"
+            value={`${Math.round(model.pilotReadiness.metrics.sourceCoverageRatio * 100)}%`}
+          />
+          <InfoRow
+            label="Da review"
+            value={String(model.pilotReadiness.metrics.reviewRequiredCount)}
+          />
+          <InfoRow
+            label="Utenti pilot"
+            value={`${model.pilotReadiness.completedUserCount}/${model.pilotReadiness.userCountTarget}`}
+          />
+        </div>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">
+          {model.pilotReadiness.summary}
+        </p>
+        {model.pilotReadiness.blockers.length > 0 ? (
+          <ul className="mt-3 grid gap-2 text-sm text-muted-foreground">
+            {model.pilotReadiness.blockers.map((blocker) => (
+              <li key={blocker}>{blocker}</li>
+            ))}
+          </ul>
+        ) : null}
+      </section>
+
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(360px,0.8fr)]">
+        <section className="rounded-lg border border-border bg-card p-4">
+          <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="font-mono text-xs uppercase text-muted-foreground">AI gate</p>
+              <h3 className="mt-1 text-base font-semibold">Decisioni provider e data policy</h3>
+            </div>
+            <Badge variant="muted">{model.aiGateDecisions.length} decisioni</Badge>
+          </div>
+
+          <div className="grid gap-3">
+            {model.aiGateDecisions.length === 0 ? (
+              <EmptyState text="Nessun gate AI registrato per questo tender." />
+            ) : (
+              model.aiGateDecisions.map((decision) => (
+                <article key={decision.id} className="rounded-md border border-border bg-background p-4">
+                  <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto]">
+                    <div>
+                      <h4 className="text-sm font-semibold leading-5">
+                        {formatTask(decision.task)} · {privacyLabels[decision.privacy_level]}
+                      </h4>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {decision.provider === "none" ? "Provider non selezionato" : decision.provider}
+                        {decision.model ? ` · ${decision.model}` : ""} · {formatDateTime(decision.created_at)}
+                      </p>
+                    </div>
+                    <Badge variant={aiGateVariant(decision.decision)}>
+                      {aiGateDecisionLabels[decision.decision]}
+                    </Badge>
+                  </div>
+
+                  <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
+                    <InfoRow label="Quota" value={quotaStatusLabels[decision.quota_status]} />
+                    <InfoRow
+                      label="Costo stimato"
+                      value={decision.estimated_cost === null ? "Non applicabile" : `€ ${decision.estimated_cost.toFixed(2)}`}
+                    />
+                    <InfoRow label="Cap" value={decision.cost_cap} />
+                  </dl>
+                  <p className="mt-3 text-xs leading-5 text-muted-foreground">
+                    Motivo: <span className="font-mono">{decision.reason_code}</span>
+                  </p>
+                </article>
+              ))
+            )}
+          </div>
+        </section>
+
+        <section className="rounded-lg border border-border bg-card p-4">
+          <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="font-mono text-xs uppercase text-muted-foreground">Registro</p>
+              <h3 className="mt-1 text-base font-semibold">Eventi audit</h3>
+            </div>
+            <Badge variant="muted">{sortedEvents.length} eventi</Badge>
+          </div>
+
+          <div className="grid gap-3">
+            {sortedEvents.length === 0 ? (
+              <EmptyState text="Nessun evento audit registrato per questo tender." />
+            ) : (
+              sortedEvents.map((event) => {
+                const relatedGate = model.aiGateDecisions.find(
+                  (decision) => decision.id === event.related_record_id
+                );
+
+                return (
+                  <article key={event.id} className="rounded-md border border-border bg-background p-4">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div>
+                        <p className="text-sm font-semibold leading-5">{event.title}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          {auditEventTypeLabels[event.event_type]} · {formatDateTime(event.created_at)}
+                        </p>
+                      </div>
+                      <Badge variant={auditStatusVariant(event.status)}>
+                        {auditStatusLabels[event.status]}
+                      </Badge>
+                    </div>
+
+                    <dl className="mt-4 grid gap-3 text-sm">
+                      <InfoRow label="Attore" value={event.actor} />
+                      <InfoRow label="Azione" value={event.action} />
+                      {event.task ? <InfoRow label="Task" value={formatTask(event.task)} /> : null}
+                      {relatedGate ? (
+                        <InfoRow
+                          label="Gate collegato"
+                          value={aiGateDecisionLabels[relatedGate.decision]}
+                        />
+                      ) : null}
+                    </dl>
+                  </article>
+                );
+              })
+            )}
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}
+
+function AuditMetric({
+  detail,
+  label,
+  value
+}: {
+  detail: string;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-md border border-border bg-background p-4">
+      <p className="text-xs font-medium text-muted-foreground">{label}</p>
+      <p className="mt-2 text-lg font-semibold leading-6">{value}</p>
+      <p className="mt-1 text-xs leading-5 text-muted-foreground">{detail}</p>
+    </div>
+  );
+}
+
+function EmptyState({ text }: { text: string }) {
+  return (
+    <div className="rounded-md border border-dashed border-border bg-background p-4">
+      <p className="text-sm text-muted-foreground">{text}</p>
     </div>
   );
 }

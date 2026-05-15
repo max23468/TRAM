@@ -42,7 +42,7 @@ Questo documento è il punto di ingresso per decisioni stabili e decisioni pende
 - Quando e come pubblicare TRAM su GitHub.
 - Policy versioning/release.
 - Target e runbook deploy futuri.
-- Hosting condiviso V1.4: VPS, OCI, Vercel/Supabase o altro stack.
+- Hosting condiviso prima della V1: VPS, OCI, Vercel/Supabase o altro stack.
 - Policy definitiva per dati L1/L2 e provider esterni su Tender reali.
 - Ruoli applicativi completi e workflow approvativo oltre i permessi minimi.
 - Formato export controllato per Q&A, review, report o Excel.

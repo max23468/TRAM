@@ -1,5 +1,6 @@
 import { z } from "zod";
 import rawFixtures from "../../data/fixtures/tram-v1-mvp-synthetic-fixtures.json";
+import { buildPilotReadinessReport, type ExtractionQualityMetrics } from "./extractions";
 
 export const PRIMARY_ROUTE_NODE_KEYS = [
   "documents",
@@ -426,8 +427,18 @@ export type TramFinancialItem = TramFixtures["financial_items"][number];
 export type TramCostDriver = TramFixtures["cost_drivers"][number];
 export type TramRouteNetwork = TramFixtures["route_networks"][number];
 export type TramContradiction = TramFixtures["contradictions"][number];
+export type TramAiGateDecision = TramFixtures["ai_gate_decisions"][number];
+export type TramAuditEvent = TramFixtures["audit_events"][number];
 export type TramRouteViewContract = (typeof ROUTE_VIEW_CONTRACTS)[number];
 export type TramReviewActionEffect = (typeof REVIEW_ACTION_EFFECTS)[number];
+export type TramIngestionDocumentStatus = {
+  document_id: string;
+  parser_kind: "pdf" | "spreadsheet" | "text";
+  status: "metadata_extracted" | "needs_ocr_check" | "needs_review";
+  issue_codes: string[];
+  source_reference_count: number;
+};
+export type TramPilotReadiness = ReturnType<typeof buildPilotReadinessReport>;
 
 let cachedFixtures: TramFixtures | null = null;
 
@@ -511,6 +522,75 @@ export function getTenderContradictions(tenderId: string): TramContradiction[] {
   return getTramFixtures().contradictions.filter((contradiction) => contradiction.tender_id === tenderId);
 }
 
+export function getTenderIngestionDocumentStatuses(tenderId: string): TramIngestionDocumentStatus[] {
+  const documents = getTenderDocuments(tenderId);
+  const sourceReferences = getTramFixtures().source_references;
+
+  return documents.map((document) => {
+    const sourceReferenceCount = sourceReferences.filter(
+      (sourceReference) => sourceReference.document_id === document.id
+    ).length;
+    const parserKind =
+      document.family === "pricing_workbook" || document.family === "clarification_register"
+        ? "spreadsheet"
+        : "pdf";
+    const needsReview = document.currentness === "under_review" || sourceReferenceCount === 0;
+
+    return {
+      document_id: document.id,
+      parser_kind: parserKind,
+      status: needsReview ? "needs_review" : "metadata_extracted",
+      issue_codes: needsReview
+        ? ["parser_requires_review"]
+        : parserKind === "pdf"
+          ? ["parser_requires_ocr_check"]
+          : [],
+      source_reference_count: sourceReferenceCount
+    };
+  });
+}
+
+export function getTenderPilotReadiness(tenderId: string): TramPilotReadiness {
+  const documents = getTenderDocuments(tenderId);
+  const timelineEvents = getTenderTimelineEvents(tenderId);
+  const deliverables = getTenderDeliverables(tenderId);
+  const requirements = getTenderRequirements(tenderId);
+  const financialItems = getTenderFinancialItems(tenderId);
+  const costDrivers = getTenderCostDrivers(tenderId);
+  const contradictions = getTenderContradictions(tenderId);
+  const clarificationThreads = getTenderClarificationThreads(tenderId);
+  const reviewItems = getTenderReviewItems(tenderId);
+  const taskCoverage = {
+    T1: documents.length,
+    T2: timelineEvents.length,
+    T3: deliverables.length,
+    T4: requirements.length,
+    T5: financialItems.length,
+    T6: costDrivers.length,
+    T7: contradictions.length,
+    T8: clarificationThreads.length
+  };
+  const candidateCount = Object.values(taskCoverage).reduce((total, count) => total + count, 0);
+  const metrics: ExtractionQualityMetrics = {
+    blockedCount: reviewItems.filter((item) => item.status === "blocked").length,
+    candidateCount,
+    reviewRequiredCount: reviewItems.length,
+    sourceCoverageRatio: candidateCount > 0 ? 1 : 0,
+    unsupportedClaimCount: 0,
+    taskCoverage
+  };
+
+  return buildPilotReadinessReport({ metrics });
+}
+
+export function getTenderAiGateDecisions(tenderId: string): TramAiGateDecision[] {
+  return getTramFixtures().ai_gate_decisions.filter((decision) => decision.tender_id === tenderId);
+}
+
+export function getTenderAuditEvents(tenderId: string): TramAuditEvent[] {
+  return getTramFixtures().audit_events.filter((event) => event.tender_id === tenderId);
+}
+
 export function getSourceReferenceById(sourceReferenceId: string): TramSourceReference | undefined {
   return getTramFixtures().source_references.find(
     (sourceReference) => sourceReference.id === sourceReferenceId
@@ -522,6 +602,10 @@ export function getTenderOverviewModel(tenderId: string) {
   const fallbackTender = fixtures.tenders[0];
   const tender = getTenderById(tenderId) ?? fallbackTender;
   const documents = getTenderDocuments(tender.id);
+  const documentIds = new Set(documents.map((document) => document.id));
+  const sourceReferences = fixtures.source_references.filter((sourceReference) =>
+    documentIds.has(sourceReference.document_id)
+  );
   const indicators = getTenderIndicators(tender.id);
   const reviewItems = getTenderReviewItems(tender.id);
   const clarificationImports = getTenderClarificationImports(tender.id);
@@ -533,10 +617,15 @@ export function getTenderOverviewModel(tenderId: string) {
   const costDrivers = getTenderCostDrivers(tender.id);
   const routeNetwork = getTenderRouteNetwork(tender.id);
   const contradictions = getTenderContradictions(tender.id);
+  const ingestionDocumentStatuses = getTenderIngestionDocumentStatuses(tender.id);
+  const pilotReadiness = getTenderPilotReadiness(tender.id);
+  const aiGateDecisions = getTenderAiGateDecisions(tender.id);
+  const auditEvents = getTenderAuditEvents(tender.id);
 
   return {
     tender,
     documents,
+    sourceReferences,
     indicators,
     reviewItems,
     clarificationImports,
@@ -548,6 +637,10 @@ export function getTenderOverviewModel(tenderId: string) {
     costDrivers,
     routeNetwork,
     contradictions,
+    ingestionDocumentStatuses,
+    pilotReadiness,
+    aiGateDecisions,
+    auditEvents,
     needsReviewCount: reviewItems.filter((item) =>
       ["open", "needs_owner", "blocked"].includes(item.status)
     ).length,

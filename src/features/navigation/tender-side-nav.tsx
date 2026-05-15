@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -40,6 +41,10 @@ export function TenderSideNav({ currentSection, sections, tenderId }: TenderSide
     [currentSection, sections]
   );
   const [activeSection, setActiveSection] = useState(initialActiveSection);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const currentLabel =
+    sections.find((item) => item.id === activeSection || item.route === currentSection)?.label ??
+    "Sezioni";
 
   useEffect(() => {
     if (currentSection !== "overview") {
@@ -90,27 +95,103 @@ export function TenderSideNav({ currentSection, sections, tenderId }: TenderSide
     };
   }, [currentSection, initialActiveSection, sections]);
 
+  useEffect(() => {
+    if (!isDrawerOpen) {
+      return;
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsDrawerOpen(false);
+      }
+    };
+    const previousOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isDrawerOpen]);
+
+  const renderLinks = (className?: string) =>
+    sections.map((item) => (
+      <Link
+        key={item.id}
+        className={cn(
+          "rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors hover:bg-muted",
+          activeSection === item.id
+            ? "border-primary bg-secondary text-secondary-foreground"
+            : "border-border text-muted-foreground",
+          className
+        )}
+        href={getNavigationHref({
+          currentSection,
+          id: item.id,
+          route: item.route,
+          tenderId
+        })}
+        onClick={() => setIsDrawerOpen(false)}
+      >
+        {item.label}
+      </Link>
+    ));
+
   return (
-    <div className="mt-5 flex flex-wrap gap-2 lg:flex-col">
-      {sections.map((item) => (
-        <Link
-          key={item.id}
-          className={cn(
-            "rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors hover:bg-muted lg:w-full",
-            activeSection === item.id
-              ? "border-primary bg-secondary text-secondary-foreground"
-              : "border-border text-muted-foreground"
-          )}
-          href={getNavigationHref({
-            currentSection,
-            id: item.id,
-            route: item.route,
-            tenderId
-          })}
-        >
-          {item.label}
-        </Link>
-      ))}
-    </div>
+    <>
+      <button
+        className="mt-5 inline-flex h-10 w-full items-center justify-between rounded-md border border-border bg-background px-3 text-sm font-medium transition-colors hover:bg-muted lg:hidden"
+        type="button"
+        aria-expanded={isDrawerOpen}
+        aria-controls="tender-mobile-sections"
+        onClick={() => setIsDrawerOpen(true)}
+      >
+        <span className="inline-flex items-center gap-2">
+          <Menu aria-hidden="true" size={16} />
+          Sezioni
+        </span>
+        <span className="text-xs text-muted-foreground">{currentLabel}</span>
+      </button>
+
+      {isDrawerOpen ? (
+        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true">
+          <button
+            className="absolute inset-0 bg-foreground/25"
+            type="button"
+            aria-label="Chiudi navigazione sezioni"
+            onClick={() => setIsDrawerOpen(false)}
+          />
+          <aside
+            id="tender-mobile-sections"
+            className="relative flex h-full w-[min(320px,calc(100%-32px))] flex-col border-r border-border bg-card p-4 shadow-xl"
+          >
+            <div className="flex items-start justify-between gap-3 border-b border-border pb-4">
+              <div>
+                <p className="text-xs font-medium uppercase text-muted-foreground">Sezioni</p>
+                <p className="mt-1 text-base font-semibold">{currentLabel}</p>
+              </div>
+              <button
+                className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border transition-colors hover:bg-muted"
+                type="button"
+                aria-label="Chiudi navigazione sezioni"
+                onClick={() => setIsDrawerOpen(false)}
+              >
+                <X aria-hidden="true" size={16} />
+              </button>
+            </div>
+
+            <nav className="mt-4 grid gap-2" aria-label="Sezioni tender">
+              {renderLinks("w-full py-2 text-sm")}
+            </nav>
+          </aside>
+        </div>
+      ) : null}
+
+      <nav className="mt-5 hidden gap-2 lg:flex lg:flex-col" aria-label="Sezioni tender">
+        {renderLinks("lg:w-full")}
+      </nav>
+    </>
   );
 }

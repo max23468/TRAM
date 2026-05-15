@@ -7,6 +7,7 @@ import {
   ROUTE_VIEW_CONTRACTS,
   assertFixturesDoNotReferenceReservedPaths,
   getFixtureSummary,
+  getTenderOverviewModel,
   getTramFixtures
 } from "./fixtures";
 
@@ -358,5 +359,18 @@ describe("fixture TRAM MVP", () => {
         expect(relatedRecordIds.has(auditEvent.related_record_id)).toBe(true);
       }
     }
+  });
+
+  it("espone readiness pilot senza dichiarare completato il pilot reale", () => {
+    const model = getTenderOverviewModel("tender_fx_cop_metro_om");
+
+    expect(model.pilotReadiness.status).toBe("ready_for_internal_pilot");
+    expect(model.pilotReadiness.completedUserCount).toBe(0);
+    expect(model.pilotReadiness.userCountTarget).toBe(3);
+    expect(model.pilotReadiness.blockers).toContain(
+      "Pilot reale con utenti interni non ancora completato."
+    );
+    expect(model.pilotReadiness.metrics.taskCoverage.T1).toBeGreaterThan(0);
+    expect(model.pilotReadiness.metrics.taskCoverage.T8).toBeGreaterThan(0);
   });
 });
