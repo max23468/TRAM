@@ -51,96 +51,34 @@ Non anticipare V2/V3 nel codice V1 se non come predisposizione ragionevole e doc
 
 ## Documenti da leggere prima di modifiche non banali
 
-Prima di proporre architetture, refactor, integrazioni, AI workflow, data model, UI o pipeline, leggere i documenti pertinenti:
+Prima di proporre architetture, refactor, integrazioni, AI workflow, data model, UI o pipeline, partire dal set governante:
 
-- `docs/planning/tram-v1-product-brief.md`
-- `docs/planning/tram-v1-mvp-roadmap-and-success-criteria-v0-1.md`
-- `docs/planning/tram-v1-mvp-functional-wireframes-v0-1.md`
-- `docs/planning/tram-v1-mvp-application-fixtures-v0-1.md`
-- `docs/planning/tram-v1-mvp-data-contract-v0-1.md`
-- `docs/planning/tram-v1-mvp-development-verification-checklist-v0-1.md`
-- `docs/planning/tram-v1-gitignore-and-secrets-policy-v0-1.md`
-- `docs/runbooks/tram-v1-oci-mvp-runtime-and-storage-runbook-v0-1.md`
-- `docs/runbooks/tram-v1-local-app-development-runbook-v0-1.md`
-- `docs/planning/tram-v1-mvp-architecture.md`
-- `docs/planning/tram-v1-free-ai-strategy.md`
-- `docs/planning/tram-v1-free-ai-benchmark-protocol.md`
-- `docs/planning/tram-v1-free-ai-provider-recommendation-v0-1.md`
-- `docs/planning/tram-v1-tx-task-taxonomy-t1-t8.md`
-- `docs/planning/tram-v1-ai-call-registry-and-gates-v0-1.md`
-- `docs/planning/tram-v1-ai-routing-matrix-v0-1.md`
-- `docs/planning/tram-v1-ai-normalizer-spec-t4-t8-v0-1.md`
-- `docs/planning/tram-v1-ai-normalizer-fixture-test-spec-t4-t8-v0-1.md`
-- `docs/decisions/tram-adr-001-normalizer-runtime-placement-v0-1.md`
-- `docs/planning/tram-v1-indicator-key-registry-p0-p1-v0-1.md`
-- `docs/planning/tram-v1-dashboard-views-t1-t8-v0-1.md`
-- `docs/planning/tram-v1-first-ui-slice-priority-v0-1.md`
-- `docs/planning/tram-v1-mvp-roles-permissions-v0-1.md`
-- `docs/planning/tram-v1-tender-data-policy-v0-1.md`
-- `docs/planning/tram-v1-ingestion-to-dashboard-workflow-v0-1.md`
-- `docs/planning/tram-v1-t2-t3-operational-spec-v0-1.md`
-- `docs/planning/tram-v1-ai-document-class-provider-matrix-v0-1.md`
-- `docs/planning/tram-v1-ai-chunk-minimization-redaction-policy-v0-1.md`
-- `docs/planning/tram-v1-free-ai-prompt-schema-pack-v0-1.md`
-- `docs/planning/tram-v1-free-ai-prompt-schema-pack-v0-2.md`
-- `docs/planning/tram-v1-free-ai-prompt-schema-pack-v0-3.md`
-- `docs/planning/tram-v1-free-ai-prompt-schema-pack-v0-4.md`
-- `docs/planning/tram-v1-free-ai-prompt-schema-pack-t2-timeline-v0-1.md`
-- `docs/planning/tram-v1-free-ai-prompt-schema-pack-t3-deliverables-v0-1.md`
-- `docs/planning/tram-v1-free-ai-prompt-schema-pack-t4-requirements-kpi-v0-1.md`
-- `docs/planning/tram-v1-free-ai-prompt-schema-pack-t5-financials-payment-v0-1.md`
-- `docs/planning/tram-v1-free-ai-prompt-schema-pack-t6-cost-drivers-v0-1.md`
-- `docs/planning/tram-v1-free-ai-prompt-schema-pack-t7-contradictions-v0-1.md`
-- `docs/planning/tram-v1-free-ai-prompt-schema-pack-t8-query-draft-v0-1.md`
-- `docs/planning/tram-v1-document-family-version-currentness-resolver-v0-1.md`
-- `docs/planning/tram-v1-data-model.md`
-- `docs/planning/tram-v1-automation-decision-matrix.md`
-- `docs/planning/tram-v1-human-validation-workflow.md`
-- `docs/planning/tram-v1-review-queue-design.md`
-- `docs/planning/tram-v1-indicator-taxonomy.md`
-- `docs/planning/tram-procurement-stage-taxonomy.md`
-- `docs/planning/tram-domain-research-policy.md`
-- `docs/planning/tram-documentation-naming-conventions.md`
-- `docs/planning/tram-v1-benchmark-packages.md`
-- `docs/runbooks/tram-local-document-processing-toolchain.md`
-- `docs/analysis/tram-loaded-packages-inventory-2026-05-12.md`
-- `docs/analysis/tram-loaded-packages-inventory-2026-05-13.md`
-- `docs/analysis/tram-copenhagen-m1-m4-semantic-benchmark-analysis.md`
-- `docs/analysis/tram-copenhagen-m1-m4-v1-extraction-grid.md`
-- `docs/analysis/tram-copenhagen-m1-m4-free-ai-benchmark-dataset.md`
-- `docs/analysis/tram-copenhagen-m1-m4-t1-l0-envelope-v0-1.md`
-- `docs/analysis/tram-copenhagen-m1-m4-t1-l0-run-template-v0-1.md`
-- `docs/analysis/tram-copenhagen-m1-m4-t1-l0-gemini-run-v0-1.md`
-- `docs/analysis/tram-copenhagen-m1-m4-t1-l0-gemini-25-json-mode-run-v0-1.md`
-- `docs/analysis/tram-copenhagen-m1-m4-t1-l0-baseline-aware-evaluation-v0-1.md`
-- `docs/analysis/tram-copenhagen-m1-m4-t1-l0-v0-2-gemini-provider-schema-evaluation.md`
-- `docs/analysis/tram-copenhagen-m1-m4-t1-l0-v0-2-mistral-provider-schema-evaluation.md`
-- `docs/analysis/tram-copenhagen-m1-m4-t1-l0-v0-3-gemini-mistral-rerun-evaluation.md`
-- `docs/analysis/tram-copenhagen-m1-m4-t1-l0-v0-3-hybrid-resolver-evaluation.md`
-- `docs/analysis/tram-dublin-luas-om-t1-l0-v0-3-hybrid-resolver-evaluation.md`
-- `docs/analysis/tram-ai-routing-micro-benchmark-v0-4-evaluation.md`
-- `docs/analysis/tram-t1-l0-v0-4-stage-aware-compact-benchmark-evaluation.md`
-- `docs/analysis/tram-t2-timeline-compact-benchmark-evaluation.md`
-- `docs/analysis/tram-t3-deliverables-compact-benchmark-evaluation.md`
-- `docs/analysis/tram-v1-four-package-compact-benchmark-synthesis-v0-1.md`
-- `docs/analysis/tram-t4-t8-compact-benchmark-preparation.md`
-- `docs/analysis/tram-t4-t8-compact-provider-benchmark-evaluation.md`
-- `docs/analysis/tram-milano-lotti-extraurbani-om-t1-l0-v0-3-hybrid-resolver-evaluation.md`
-- `docs/analysis/tram-dublin-metrolink-ppp-t1-l0-v0-3-hybrid-resolver-evaluation.md`
-- `docs/analysis/tram-copenhagen-m1-m4-t1-l0-v0-2-groq-provider-schema-evaluation.md`
-- `docs/analysis/tram-copenhagen-m1-m4-t1-l0-v0-2-cerebras-provider-schema-evaluation.md`
-- `docs/analysis/tram-copenhagen-m1-m4-t1-l0-v0-2-cloudflare-provider-schema-evaluation.md`
-- `docs/analysis/tram-v1-free-ai-provider-readiness-status-2026-05-13.md`
-- `data/config/tram-v1-normalizer-config-t4-t8-v0-1.json`
-- `data/tram-data-packages-guide.md`
+- `README.md`
+- `ROADMAP.md`
+- `docs/INDEX.md`
+- `docs/CONTEXT.md`
+- `docs/ARCHITECTURE.md`
+- `docs/AI_AND_DOCUMENT_PIPELINE.md`
+- `docs/UX_REVIEW_WORKFLOW.md`
+- `docs/OPERATIONS.md`
+- `docs/BRAND.md`
+- `docs/DECISIONS.md`
+
+Documenti puntuali ancora ammessi:
+
+- `docs/decisions/` per ADR e decisioni dettagliate.
+- `docs/plans/` per piani temporanei e fasi di lavoro.
+- `data/` per configurazioni e fixture applicative, non per governance prodotto principale.
+
+I vecchi file di `docs/planning/`, `docs/analysis/`, `docs/runbooks/` e `docs/design/` sono stati o saranno assorbiti nei documenti governanti. Dopo il consolidamento non devono più essere trattati come fonti primarie.
 
 Se il task tocca una decisione stabile, aggiornare anche il documento che la governa. Se manca un documento adatto, crearne uno con nome univoco e descrittivo.
 
 ## Stato attuale del progetto
 
-- TRAM è ancora in fase di piano e documentazione.
-- Non scrivere codice applicativo finché il piano e la relativa documentazione non sono sufficientemente chiari o finché il maintainer non lo chiede esplicitamente.
-- La cartella TRAM non è ancora una repo Git inizializzata.
+- TRAM è in fase MVP iniziale, con app locale Next.js e consolidamento documentale in corso.
+- Non introdurre runtime, provider, deploy o pipeline produttive finché il piano e la relativa documentazione non sono sufficientemente chiari o finché il maintainer non lo chiede esplicitamente.
+- La cartella TRAM è una repo Git locale inizializzata.
 - Esiste una chiave locale `ssh-key-tram.key`: trattarla come segreto, non leggerla se non necessario, non copiarla, non committarla.
 - I pacchetti in `data/packages/` sono dati reali o rappresentativi e non vanno considerati “documenti grezzi” qualsiasi: sono input applicativi benchmark per TRAM.
 - I pacchetti documentali e i working extract sono esclusi da Git e vanno trattati come riservati.
@@ -193,7 +131,7 @@ Regole:
 - VPS gratuita o modello self-hosted resta fallback per task sensibili o batch lenti.
 - Nessun pacchetto completo va inviato a un LLM: prima parsing/OCR, poi chunk mirati e minimizzati.
 - Ogni chiamata AI deve salvare provider, modello, endpoint, prompt version, input hash, output hash, consumo stimato, costo stimato, quota residua se disponibile, fonte e motivazione.
-- Ogni prompt AI deve rispettare la policy `docs/planning/tram-v1-ai-chunk-minimization-redaction-policy-v0-1.md`.
+- Ogni prompt AI deve rispettare la policy consolidata in `docs/AI_AND_DOCUMENT_PIPELINE.md`.
 - Per T1 L0 stage-aware v0.4, la route promossa è Gemini + normalizzatore deterministico post-AI + resolver deterministico; Mistral resta candidato ma non affidabile se il tier gratuito è saturo.
 - Per T2 timeline v0.1, date, orari, durate, timezone, conflitti e stato review sono responsabilità di parser/regole; AI può normalizzare nome evento, natura, ruolo e incertezze su envelope minimizzato.
 - Per T3 deliverable v0.1, parser/regole individuano deliverable, codici, obbligatorietà, limiti pagina, formati, pesi, deadline e fonti; AI può normalizzare nome, tipo, area di submission, dominio O&M, dipendenze e incertezze, ma non deve consolidare requisiti formali, valori economici o contenuti sensibili.
@@ -207,7 +145,7 @@ Regole:
 - L’AI può proporre, non consolidare dati critici senza validazione.
 - Bozze di chiarimento sempre approvate da un utente prima di invio o export esterno.
 - Le clausole dei documenti di gara su AI, riservatezza, data processing e vendor esterni vanno cercate prima di usare provider AI esterni su un pacchetto.
-- La matrice `docs/planning/tram-v1-ai-document-class-provider-matrix-v0-1.md` governa il default per classi documentali, privacy level e provider ammessi.
+- La policy consolidata in `docs/AI_AND_DOCUMENT_PIPELINE.md` governa il default per classi documentali, privacy level e provider ammessi.
 
 Output AI critici, contraddizioni, payment mechanism, penali, KPI, requisiti mandatory, rischio economico, compliance e chiarimenti/Q&A restano soggetti a review umana.
 
@@ -440,7 +378,7 @@ Quando inizierà lo sviluppo:
 
 ## Testing e verifica
 
-In fase attuale docs/planning:
+Per modifiche documentali:
 
 - per modifiche documentali, rileggere i file toccati;
 - controllare naming `.md` univoco;
@@ -482,7 +420,7 @@ Aggiornare la documentazione quando cambia:
 Documenti futuri consigliati quando servono:
 
 - ADR in `docs/decisions/` per decisioni permanenti;
-- runbook VPS in `docs/runbooks/`;
+- runbook VPS dedicato quando servirà;
 - roadmap in file dedicato, con nome univoco;
 - changelog quando inizia lo sviluppo applicativo;
 - glossario prodotto in italiano;

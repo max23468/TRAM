@@ -26,3 +26,7 @@ Questo indice è il punto di ingresso per la documentazione viva di TRAM. I vecc
 - `docs/decisions/`: ADR puntuali numerati quando serve una decisione stabile dettagliata.
 - `docs/plans/`: piani temporanei e fasi di lavoro, da rimuovere o chiudere quando assorbiti.
 - `data/`: configurazioni e fixture applicative, non documentazione prodotto principale.
+
+## Piani Attivi
+
+- [`docs/plans/documentation-consolidation-2026-05-15.md`](plans/documentation-consolidation-2026-05-15.md)
