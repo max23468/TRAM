@@ -70,7 +70,7 @@ Documenti puntuali ancora ammessi:
 - `docs/plans/` per piani temporanei e fasi di lavoro.
 - `data/` per configurazioni e fixture applicative, non per governance prodotto principale.
 
-I vecchi file di `docs/planning/`, `docs/analysis/`, `docs/runbooks/` e `docs/design/` sono stati o saranno assorbiti nei documenti governanti. Dopo il consolidamento non devono più essere trattati come fonti primarie.
+I vecchi file di `docs/planning/`, `docs/analysis/`, `docs/runbooks/` e `docs/design/` sono stati assorbiti nei documenti governanti e rimossi dal workspace. Restano recuperabili dallo storico Git, ma non devono più essere trattati come fonti primarie.
 
 Se il task tocca una decisione stabile, aggiornare anche il documento che la governa. Se manca un documento adatto, crearne uno con nome univoco e descrittivo.
 

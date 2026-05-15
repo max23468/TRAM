@@ -4,7 +4,7 @@ Questo documento governa priorità, milestone e debiti visibili. I dettagli tecn
 
 ## Stato Corrente
 
-Fase attuale: **M0 - Fondazioni e consolidamento**.
+Fase attuale: **M0 - Fondazioni**.
 
 TRAM ha già:
 
@@ -13,7 +13,7 @@ TRAM ha già:
 - branch `codex/docs-consolidation`;
 - app Next.js iniziale con fixture sintetiche;
 - policy `.gitignore` per escludere dati sensibili e runtime locali;
-- consolidamento documentale in corso.
+- documentazione governante consolidata da 85 a 13 Markdown.
 
 ## Milestone
 
@@ -29,9 +29,6 @@ TRAM ha già:
 
 ## Debiti Visibili
 
-- Consolidare i vecchi 85 Markdown nel nuovo set governante.
-- Aggiornare `AGENTS.md` dopo il consolidamento.
-- Decidere se conservare una selezione minima di evidenze benchmark oltre allo storico Git.
 - Formalizzare la policy release quando TRAM sarà pubblicata su GitHub.
 - Definire eventuale `CHANGELOG.md` solo quando inizierà un flusso release reale.
 

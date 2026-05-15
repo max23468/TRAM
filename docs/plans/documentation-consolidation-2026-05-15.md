@@ -4,6 +4,15 @@
 
 Questo documento governa il riordino della documentazione TRAM dopo l’inizializzazione Git locale.
 
+Stato finale: consolidamento eseguito sul branch `codex/docs-consolidation`.
+
+Esito:
+
+- documenti Markdown tracciati ridotti da 85 a 13;
+- nuovo set governante creato con nomi brevi e stabili;
+- vecchi documenti assorbiti rimossi dal workspace;
+- storico mantenuto da Git, senza archivio massivo.
+
 Stato rilevato sul branch `codex/docs-consolidation`:
 
 - Markdown tracciati da Git: 85.
@@ -403,14 +412,14 @@ rg -n "perche|piu|attivita|qualita|criticita|possibilita|responsabilita|modalita
 
 Per i documenti consolidati, aggiungere rilettura manuale mirata prima del commit.
 
-## Decisioni Da Prendere
+## Decisioni Risolte Nel Consolidamento
 
-- Se `data/tram-data-packages-guide.md` deve restare in `data/` o essere spostato in `docs/planning/`.
-- Se conservare alcune evidenze benchmark non sintetizzabili in una cartella dedicata, oppure affidare tutto lo storico a Git.
-- Se mantenere gli ADR singoli oltre al decision log.
-- Se il mock HTML in `docs/design/` resta documentazione o diventa artifact di design da mettere in una sottocartella dedicata.
-- Se, dopo consolidamento, eliminare davvero le versioni superate di prompt pack o conservarne una selezione minima come evidenza.
+- `data/tram-data-packages-guide.md` è stato assorbito nei documenti governanti e rimosso dal workspace.
+- Non è stata creata una cartella archivio massiva.
+- Gli ADR singoli restano in `docs/decisions/`.
+- Il mock HTML è stato spostato in `docs/assets/mvp-ui-mock.html`.
+- Le versioni superate di prompt pack sono state rimosse dal workspace dopo sintesi nei documenti governanti.
 
 ## Prossimo Passo Consigliato
 
-Validare questo piano, poi iniziare dalla Fase 2 con i nuovi documenti consolidati. La prima implementazione concreta dovrebbe creare i documenti governanti senza ancora archiviare o cancellare i file esistenti.
+Usare il nuovo set governante come fonte primaria e aggiornare solo i documenti pertinenti quando cambiano prodotto, AI, architettura, operations, UX, brand o decisioni.

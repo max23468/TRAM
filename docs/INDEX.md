@@ -1,6 +1,6 @@
 # TRAM - Indice Documentazione
 
-Questo indice è il punto di ingresso per la documentazione viva di TRAM. I vecchi documenti di `docs/planning`, `docs/analysis`, `docs/runbooks` e `docs/design` vengono progressivamente assorbiti in questo set minimo.
+Questo indice è il punto di ingresso per la documentazione viva di TRAM. I vecchi documenti di `docs/planning`, `docs/analysis`, `docs/runbooks` e `docs/design` sono stati assorbiti in questo set minimo e restano recuperabili dallo storico Git.
 
 ## Ordine Di Lettura
 
@@ -27,6 +27,6 @@ Questo indice è il punto di ingresso per la documentazione viva di TRAM. I vecc
 - `docs/plans/`: piani temporanei e fasi di lavoro, da rimuovere o chiudere quando assorbiti.
 - `data/`: configurazioni e fixture applicative, non documentazione prodotto principale.
 
-## Piani Attivi
+## Piani Recenti
 
 - [`docs/plans/documentation-consolidation-2026-05-15.md`](plans/documentation-consolidation-2026-05-15.md)

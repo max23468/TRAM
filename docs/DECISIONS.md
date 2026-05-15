@@ -21,7 +21,6 @@ Questo documento è il punto di ingresso per decisioni stabili e decisioni pende
 ## Decisioni Pendenti
 
 - Se conservare alcune evidenze benchmark non sintetizzabili oltre allo storico Git.
-- Se `data/tram-data-packages-guide.md` resta in `data/` o viene assorbito del tutto nei documenti governanti.
 - Quando introdurre `CHANGELOG.md`.
 - Quando e come pubblicare TRAM su GitHub.
 - Policy versioning/release.

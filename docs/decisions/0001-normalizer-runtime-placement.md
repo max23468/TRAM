@@ -32,8 +32,8 @@ Il runtime canonico dei normalizzatori TRAM V1 sarà TypeScript, lato app/API/AI
 La configurazione resta dichiarativa e condivisa:
 
 - config: `/Users/Matteo/Documents/TRAM/data/config/tram-v1-normalizer-config-t4-t8-v0-1.json`;
-- specifica: `/Users/Matteo/Documents/TRAM/docs/planning/tram-v1-ai-normalizer-spec-t4-t8-v0-1.md`;
-- fixture spec: `/Users/Matteo/Documents/TRAM/docs/planning/tram-v1-ai-normalizer-fixture-test-spec-t4-t8-v0-1.md`.
+- specifica consolidata: `/Users/Matteo/Documents/TRAM/docs/AI_AND_DOCUMENT_PIPELINE.md`;
+- architettura consolidata: `/Users/Matteo/Documents/TRAM/docs/ARCHITECTURE.md`.
 
 Il worker Python documentale non sarà la sede canonica dei normalizzatori AI. Potrà:
 
@@ -263,8 +263,8 @@ Questo ADR non decide ancora:
 - Quando inizierà il codice, creare una mini ADR o sezione tecnica su package layout.
 - Definire se il config JSON resterà in `data/config` o migrerà in una cartella applicativa versionata.
 - Definire fixture sintetiche minimizzate per campi vietati e L2.
-- Specifica viste dashboard MVP definita in `/Users/Matteo/Documents/TRAM/docs/planning/tram-v1-dashboard-views-t1-t8-v0-1.md`.
-- Usare il registro `indicator_key` P0/P1 già definito in `/Users/Matteo/Documents/TRAM/docs/planning/tram-v1-indicator-key-registry-p0-p1-v0-1.md`.
+- Specifica viste dashboard e review workflow consolidata in `/Users/Matteo/Documents/TRAM/docs/UX_REVIEW_WORKFLOW.md`.
+- Usare il registro indicatori consolidato nei documenti `/Users/Matteo/Documents/TRAM/docs/UX_REVIEW_WORKFLOW.md` e `/Users/Matteo/Documents/TRAM/docs/AI_AND_DOCUMENT_PIPELINE.md`.
 
 ## Prossimo passo consigliato
 
