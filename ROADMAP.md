@@ -206,11 +206,18 @@ Feedback dry-run UX su fixture:
 | `/documents` | La document map mostra lessico tecnico come parser/metadati e non rende chiaro l’accesso alla fonte | P1 | Tradurre la UI in linguaggio operativo e mostrare riferimenti fonte |
 | `/review` | La sezione Da validare manca di gerarchia, scopo e differenza tra azioni | P1 | Ridisegnare gerarchia, CTA, spiegazioni e significato delle azioni |
 
+Feedback CPH su pacchetto reale/rappresentativo:
+
+| Route | Feedback | Severità | Decisione |
+| --- | --- | --- | --- |
+| `/pilot/copenhagen-m1-m4-om` | La prima vista era un inventario tecnico e la prima correzione ha introdotto una dashboard CPH parallela non allineata al modello definito | P0 | Riallineare la route al modello TRAM: stato dashboard, fonti P0, blocchi, Q&A, route T1-T8, document map e source inspector senza esporre estratti grezzi come contenuto principale |
+
 Prossimo pilot reale/rappresentativo:
 
 - pacchetto scelto: `data/packages/copenhagen-m1-m4-om`;
 - inventario locale generato in `data/working/copenhagen-m1-m4-om/inventory/`, area esclusa da Git;
 - baseline inventario CPH: 59 file, di cui 51 PDF, 6 DOCX, 1 MPP e 1 XLSX;
+- prima vista applicativa su `/pilot/copenhagen-m1-m4-om`: overview allineata al modello TRAM con stato dashboard, route T1-T8, document map, source inspector e link al documento originale;
 - non committare documenti, OCR, estratti grezzi, screenshot o contenuti riservati;
 - usare parsing locale e fixture derivate/minimizzate solo quando non espongono contenuti sensibili;
 - raccogliere feedback osservabile su dati effettivi: document map, timeline, deliverable, fonti e Da validare.

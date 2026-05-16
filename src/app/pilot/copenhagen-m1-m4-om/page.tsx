@@ -1,53 +1,49 @@
 import Link from "next/link";
-import { AlertTriangle, FileText, FolderOpen, Layers3 } from "lucide-react";
+import type { ComponentType } from "react";
+import {
+  AlertTriangle,
+  ArrowRight,
+  CalendarDays,
+  CheckCircle2,
+  ClipboardCheck,
+  ExternalLink,
+  FileQuestion,
+  FileSpreadsheet,
+  FileText,
+  Gauge,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
+  buildCphPilotDocumentGroups,
   formatBytes,
   getCphPilotInventory,
   getCphPilotSummary,
   getCphTextExtract,
   getCphTextExtractSummary,
-  getTopLevelFolder,
-  type PilotInventoryFile
+  type CphPilotDocumentGroup,
+  type CphPilotDocumentVersion
 } from "@/lib/pilot-cph";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
 type PageProps = {
-  searchParams?: Promise<{ doc?: string; folder?: string }>;
+  searchParams?: Promise<{ area?: string; group?: string }>;
 };
 
-const statusLabels: Record<string, string> = {
-  needs_ocr_check: "Testo da estrarre/verificare",
-  ready_for_parser: "Pronto per parser",
-  unsupported: "Formato non supportato"
-};
-
-const parserLabels: Record<string, string> = {
-  docx: "DOCX",
-  mpp: "MPP",
-  pdf: "PDF",
-  spreadsheet: "XLSX"
-};
-
-function statusVariant(status: string) {
-  return status === "ready_for_parser" ? "success" : "risk";
-}
-
-function documentHref(file: PilotInventoryFile) {
+function documentHref(file: CphPilotDocumentVersion) {
   return `/pilot/copenhagen-m1-m4-om/document?id=${encodeURIComponent(file.id)}`;
 }
 
-function pageHref(params: { doc?: string; folder?: string }) {
+function pageHref(params: { area?: string; group?: string }) {
   const searchParams = new URLSearchParams();
 
-  if (params.folder) {
-    searchParams.set("folder", params.folder);
+  if (params.area) {
+    searchParams.set("area", params.area);
   }
 
-  if (params.doc) {
-    searchParams.set("doc", params.doc);
+  if (params.group) {
+    searchParams.set("group", params.group);
   }
 
   const query = searchParams.toString();
@@ -66,7 +62,25 @@ function clipText(text: string | null) {
     .filter((line) => line.trim().length > 0)
     .join("\n");
 
-  return normalized.slice(0, 12000);
+  return normalized.length > 2800 ? `${normalized.slice(0, 2800)}\n[...]` : normalized;
+}
+
+function countByArea(groups: CphPilotDocumentGroup[]) {
+  return groups.reduce<Record<string, { label: string; count: number }>>((accumulator, group) => {
+    accumulator[group.areaId] = {
+      label: group.areaLabel,
+      count: (accumulator[group.areaId]?.count ?? 0) + 1
+    };
+    return accumulator;
+  }, {});
+}
+
+function findGroup(groups: CphPilotDocumentGroup[], familyKey: string, documentCode?: string) {
+  return groups.find(
+    (group) =>
+      group.familyKey === familyKey &&
+      (!documentCode || group.documentCode === documentCode)
+  );
 }
 
 export default async function CphPilotPage({ searchParams }: PageProps) {
@@ -95,182 +109,271 @@ export default async function CphPilotPage({ searchParams }: PageProps) {
     );
   }
 
-  const folder = params?.folder;
-  const folders = Object.keys(summary.topLevelFolderCounts).sort((left, right) =>
-    left.localeCompare(right)
+  const groups = buildCphPilotDocumentGroups(inventory);
+  const areaCounts = countByArea(groups);
+  const areaOptions = Object.entries(areaCounts).sort((left, right) =>
+    left[1].label.localeCompare(right[1].label)
   );
-  const filteredFiles = folder
-    ? inventory.files.filter((file) => getTopLevelFolder(file) === folder)
-    : inventory.files;
-  const selectedFile =
-    filteredFiles.find((file) => file.id === params?.doc) ?? filteredFiles[0] ?? inventory.files[0];
-  const selectedText = clipText(selectedFile ? await getCphTextExtract(selectedFile.id) : null);
+  const selectedArea = params?.area;
+  const filteredGroups = selectedArea
+    ? groups.filter((group) => group.areaId === selectedArea)
+    : groups;
+  const selectedGroup =
+    filteredGroups.find((group) => group.id === params?.group) ??
+    filteredGroups[0] ??
+    groups[0];
+  const visibleGroups = selectedArea ? filteredGroups : filteredGroups.slice(0, 12);
+  const hiddenGroupCount = Math.max(filteredGroups.length - visibleGroups.length, 0);
+  const selectedText = clipText(
+    selectedGroup?.sourceTextVersion
+      ? await getCphTextExtract(selectedGroup.sourceTextVersion.id)
+      : null
+  );
+  const criticalGroups = groups.filter((group) => group.priority !== "normal");
+  const scheduleGroup = findGroup(groups, "procurement_schedule");
+  const instructionsGroup = findGroup(groups, "instructions", "CM-X-OMRT3-TD-0020");
+  const pricesGroup = findGroup(groups, "schedule_prices");
+  const contractGroup =
+    findGroup(groups, "conditions_contract", "CM-X-OMRT3-TD-0011") ??
+    findGroup(groups, "contract_specification", "CM-X-OMRT3-TD-0010");
+  const routeItems = [
+    {
+      label: "Documenti",
+      status: "Da validare",
+      value: `${groups.length} famiglie`,
+      href: "#document-map",
+      variant: "success" as const
+    },
+    {
+      label: "Timeline",
+      status: scheduleGroup ? "Fonte trovata" : "Bloccata",
+      value: scheduleGroup ? "Calendario PDF/MPP" : "Fonte calendario assente",
+      href: scheduleGroup ? pageHref({ area: scheduleGroup.areaId, group: scheduleGroup.id }) : "#document-map",
+      variant: scheduleGroup ? ("success" as const) : ("risk" as const)
+    },
+    {
+      label: "Deliverables",
+      status: "Da estrarre",
+      value: "Formati, buste e obbligatorietà",
+      href: instructionsGroup ? pageHref({ area: instructionsGroup.areaId, group: instructionsGroup.id }) : "#document-map",
+      variant: "risk" as const
+    },
+    {
+      label: "Requisiti",
+      status: "Da estrarre",
+      value: "Specifiche e allegati O&M",
+      href: contractGroup ? pageHref({ area: contractGroup.areaId, group: contractGroup.id }) : "#document-map",
+      variant: "risk" as const
+    },
+    {
+      label: "Financials",
+      status: pricesGroup ? "Human-first" : "Bloccato",
+      value: pricesGroup ? "Workbook prezzi presente" : "Workbook assente",
+      href: pricesGroup ? pageHref({ area: pricesGroup.areaId, group: pricesGroup.id }) : "#document-map",
+      variant: "default" as const
+    },
+    {
+      label: "Cost driver",
+      status: "Da derivare",
+      value: "Nessuna stima automatica",
+      href: "#document-map",
+      variant: "muted" as const
+    },
+    {
+      label: "Criticità",
+      status: "Candidate",
+      value: "Redline e versioni da confrontare",
+      href: "#document-map",
+      variant: "risk" as const
+    },
+    {
+      label: "Q&A",
+      status: "Non importato",
+      value: "Nessun invio automatico",
+      href: "#document-map",
+      variant: "muted" as const
+    }
+  ];
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-6 px-6 py-8">
+    <main className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:py-8">
       <TopNav />
 
-      <section>
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
-          Pilot reale/rappresentativo
-        </p>
-        <div className="mt-3 flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-semibold tracking-tight">CPH M1/M4 O&amp;M</h1>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
-              Vista locale su documenti pubblici della procedura: document map, file originali e
-              testo estratto dai PDF quando disponibile.
-            </p>
-          </div>
-          <Badge variant="success">Locale</Badge>
+      <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-end">
+        <div>
+          <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
+            Dashboard Tender · pilot reale locale
+          </p>
+          <h1 className="mt-3 text-3xl font-semibold tracking-tight">
+            CPH M1/M4 O&amp;M
+          </h1>
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
+            Quadro operativo evidence-first del Tender, allineato al modello TRAM: overview,
+            stato, fonti P0, blocchi, route T1-T8 e drill-down verso documenti e sorgenti.
+          </p>
+        </div>
+
+        <div className="rounded-lg border border-primary/25 bg-secondary p-4">
+          <p className="text-xs font-medium uppercase text-muted-foreground">Decisione prioritaria</p>
+          <p className="mt-2 text-sm font-semibold">Stabilizzare T1/T2/T3 sul pacchetto CPH.</p>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            Prima document map, poi timeline e deliverable con fonte e stato di review.
+          </p>
         </div>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-4" aria-label="Sintesi CPH">
-        <SummaryCard icon={Layers3} label="File" value={String(summary.fileCount)} />
+      <section className="grid gap-3 md:grid-cols-4" aria-label="Sintesi CPH">
+        <SummaryCard icon={Gauge} label="Stato dashboard" value="Da validare" />
+        <SummaryCard icon={AlertTriangle} label="Fonti P0 da verificare" value={String(criticalGroups.length)} />
         <SummaryCard
-          icon={FileText}
-          label="PDF"
-          value={String(summary.extensionCounts[".pdf"] ?? 0)}
+          icon={ClipboardCheck}
+          label="Blocchi attivi"
+          value={String(criticalGroups.length)}
         />
-        <SummaryCard
-          icon={FolderOpen}
-          label="Cartelle"
-          value={String(Object.keys(summary.topLevelFolderCounts).length)}
-        />
-        <SummaryCard
-          icon={AlertTriangle}
-          label="Testi PDF"
-          value={`${textSummary?.extractedCount ?? 0}/${summary.extensionCounts[".pdf"] ?? 0}`}
-        />
+        <SummaryCard icon={FileQuestion} label="Q&A con impatto" value="0" />
       </section>
 
-      <section className="rounded-lg border border-border bg-card p-4">
-        <div className="flex flex-wrap gap-2">
-          <Link
-            className={cn(
-              "rounded-md border px-3 py-2 text-sm font-medium transition-colors hover:bg-muted",
-              !folder ? "border-primary bg-secondary text-secondary-foreground" : "border-border"
-            )}
-            href={pageHref({})}
-          >
-            Tutti
-          </Link>
-          {folders.map((folderName) => (
+      <section className="rounded-lg border border-border bg-card p-4" aria-label="Route T1-T8">
+        <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="font-mono text-xs uppercase text-muted-foreground">Route T1-T8</p>
+            <h2 className="mt-1 text-base font-semibold">Stato delle viste del modello</h2>
+          </div>
+          <Badge variant="muted">
+            Testi PDF {textSummary?.extractedCount ?? 0}/{summary.extensionCounts[".pdf"] ?? 0}
+          </Badge>
+        </div>
+        <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-4">
+          {routeItems.map((item) => (
             <Link
-              key={folderName}
-              className={cn(
-                "rounded-md border px-3 py-2 text-sm font-medium transition-colors hover:bg-muted",
-                folder === folderName
-                  ? "border-primary bg-secondary text-secondary-foreground"
-                  : "border-border"
-              )}
-              href={pageHref({ folder: folderName })}
+              key={item.label}
+              className="rounded-md border border-border bg-muted p-3 transition-colors hover:bg-card active:scale-[0.99]"
+              href={item.href}
             >
-              {folderName} ({summary.topLevelFolderCounts[folderName]})
+              <div className="flex items-start justify-between gap-2">
+                <p className="text-sm font-semibold">{item.label}</p>
+                <Badge variant={item.variant}>{item.status}</Badge>
+              </div>
+              <p className="mt-2 text-sm leading-5 text-muted-foreground">{item.value}</p>
             </Link>
           ))}
         </div>
       </section>
 
-      <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_520px]">
-        <div className="rounded-lg border border-border bg-card">
+      <section className="grid gap-3 lg:grid-cols-4" aria-label="Drill-down prioritari">
+        <PriorityLink
+          group={scheduleGroup}
+          icon={CalendarDays}
+          label="Timeline"
+          title="Date e versioni calendario"
+        />
+        <PriorityLink
+          group={instructionsGroup}
+          icon={FileText}
+          label="Regole gara"
+          title="Istruzioni ai concorrenti"
+        />
+        <PriorityLink
+          group={pricesGroup}
+          icon={FileSpreadsheet}
+          label="Economics"
+          title="Workbook prezzi"
+        />
+        <PriorityLink
+          group={contractGroup}
+          icon={CheckCircle2}
+          label="Contratto"
+          title="Obblighi e specifiche"
+        />
+      </section>
+
+      <nav className="flex flex-wrap gap-2" aria-label="Filtri area documentale">
+        <Link
+          className={cn(
+            "rounded-md border px-3 py-2 text-sm font-medium transition-colors hover:bg-muted active:scale-95",
+            !selectedArea ? "border-primary bg-secondary text-secondary-foreground" : "border-border text-muted-foreground"
+          )}
+          href={pageHref({})}
+        >
+          Tutte ({groups.length})
+        </Link>
+        {areaOptions.map(([areaId, area]) => (
+          <Link
+            key={areaId}
+            className={cn(
+              "rounded-md border px-3 py-2 text-sm font-medium transition-colors hover:bg-muted active:scale-95",
+              selectedArea === areaId
+                ? "border-primary bg-secondary text-secondary-foreground"
+                : "border-border text-muted-foreground"
+            )}
+            href={pageHref({ area: areaId })}
+          >
+            {area.label} ({area.count})
+          </Link>
+        ))}
+      </nav>
+
+      <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_480px]">
+        <div id="document-map" className="scroll-mt-6 rounded-lg border border-border bg-card">
           <div className="border-b border-border p-4">
-            <h2 className="text-base font-semibold">Document map reale</h2>
+            <h2 className="text-base font-semibold">Document map compatta</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              {filteredFiles.length} file mostrati. Seleziona un documento per vedere fonte,
-              link e testo estratto.
+              Non è un file browser: mostra prima i gruppi da cui dipendono timeline, regole,
+              prezzi e contratto. Usa i filtri per scendere nelle aree.
             </p>
           </div>
 
           <div className="divide-y divide-border">
-            {filteredFiles.map((file) => (
+            {visibleGroups.map((group) => (
               <Link
-                key={file.id}
+                key={group.id}
                 className={cn(
-                  "grid gap-3 px-4 py-4 transition-colors hover:bg-muted lg:grid-cols-[minmax(0,1fr)_auto]",
-                  file.id === selectedFile?.id ? "bg-muted" : ""
+                  "grid gap-4 px-4 py-4 transition-colors hover:bg-muted active:scale-[0.995] lg:grid-cols-[minmax(0,1fr)_260px]",
+                  group.id === selectedGroup?.id ? "bg-muted" : ""
                 )}
-                href={pageHref({ doc: file.id, folder })}
+                href={pageHref({ area: selectedArea, group: group.id })}
               >
                 <span>
-                  <span className="block text-sm font-medium">{file.fileName}</span>
-                  <span className="mt-1 block text-xs leading-5 text-muted-foreground">
-                    {getTopLevelFolder(file)} · {formatBytes(file.sizeBytes)}
+                  <span className="flex flex-wrap items-center gap-2">
+                    <PriorityBadge priority={group.priority} />
+                    <Badge variant="muted">{group.areaLabel}</Badge>
+                    {group.documentCode ? <Badge variant="muted">{group.documentCode}</Badge> : null}
+                  </span>
+                  <span className="mt-3 block text-sm font-semibold">{group.familyLabel}</span>
+                  <span className="mt-1 block text-sm leading-5 text-muted-foreground">
+                    {group.title}
                   </span>
                 </span>
-                <span className="flex flex-wrap gap-2 lg:justify-end">
-                  <Badge variant="muted">{parserLabels[file.parserKind] ?? file.parserKind}</Badge>
-                  <Badge variant={statusVariant(file.status)}>
-                    {statusLabels[file.status] ?? file.status}
-                  </Badge>
+
+                <span className="grid content-start gap-2 text-sm">
+                  <span className="flex flex-wrap gap-2 lg:justify-end">
+                    <Badge variant="muted">{group.versions.length} versioni</Badge>
+                    {group.formats.map((format) => (
+                      <Badge key={format} variant="muted">
+                        {format}
+                      </Badge>
+                    ))}
+                    {group.hasTrackChanges ? <Badge variant="risk">Redline</Badge> : null}
+                  </span>
+                  <span className="text-muted-foreground lg:text-right">
+                    Corrente: {group.currentVersion.fileName}
+                  </span>
                 </span>
               </Link>
             ))}
+            {hiddenGroupCount > 0 ? (
+              <div className="bg-muted/40 px-4 py-4 text-sm leading-6 text-muted-foreground">
+                Altri {hiddenGroupCount} gruppi sono nascosti in questa vista iniziale. Seleziona
+                un’area per vedere l’elenco completo senza trasformare la dashboard in un indice
+                interminabile.
+              </div>
+            ) : null}
           </div>
         </div>
 
         <aside className="rounded-lg border border-border bg-card p-5 xl:sticky xl:top-6 xl:self-start">
-          {selectedFile ? (
-            <>
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <p className="font-mono text-xs uppercase text-muted-foreground">
-                    Documento selezionato
-                  </p>
-                  <h2 className="mt-1 text-lg font-semibold leading-6">
-                    {selectedFile.fileName}
-                  </h2>
-                </div>
-                <Badge variant={statusVariant(selectedFile.status)}>
-                  {statusLabels[selectedFile.status] ?? selectedFile.status}
-                </Badge>
-              </div>
-
-              <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
-                <InfoRow label="Cartella" value={getTopLevelFolder(selectedFile)} />
-                <InfoRow label="Formato" value={parserLabels[selectedFile.parserKind] ?? selectedFile.parserKind} />
-                <InfoRow label="Dimensione" value={formatBytes(selectedFile.sizeBytes)} />
-                <InfoRow label="Hash" value={selectedFile.sha256.slice(0, 16)} />
-              </dl>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                <a
-                  className="rounded-md border border-primary bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-                  href={documentHref(selectedFile)}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Apri documento originale
-                </a>
-                <a
-                  className="rounded-md border border-border px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
-                  href={documentHref(selectedFile)}
-                  download={selectedFile.fileName}
-                >
-                  Scarica copia locale
-                </a>
-              </div>
-
-              <section className="mt-5">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <h3 className="text-sm font-semibold">Testo estratto</h3>
-                  <Badge variant={selectedText ? "success" : "muted"}>
-                    {selectedText ? "Disponibile" : "Non disponibile"}
-                  </Badge>
-                </div>
-                {selectedText ? (
-                  <pre className="mt-3 max-h-[520px] overflow-auto whitespace-pre-wrap rounded-md border border-border bg-muted p-3 text-xs leading-5">
-                    {selectedText}
-                  </pre>
-                ) : (
-                  <p className="mt-3 rounded-md border border-border bg-muted p-3 text-sm leading-6 text-muted-foreground">
-                    Nessun testo estratto per questo formato. Per i PDF, rigenera con
-                    `npm run pilot:extract-text -- copenhagen-m1-m4-om`.
-                  </p>
-                )}
-              </section>
-            </>
+          {selectedGroup ? (
+            <SourceInspector group={selectedGroup} selectedText={selectedText} />
           ) : (
             <p className="text-sm text-muted-foreground">Nessun documento disponibile.</p>
           )}
@@ -298,7 +401,7 @@ function SummaryCard({
   label,
   value
 }: {
-  icon: React.ComponentType<{ "aria-hidden": true; size: number; className?: string }>;
+  icon: ComponentType<{ "aria-hidden": true; size: number; className?: string }>;
   label: string;
   value: string;
 }) {
@@ -308,8 +411,163 @@ function SummaryCard({
         <p className="text-xs font-medium uppercase text-muted-foreground">{label}</p>
         <Icon aria-hidden={true} className="text-primary" size={18} />
       </div>
-      <p className="mt-3 text-2xl font-semibold">{value}</p>
+      <p className="mt-3 text-2xl font-semibold tabular-nums">{value}</p>
     </div>
+  );
+}
+
+function PriorityLink({
+  group,
+  icon: Icon,
+  label,
+  title
+}: {
+  group: CphPilotDocumentGroup | undefined;
+  icon: ComponentType<{ "aria-hidden": true; size: number; className?: string }>;
+  label: string;
+  title: string;
+}) {
+  if (!group) {
+    return (
+      <div className="rounded-lg border border-border bg-card p-4 opacity-70">
+        <Icon aria-hidden={true} className="text-muted-foreground" size={18} />
+        <p className="mt-3 text-xs font-medium uppercase text-muted-foreground">{label}</p>
+        <p className="mt-1 text-sm font-semibold">{title}</p>
+        <p className="mt-2 text-sm text-muted-foreground">Fonte non trovata nell’inventario.</p>
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      className="rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary/40 hover:bg-muted active:scale-[0.99]"
+      href={pageHref({ area: group.areaId, group: group.id })}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <Icon aria-hidden={true} className="text-primary" size={18} />
+        <ArrowRight aria-hidden="true" className="text-muted-foreground" size={16} />
+      </div>
+      <p className="mt-3 text-xs font-medium uppercase text-muted-foreground">{label}</p>
+      <p className="mt-1 text-sm font-semibold">{title}</p>
+      <p className="mt-2 line-clamp-2 text-sm leading-5 text-muted-foreground">
+        {group.currentVersion.fileName}
+      </p>
+    </Link>
+  );
+}
+
+function PriorityBadge({ priority }: { priority: CphPilotDocumentGroup["priority"] }) {
+  if (priority === "critical") {
+    return <Badge variant="risk">Critico</Badge>;
+  }
+
+  if (priority === "high") {
+    return <Badge variant="default">Alta priorità</Badge>;
+  }
+
+  return <Badge variant="muted">Normale</Badge>;
+}
+
+function SourceInspector({
+  group,
+  selectedText
+}: {
+  group: CphPilotDocumentGroup;
+  selectedText: string | null;
+}) {
+  return (
+    <>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="font-mono text-xs uppercase text-muted-foreground">Fonte selezionata</p>
+          <h2 className="mt-1 text-lg font-semibold leading-6">{group.familyLabel}</h2>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">{group.reviewFocus}</p>
+        </div>
+        <PriorityBadge priority={group.priority} />
+      </div>
+
+      <section className="mt-5 rounded-md border border-border bg-muted p-4">
+        <p className="text-xs font-medium uppercase text-muted-foreground">Documento corrente</p>
+        <p className="mt-2 break-words text-sm font-semibold">{group.currentVersion.fileName}</p>
+        <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
+          <InfoRow label="Area" value={group.areaLabel} />
+          <InfoRow label="Versione" value={group.currentVersion.versionLabel} />
+          <InfoRow label="Formato" value={group.currentVersion.formatLabel} />
+          <InfoRow label="Dimensione" value={formatBytes(group.currentVersion.sizeBytes)} />
+        </dl>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <a
+            className="inline-flex items-center gap-2 rounded-md border border-primary bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 active:scale-95"
+            href={documentHref(group.currentVersion)}
+            rel="noreferrer"
+            target="_blank"
+          >
+            Apri fonte corrente
+            <ExternalLink aria-hidden="true" size={14} />
+          </a>
+          <a
+            className="rounded-md border border-border bg-card px-3 py-2 text-sm font-medium transition-colors hover:bg-muted active:scale-95"
+            href={documentHref(group.currentVersion)}
+            download={group.currentVersion.fileName}
+          >
+            Scarica copia locale
+          </a>
+        </div>
+      </section>
+
+      <section className="mt-5">
+        <h3 className="text-sm font-semibold">Versioni e varianti</h3>
+        <div className="mt-3 divide-y divide-border rounded-md border border-border">
+          {group.versions.map((version) => (
+            <div key={version.id} className="grid gap-3 p-3 text-sm">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant={version.id === group.currentVersion.id ? "success" : "muted"}>
+                  {version.id === group.currentVersion.id ? "Corrente" : version.versionLabel}
+                </Badge>
+                <Badge variant="muted">{version.formatLabel}</Badge>
+                {version.isTrackChanges ? <Badge variant="risk">Redline</Badge> : null}
+              </div>
+              <div className="flex items-start justify-between gap-3">
+                <p className="break-words text-muted-foreground">{version.fileName}</p>
+                <a
+                  className="shrink-0 text-primary hover:underline"
+                  href={documentHref(version)}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Apri
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <details className="mt-5 rounded-md border border-border bg-card">
+        <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-2 p-3 text-sm font-semibold hover:bg-muted">
+          Evidenza testuale PDF
+          <Badge variant={selectedText ? "success" : "muted"}>
+            {selectedText ? "Testo disponibile" : "Non disponibile"}
+          </Badge>
+        </summary>
+        <div className="border-t border-border p-3">
+          <p className="text-sm leading-6 text-muted-foreground">
+            L’estratto serve solo per riconoscere la fonte. Date, requisiti e valori critici devono
+            diventare item strutturati e revisionabili.
+          </p>
+          {selectedText ? (
+            <pre className="mt-3 max-h-[300px] overflow-auto whitespace-pre-wrap rounded-md border border-border bg-muted p-3 text-xs leading-5">
+              {selectedText}
+            </pre>
+          ) : (
+            <p className="mt-3 rounded-md border border-border bg-muted p-3 text-sm leading-6 text-muted-foreground">
+              Nessun estratto testuale collegato a questa famiglia. Apri la fonte originale oppure
+              rigenera gli estratti PDF locali.
+            </p>
+          )}
+        </div>
+      </details>
+    </>
   );
 }
 
