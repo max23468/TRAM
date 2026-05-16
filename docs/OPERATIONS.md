@@ -90,7 +90,7 @@ Esclusi da `.gitignore`:
 - `data/ocr/`;
 - `data/extracts/`;
 - `data/exports/`;
-- database, dump, backup, report ed export locali.
+- database, dump, backup, report, export locali e la cartella root `/storage/`.
 
 Sono bloccanti prima di commit:
 

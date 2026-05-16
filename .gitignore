@@ -42,7 +42,7 @@ data/extracts/
 data/exports/
 data/indexes/
 data/tmp/
-storage/
+/storage/
 tmp/
 logs/
 *.log
