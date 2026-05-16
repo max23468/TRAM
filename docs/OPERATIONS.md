@@ -65,6 +65,7 @@ Repository GitHub:
 - branch `codex/<tema>` per lavori non banali;
 - self-review del diff prima di PR o merge;
 - workflow ammessi: quality, repo hygiene, PR title e Dependabot per npm/GitHub Actions;
+- branch protection o ruleset equivalente da attivare appena il piano GitHub della repo privata lo consente;
 - nessuna ulteriore GitHub Action, bot o release automation senza decisione esplicita;
 - pulizia branch `codex/*` assorbiti;
 - Conventional Commit coerente con l’impatto reale.

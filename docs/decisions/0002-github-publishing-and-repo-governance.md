@@ -31,7 +31,7 @@ La configurazione GitHub iniziale include:
 - workflow `Quality` per `npm run verify` e audit dipendenze quando rilevante;
 - workflow `Repo Hygiene` per whitespace, path vietati, nomi Markdown duplicati e accenti italiani comuni;
 - workflow `PR Title` per titoli in formato Conventional Commit;
-- branch protection su `main` dopo il primo push, con PR review e status check richiesti quando disponibili.
+- branch protection su `main` come configurazione target, con PR review e status check richiesti quando il piano GitHub della repo privata la consente.
 
 ## Non Decisioni
 
@@ -54,17 +54,20 @@ Prima del merge è richiesta self-review del diff e verifica proporzionata allo 
 
 I workflow GitHub sono ammessi perché sono controlli di qualità e igiene repository, non runtime produttivi. Non devono accedere a segreti, dati reali o provider esterni.
 
-La branch protection su `main` non sostituisce il giudizio operativo: se una modifica tocca dati, AI, deploy, storage, costi o privacy, serve comunque una decisione documentata.
+La branch protection su `main`, quando disponibile, non sostituisce il giudizio operativo: se una modifica tocca dati, AI, deploy, storage, costi o privacy, serve comunque una decisione documentata.
+
+Nel setup iniziale del 2026-05-16, GitHub ha rifiutato l’attivazione della branch protection sulla repo privata con errore `403` perché richiede GitHub Pro o una repository pubblica. Finché questo limite resta attivo, la protezione di `main` è un requisito operativo da applicare manualmente tramite disciplina PR, review locale e controlli GitHub esistenti, non una regola tecnica enforcement lato GitHub.
 
 ## Rischi E Mitigazioni
 
 - **Rischio: pubblicazione accidentale di dati riservati.** Mitigazione: `.gitignore`, workflow `Repo Hygiene`, review PR e divieto esplicito di log/screenshot/fixture con dati reali.
 - **Rischio: GitHub venga interpretato come deploy o release.** Mitigazione: decisione D024, questa ADR e checklist PR distinguono pubblicazione, deploy e rilascio.
 - **Rischio: automazioni troppo ampie.** Mitigazione: workflow limitati a quality/hygiene/title, senza segreti e senza deploy.
-- **Rischio: branch protection blocchi manutenzione urgente.** Mitigazione: repo privata con maintainer owner; eventuali eccezioni devono essere motivate in PR o commit.
+- **Rischio: branch protection non disponibile sul piano GitHub corrente.** Mitigazione: mantenere repo privata, usare branch `codex/<tema>`, PR, review e controlli; attivare l’enforcement appena disponibile senza rendere pubblica la repo solo per aggirare il limite.
 
 ## Follow-Up
 
 - Definire policy versioning/release solo quando ci sarà un flusso release reale.
 - Creare runbook deploy solo quando il target sarà deciso.
+- Attivare branch protection o ruleset equivalente se il piano GitHub privato lo consente.
 - Valutare automazioni aggiuntive solo se servono e restano coerenti con privacy, costi e perimetro TRAM.
