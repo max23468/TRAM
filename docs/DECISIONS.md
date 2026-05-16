@@ -30,7 +30,7 @@ Questo documento è il punto di ingresso per decisioni stabili e decisioni pende
 | D022 | UI italiana con stati tradotti | accepted | Codici raw restano nel modello, non nella superficie primaria |
 | D023 | Fixture sintetiche come base app | accepted | Pacchetti reali restano benchmark riservati o rappresentativi fuori Git |
 | D024 | GitHub non implica deploy/release | accepted | Pubblicare, deployare e rilasciare restano azioni distinte |
-| D025 | TRAM pubblicata su GitHub privato | accepted | `max23468/TRAM`, CI/igiene repo senza deploy; branch protection target quando disponibile |
+| D025 | TRAM pubblicata su GitHub privato | accepted | `max23468/TRAM`, CI/igiene repo senza deploy e senza branch protection premium |
 
 ## ADR
 
