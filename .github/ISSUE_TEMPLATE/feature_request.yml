@@ -1,0 +1,48 @@
+name: Feature request
+description: Proponi una capacità TRAM nel perimetro V1/V2/V3.
+title: "feat: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        TRAM V1 resta evidence-first e human-in-the-loop. Non proporre invii automatici, provider paid, deploy o uso di dati reali senza decisione documentata.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema operativo
+      description: Quale lavoro su tender, documenti, review o dashboard deve diventare più chiaro o veloce?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Soluzione proposta
+      description: Descrivi l’esperienza o il comportamento atteso.
+    validations:
+      required: true
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Fase prodotto
+      options:
+        - V1 - Tender, document map, ingestion, review e dashboard
+        - V2 - Confronto offerta-gara
+        - V3 - Memoria storica e benchmark cross-gara
+        - Da decidere
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidenze o riferimenti
+      description: Link, documenti governanti, ADR o note sanificate.
+  - type: checkboxes
+    id: guardrails
+    attributes:
+      label: Guardrail
+      options:
+        - label: Non richiede dati reali in Git, screenshot o log
+        - label: Non richiede deploy/release immediati
+        - label: Non introduce provider AI esterni senza policy

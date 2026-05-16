@@ -30,16 +30,17 @@ Questo documento è il punto di ingresso per decisioni stabili e decisioni pende
 | D022 | UI italiana con stati tradotti | accepted | Codici raw restano nel modello, non nella superficie primaria |
 | D023 | Fixture sintetiche come base app | accepted | Pacchetti reali restano benchmark riservati o rappresentativi fuori Git |
 | D024 | GitHub non implica deploy/release | accepted | Pubblicare, deployare e rilasciare restano azioni distinte |
+| D025 | TRAM pubblicata su GitHub privato | accepted | `max23468/TRAM`, `main` protetto, CI/igiene repo senza deploy |
 
 ## ADR
 
 - `docs/decisions/0001-normalizer-runtime-placement.md`: sede runtime dei normalizzatori AI.
+- `docs/decisions/0002-github-publishing-and-repo-governance.md`: pubblicazione GitHub e governance repository.
 
 ## Decisioni Pendenti
 
 - Se conservare alcune evidenze benchmark non sintetizzabili oltre allo storico Git.
 - Quando introdurre `CHANGELOG.md`.
-- Quando e come pubblicare TRAM su GitHub.
 - Policy versioning/release.
 - Target e runbook deploy futuri.
 - Hosting condiviso prima della V1: VPS, OCI, Vercel/Supabase o altro stack.

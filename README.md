@@ -6,12 +6,14 @@ Lo scopo iniziale non è “fare parlare i PDF”, ma trasformare pacchetti docu
 
 ## Stato
 
-TRAM è in fase MVP iniziale, con roadmap viva fino a V1.4 e perimetro futuro V2/V3 già tracciato. Esiste una prima app Next.js con fixture sintetiche e navigazione tender, ma il progetto resta governato da documentazione e validazione manuale: nessuna pipeline produttiva, invio AI esterno, deploy o pubblicazione su GitHub va considerata implicita.
+TRAM è in fase MVP iniziale, con roadmap viva fino a V1.4 e perimetro futuro V2/V3 già tracciato. Esiste una prima app Next.js con fixture sintetiche e navigazione tender, ma il progetto resta governato da documentazione e validazione manuale: nessuna pipeline produttiva, invio AI esterno, deploy o release va considerata implicita.
 
-Repository locale:
+Repository:
 
+- GitHub: `max23468/TRAM`, repository privata;
 - branch base: `main`;
-- branch riordino documentazione: `codex/docs-consolidation`;
+- lavori non banali: branch `codex/<tema>`;
+- pubblicazione GitHub governata da [`docs/decisions/0002-github-publishing-and-repo-governance.md`](docs/decisions/0002-github-publishing-and-repo-governance.md);
 - dati sensibili e pacchetti gara esclusi da Git tramite `.gitignore`.
 
 ## Documenti Principali

@@ -57,14 +57,19 @@ Storage locale:
 - Non usare comandi distruttivi senza conferma.
 - Non fare push, deploy o release se non richiesto e se la policy non è chiara.
 
-Quando TRAM sarà pubblicata su GitHub:
+Repository GitHub:
 
-- GitHub diventa fonte primaria della documentazione pubblicata;
+- repository privata: `max23468/TRAM`;
+- branch predefinito: `main`;
+- GitHub è fonte primaria della documentazione e del codice pubblicati;
 - branch `codex/<tema>` per lavori non banali;
 - self-review del diff prima di PR o merge;
-- nessuna GitHub Action, bot o release automation senza decisione esplicita;
+- workflow ammessi: quality, repo hygiene, PR title e Dependabot per npm/GitHub Actions;
+- nessuna ulteriore GitHub Action, bot o release automation senza decisione esplicita;
 - pulizia branch `codex/*` assorbiti;
 - Conventional Commit coerente con l’impatto reale.
+
+La pubblicazione GitHub è governata da `docs/decisions/0002-github-publishing-and-repo-governance.md`. Non abilita deploy, release, hosting, provider AI, upload documentale o runtime esterni.
 
 ## Dati Esclusi Da Git
 

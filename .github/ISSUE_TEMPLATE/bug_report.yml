@@ -1,0 +1,56 @@
+name: Bug report
+description: Segnala un comportamento inatteso di TRAM.
+title: "fix: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Non includere documenti reali, screenshot con dati sensibili, chiavi, token, `.env`, pacchetti gara o estratti integrali.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Sintesi
+      description: Cosa non funziona e dove.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Passi per riprodurre
+      description: Usa fixture sintetiche o descrizioni sanificate.
+      placeholder: |
+        1. Apri ...
+        2. Esegui ...
+        3. Osserva ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamento atteso
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Comportamento osservato
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verifiche già eseguite
+      description: Comandi, browser check o log sanificati.
+      placeholder: "`npm run verify` ..."
+  - type: dropdown
+    id: data-risk
+    attributes:
+      label: Rischio dati
+      options:
+        - Solo fixture sintetiche
+        - Dati reali coinvolti ma non allegati
+        - Non so
+    validations:
+      required: true

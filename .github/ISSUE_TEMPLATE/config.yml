@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Regole operative TRAM
+    url: https://github.com/max23468/TRAM/blob/main/AGENTS.md
+    about: Consulta guardrail, sicurezza e workflow prima di aprire attività non banali.

@@ -1,0 +1,103 @@
+name: Repo Hygiene
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: repo-hygiene-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  hygiene:
+    name: Secrets, docs and repo hygiene
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Check whitespace
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            base_ref="${GITHUB_BASE_REF:-main}"
+            git fetch origin "$base_ref" --depth=1
+            git diff --check "origin/${base_ref}...HEAD"
+          else
+            git diff-tree --check --no-commit-id -r HEAD
+          fi
+
+      - name: Block tracked sensitive paths
+        shell: bash
+        run: |
+          blocked="$(git ls-files \
+            '.env' '.env.*' '*.key' '*.pem' '*.p8' '*.p12' '*.pfx' '*.crt' '*.cer' \
+            'data/packages/**' 'data/keys/**' 'data/private/**' 'data/uploads/**' \
+            'data/working/**' 'data/ocr/**' 'data/extracts/**' 'data/exports/**' \
+            'data/indexes/**' 'data/tmp/**' 'storage/**' 'tmp/**' 'logs/**' \
+            '*.sqlite' '*.sqlite3' '*.db' '*.dump' '*.backup' '*.bak' \
+            'exports/**' 'reports/**' 'output/playwright/**' \
+            | grep -v '^.env.example$' || true)"
+          if [[ -n "$blocked" ]]; then
+            echo "Tracked files match TRAM blocked-data patterns:" >&2
+            echo "$blocked" >&2
+            exit 1
+          fi
+
+      - name: Check unique Markdown basenames
+        shell: bash
+        run: |
+          duplicates="$(git ls-files '*.md' | awk -F/ '{print $NF}' | sort | uniq -d)"
+          if [[ -n "$duplicates" ]]; then
+            echo "Duplicate Markdown basenames are not allowed:" >&2
+            echo "$duplicates" >&2
+            exit 1
+          fi
+
+      - name: Check common missing Italian accents
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          import re
+          import sys
+
+          roots = [pathlib.Path("docs"), pathlib.Path("data"), pathlib.Path("README.md"), pathlib.Path("ROADMAP.md"), pathlib.Path("AGENTS.md")]
+          pattern = re.compile(r"\b(perche|piu|attivita|qualita|criticita|possibilita|responsabilita|modalita)\b", re.IGNORECASE)
+          offenders = []
+
+          for root in roots:
+              paths = [root] if root.is_file() else root.rglob("*.md")
+              for path in paths:
+                  if "data/packages" in path.as_posix():
+                      continue
+                  text = path.read_text(encoding="utf-8")
+                  in_fence = False
+                  for line_no, line in enumerate(text.splitlines(), 1):
+                      stripped = line.strip()
+                      if stripped.startswith("```"):
+                          in_fence = not in_fence
+                          continue
+                      if in_fence:
+                          continue
+                      prose = re.sub(r"`[^`]*`", "", line)
+                      if pattern.search(prose):
+                          offenders.append(f"{path}:{line_no}: {line.strip()}")
+
+          if offenders:
+              print("Possible missing Italian accents:", file=sys.stderr)
+              print("\n".join(offenders), file=sys.stderr)
+              sys.exit(1)
+          PY
