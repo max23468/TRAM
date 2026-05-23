@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Database, FileJson, ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button-variants";
 import { getFixtureSummary, getTramFixtures } from "@/lib/fixtures";
 import { cn } from "@/lib/utils";
 
