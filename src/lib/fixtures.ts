@@ -1,6 +1,7 @@
 import { z } from "zod";
 import rawFixtures from "../../data/fixtures/tram-v1-mvp-synthetic-fixtures.json";
-import { buildPilotReadinessReport, type ExtractionQualityMetrics } from "./extractions";
+import { buildPilotReadinessReport } from "./extractions/pilot";
+import type { ExtractionQualityMetrics } from "./extractions/types";
 
 export const PRIMARY_ROUTE_NODE_KEYS = [
   "documents",
@@ -653,16 +654,11 @@ export function getTenderOverviewModel(tenderId: string) {
 
 export function assertFixturesDoNotReferenceReservedPaths(fixtures = getTramFixtures()) {
   const serialized = JSON.stringify(fixtures);
-  const reservedPaths = [
-    "data/packages/",
-    "data/private/",
-    "/private/tmp",
-    "ssh-key-tram.key"
-  ];
+  const reservedPathMatch = /data\/packages\/|data\/private\/|\/private\/tmp|ssh-key-tram\.key/.exec(
+    serialized
+  );
 
-  for (const reservedPath of reservedPaths) {
-    if (serialized.includes(reservedPath)) {
-      throw new Error(`Fixture non valida: riferimento vietato a ${reservedPath}`);
-    }
+  if (reservedPathMatch) {
+    throw new Error(`Fixture non valida: riferimento vietato a ${reservedPathMatch[0]}`);
   }
 }

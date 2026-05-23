@@ -125,7 +125,7 @@ function RouteNodeItem({
         )}
         href={node.target_route}
       >
-        <span className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-[color:var(--route-token)] bg-card text-[color:var(--route-token)] shadow-sm ring-4 ring-background">
+        <span className="flex size-9 items-center justify-center rounded-full border-2 border-[color:var(--route-token)] bg-card text-[color:var(--route-token)] shadow-sm ring-4 ring-background">
           <span className="font-mono text-[9px] font-bold leading-none">
             {nodeCodes[node.node_key] ?? <NodeIcon node={node} />}
           </span>

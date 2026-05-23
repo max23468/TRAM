@@ -37,9 +37,11 @@ function reasonForCandidate(candidate: ExtractionCandidate) {
 }
 
 export function buildReviewGate(candidates: ExtractionCandidate[]): ReviewGateItem[] {
-  return candidates
-    .filter((candidate) => candidate.requiresReview || candidate.status === "blocked" || !candidate.sourceReferenceId)
-    .map((candidate) => ({
+  const gateItems: ReviewGateItem[] = [];
+
+  for (const candidate of candidates) {
+    if (candidate.requiresReview || candidate.status === "blocked" || !candidate.sourceReferenceId) {
+      gateItems.push({
       id: `gate_${candidate.id}`,
       candidateId: candidate.id,
       task: candidate.task,
@@ -47,7 +49,11 @@ export function buildReviewGate(candidates: ExtractionCandidate[]): ReviewGateIt
       severity: severityForCandidate(candidate),
       reason: reasonForCandidate(candidate),
       route: candidate.route
-    }))
+      });
+    }
+  }
+
+  return gateItems
     .sort((left, right) => {
       const weight: Record<ReviewGateSeverity, number> = { blocking: 0, warning: 1, info: 2 };
       return weight[left.severity] - weight[right.severity];

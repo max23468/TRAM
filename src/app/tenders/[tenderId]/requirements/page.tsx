@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+
+export const metadata: Metadata = {
+  title: "Requisiti e KPI | TRAM",
+  description: "Clausole O&M e indicatori non finanziari collegati a fonte e stato."
+};
 
 type TenderRoutePageProps = {
   params: Promise<{ tenderId: string }>;

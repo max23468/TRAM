@@ -1,4 +1,5 @@
-import { readFile } from "node:fs/promises";
+import { createReadStream } from "node:fs";
+import { Readable } from "node:stream";
 import { NextRequest, NextResponse } from "next/server";
 import {
   getCphPilotInventory,
@@ -20,7 +21,7 @@ export async function GET(request: NextRequest) {
     return new NextResponse("Path documento non valido", { status: 400 });
   }
 
-  const body = await readFile(filePath);
+  const body = Readable.toWeb(createReadStream(filePath)) as ReadableStream<Uint8Array>;
 
   return new NextResponse(body, {
     headers: {

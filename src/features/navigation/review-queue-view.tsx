@@ -167,7 +167,7 @@ export function ReviewQueueView({ items, sourceReferences }: ReviewQueueViewProp
   const [statusById, setStatusById] = useState<Record<string, string>>({});
   const sortedItems = useMemo(
     () =>
-      [...items].sort((left, right) => {
+      items.toSorted((left, right) => {
         const leftStatus = statusById[left.id] ?? left.status;
         const rightStatus = statusById[right.id] ?? right.status;
         return priorityWeight(left, leftStatus) - priorityWeight(right, rightStatus);
@@ -287,7 +287,7 @@ export function ReviewQueueView({ items, sourceReferences }: ReviewQueueViewProp
           </div>
         </dl>
 
-        <blockquote className="mt-4 rounded-md border border-border bg-muted px-3 py-3 text-sm leading-6 text-muted-foreground">
+        <blockquote className="mt-4 rounded-md border border-border bg-muted p-3 text-sm leading-6 text-muted-foreground">
           {selectedSource?.synthetic_excerpt ?? "Nessun estratto collegato a questo item."}
         </blockquote>
 
@@ -296,7 +296,7 @@ export function ReviewQueueView({ items, sourceReferences }: ReviewQueueViewProp
             <button
               key={action.id}
               className={cn(
-                "rounded-md border px-3 py-3 text-left text-sm font-medium transition-colors",
+                "rounded-md border p-3 text-left text-sm font-medium transition-colors",
                 action.className
               )}
               type="button"

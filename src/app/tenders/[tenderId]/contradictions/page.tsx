@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+
+export const metadata: Metadata = {
+  title: "Criticità | TRAM",
+  description: "Incoerenze, gap e conflitti candidati da trattare come elementi da validare."
+};
 
 type TenderRoutePageProps = {
   params: Promise<{ tenderId: string }>;

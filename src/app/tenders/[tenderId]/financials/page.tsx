@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+
+export const metadata: Metadata = {
+  title: "Financials | TRAM",
+  description: "Payment mechanism, pricing e dati economici con fonti e validazione umana."
+};
 
 type TenderRoutePageProps = {
   params: Promise<{ tenderId: string }>;

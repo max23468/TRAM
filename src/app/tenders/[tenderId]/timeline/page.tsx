@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+
+export const metadata: Metadata = {
+  title: "Timeline | TRAM",
+  description: "Scadenze, milestone, addendum e conflitti calendario del Tender."
+};
 
 type TenderRoutePageProps = {
   params: Promise<{ tenderId: string }>;

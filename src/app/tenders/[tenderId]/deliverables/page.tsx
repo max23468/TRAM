@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+
+export const metadata: Metadata = {
+  title: "Deliverables | TRAM",
+  description: "Submission, formati, limiti e stato validazione dei deliverables del Tender."
+};
 
 type TenderRoutePageProps = {
   params: Promise<{ tenderId: string }>;

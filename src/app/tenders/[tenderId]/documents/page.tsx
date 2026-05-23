@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+
+export const metadata: Metadata = {
+  title: "Document map | TRAM",
+  description: "Inventario documenti, versioni e riferimenti fonte del Tender."
+};
 
 type TenderRoutePageProps = {
   params: Promise<{ tenderId: string }>;

@@ -10,7 +10,17 @@ import type {
 const compoundBinaryMagic = [0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1];
 
 function startsWithBytes(body: Uint8Array, expected: number[]) {
-  return expected.every((byte, index) => body[index] === byte);
+  if (body.length < expected.length) {
+    return false;
+  }
+
+  for (let index = 0; index < expected.length; index += 1) {
+    if (body[index] !== expected[index]) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 function startsWithText(body: Uint8Array, expected: string) {

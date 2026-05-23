@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+
+export const metadata: Metadata = {
+  title: "Q&A | TRAM",
+  description: "Registro Q&A del Tender, bozze interne e impatti su documenti e dashboard."
+};
 
 type TenderRoutePageProps = {
   params: Promise<{ tenderId: string }>;

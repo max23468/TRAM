@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+
+export const metadata: Metadata = {
+  title: "Cost driver | TRAM",
+  description: "Famiglie costo e dipendenze operative proposte con fonti verificabili."
+};
 
 type TenderRoutePageProps = {
   params: Promise<{ tenderId: string }>;

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import type { ComponentType } from "react";
 import {
   AlertTriangle,
@@ -15,6 +16,12 @@ import {
   type TramTender
 } from "@/lib/fixtures";
 import { cn } from "@/lib/utils";
+
+export const metadata: Metadata = {
+  title: "Tender | TRAM",
+  description:
+    "Elenco operativo dei Tender demo con stato dashboard, review, documenti e policy AI."
+};
 
 const privacyLabels: Record<string, string> = {
   L0: "Pubblico",
