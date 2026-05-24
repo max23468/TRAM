@@ -37,7 +37,7 @@ Closes #
 - [ ] `git diff --check`
 - [ ] Review contenuto documenti toccati
 - [ ] Verifica browser desktop/mobile se UI sostanziale
-- [ ] Aggiornato `ROADMAP.md` se è cambiato lo stato di una voce
+- [ ] Aggiornato `docs/ROADMAP.md` se è cambiato lo stato di una voce
 - [ ] Aggiornato `docs/` o ADR se è cambiata una scelta stabile
 
 ## Sicurezza e privacy
