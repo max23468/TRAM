@@ -43,8 +43,10 @@ export function createFilesystemStorageDriver(root = ".local/tram-storage"): Sto
 
   async function headObject(key: string): Promise<StorageObjectMetadata> {
     const objectPath = resolveKey(key);
-    const objectStat = await stat(objectPath);
-    const sidecar = await readSidecar(objectPath);
+    const [objectStat, sidecar] = await Promise.all([
+      stat(objectPath),
+      readSidecar(objectPath)
+    ]);
 
     return {
       key,

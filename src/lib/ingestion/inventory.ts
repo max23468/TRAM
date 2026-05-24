@@ -130,8 +130,7 @@ async function buildFileRecord({
   const relativePath = normalizeRelativePath(rootPath, filePath);
   const fileName = path.basename(filePath);
   const extension = path.extname(fileName).toLowerCase();
-  const fileStat = await stat(filePath);
-  const body = await readFile(filePath);
+  const [fileStat, body] = await Promise.all([stat(filePath), readFile(filePath)]);
   const sha256 = createHash("sha256").update(body).digest("hex");
   const parserPlan = getParserPlan(extension);
   const issues: ParserIssue[] = [];

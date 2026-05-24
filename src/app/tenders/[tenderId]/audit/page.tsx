@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+
+export const metadata: Metadata = {
+  title: "Registro attività | TRAM",
+  description: "Eventi, gate AI, policy dati e tracciabilità operativa del Tender."
+};
 
 type TenderRoutePageProps = {
   params: Promise<{ tenderId: string }>;

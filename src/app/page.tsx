@@ -1,9 +1,16 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { ArrowRight, Database, FileJson, ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { getFixtureSummary, getTramFixtures } from "@/lib/fixtures";
 import { cn } from "@/lib/utils";
+
+export const metadata: Metadata = {
+  title: "TRAM",
+  description:
+    "Dashboard MVP per analizzare e monitorare documenti di gara del trasporto pubblico locale."
+};
 
 const setupCards = [
   {

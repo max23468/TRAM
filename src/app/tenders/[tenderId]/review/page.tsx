@@ -1,4 +1,10 @@
+import type { Metadata } from "next";
 import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+
+export const metadata: Metadata = {
+  title: "Da validare | TRAM",
+  description: "Coda prioritaria per validare, correggere o bloccare dati proposti."
+};
 
 type TenderRoutePageProps = {
   params: Promise<{ tenderId: string }>;

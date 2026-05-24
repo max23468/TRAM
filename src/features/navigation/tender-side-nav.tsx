@@ -35,6 +35,44 @@ function getNavigationHref({
   return `/tenders/${tenderId}/${route}`;
 }
 
+function TenderSideNavLinks({
+  activeSection,
+  className,
+  currentSection,
+  onNavigate,
+  sections,
+  tenderId
+}: {
+  activeSection: string;
+  className?: string;
+  currentSection: string;
+  onNavigate: () => void;
+  sections: readonly TenderNavSection[];
+  tenderId: string;
+}) {
+  return sections.map((item) => (
+    <Link
+      key={item.id}
+      className={cn(
+        "rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors hover:bg-muted",
+        activeSection === item.id
+          ? "border-primary bg-secondary text-secondary-foreground"
+          : "border-border text-muted-foreground",
+        className
+      )}
+      href={getNavigationHref({
+        currentSection,
+        id: item.id,
+        route: item.route,
+        tenderId
+      })}
+      onClick={onNavigate}
+    >
+      {item.label}
+    </Link>
+  ));
+}
+
 export function TenderSideNav({ currentSection, sections, tenderId }: TenderSideNavProps) {
   const initialActiveSection = useMemo(
     () => sections.find((item) => item.route === currentSection)?.id ?? "overview",
@@ -116,29 +154,6 @@ export function TenderSideNav({ currentSection, sections, tenderId }: TenderSide
     };
   }, [isDrawerOpen]);
 
-  const renderLinks = (className?: string) =>
-    sections.map((item) => (
-      <Link
-        key={item.id}
-        className={cn(
-          "rounded-md border px-2.5 py-1.5 text-xs font-medium transition-colors hover:bg-muted",
-          activeSection === item.id
-            ? "border-primary bg-secondary text-secondary-foreground"
-            : "border-border text-muted-foreground",
-          className
-        )}
-        href={getNavigationHref({
-          currentSection,
-          id: item.id,
-          route: item.route,
-          tenderId
-        })}
-        onClick={() => setIsDrawerOpen(false)}
-      >
-        {item.label}
-      </Link>
-    ));
-
   return (
     <>
       <button
@@ -156,7 +171,11 @@ export function TenderSideNav({ currentSection, sections, tenderId }: TenderSide
       </button>
 
       {isDrawerOpen ? (
-        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true">
+        <dialog
+          aria-modal="true"
+          className="fixed inset-0 z-50 m-0 h-dvh max-h-none w-dvw max-w-none border-0 bg-transparent p-0 lg:hidden"
+          open
+        >
           <button
             className="absolute inset-0 bg-foreground/25"
             type="button"
@@ -173,7 +192,7 @@ export function TenderSideNav({ currentSection, sections, tenderId }: TenderSide
                 <p className="mt-1 text-base font-semibold">{currentLabel}</p>
               </div>
               <button
-                className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border transition-colors hover:bg-muted"
+                className="inline-flex size-9 items-center justify-center rounded-md border border-border transition-colors hover:bg-muted"
                 type="button"
                 aria-label="Chiudi navigazione sezioni"
                 onClick={() => setIsDrawerOpen(false)}
@@ -183,14 +202,28 @@ export function TenderSideNav({ currentSection, sections, tenderId }: TenderSide
             </div>
 
             <nav className="mt-4 grid gap-2" aria-label="Sezioni tender">
-              {renderLinks("w-full py-2 text-sm")}
+              <TenderSideNavLinks
+                activeSection={activeSection}
+                className="w-full py-2 text-sm"
+                currentSection={currentSection}
+                onNavigate={() => setIsDrawerOpen(false)}
+                sections={sections}
+                tenderId={tenderId}
+              />
             </nav>
           </aside>
-        </div>
+        </dialog>
       ) : null}
 
       <nav className="mt-5 hidden gap-2 lg:flex lg:flex-col" aria-label="Sezioni tender">
-        {renderLinks("lg:w-full")}
+        <TenderSideNavLinks
+          activeSection={activeSection}
+          className="lg:w-full"
+          currentSection={currentSection}
+          onNavigate={() => setIsDrawerOpen(false)}
+          sections={sections}
+          tenderId={tenderId}
+        />
       </nav>
     </>
   );

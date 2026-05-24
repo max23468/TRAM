@@ -519,7 +519,7 @@ export function buildCphPilotDocumentGroups(inventory: PilotInventory) {
 
   return Array.from(buckets.entries())
     .map(([key, versions]) => {
-      const sortedVersions = [...versions].sort(versionSort);
+      const sortedVersions = versions.toSorted(versionSort);
       const currentVersion = sortedVersions[0];
       const family = inferFamily(currentVersion);
       const sourceTextVersion =

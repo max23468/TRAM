@@ -67,6 +67,20 @@ const privacyLabels: Record<string, string> = {
   L2: "Accesso ristretto"
 };
 
+const blockingReviewStatuses = new Set(["blocked", "needs_owner", "open"]);
+const decisionReviewStatuses = new Set([
+  "blocked",
+  "needs_owner",
+  "open",
+  "contested"
+]);
+
+const romeDateTimeFormatter = new Intl.DateTimeFormat("it-IT", {
+  dateStyle: "medium",
+  timeStyle: "short",
+  timeZone: "Europe/Rome"
+});
+
 const aiAnalysisLabels: Record<string, string> = {
   allowed_minimized: "Analisi minimizzata ammessa",
   review_after_ai: "Validazione dopo analisi richiesta"
@@ -288,11 +302,7 @@ function formatTask(task: string) {
 }
 
 function formatDateTime(value: string) {
-  return new Intl.DateTimeFormat("it-IT", {
-    dateStyle: "medium",
-    timeStyle: "short",
-    timeZone: "Europe/Rome"
-  }).format(new Date(value));
+  return romeDateTimeFormatter.format(new Date(value));
 }
 
 function getSourceLabel(sourceReferenceId: string) {
@@ -384,16 +394,17 @@ function DashboardView({ model }: { model: TenderOverviewModel }) {
   ).length;
   const blockingCountValue =
     blockingCount?.value ??
-    String(model.reviewItems.filter((item) => ["blocked", "needs_owner", "open"].includes(item.status)).length);
+    String(model.reviewItems.filter((item) => blockingReviewStatuses.has(item.status)).length);
   const primaryReview =
     model.reviewItems.find((item) => item.status === "blocked") ??
     model.reviewItems.find((item) => item.risk === "critical" || item.risk === "high") ??
     model.reviewItems[0];
   const primarySource = primaryReview ? getSourceReferenceById(primaryReview.source_reference_id) : undefined;
-  const decisionItems = [
-    ...model.reviewItems
-      .filter((item) => ["blocked", "needs_owner", "open", "contested"].includes(item.status))
-      .map((item) => ({
+  const decisionItems: DecisionItem[] = [];
+
+  for (const item of model.reviewItems) {
+    if (decisionReviewStatuses.has(item.status)) {
+      decisionItems.push({
         id: item.id,
         eyebrow: "Review",
         title: item.title,
@@ -401,10 +412,13 @@ function DashboardView({ model }: { model: TenderOverviewModel }) {
         href: sectionHref(model.tender.id, "review"),
         badge: formatRisk(item.risk),
         badgeVariant: riskVariant(item.risk)
-      })),
-    ...model.clarificationThreads
-      .filter((thread) => thread.requires_dashboard_update || thread.status === "blocked")
-      .map((thread) => ({
+      });
+    }
+  }
+
+  for (const thread of model.clarificationThreads) {
+    if (thread.requires_dashboard_update || thread.status === "blocked") {
+      decisionItems.push({
         id: thread.id,
         eyebrow: "Q&A",
         title: thread.title,
@@ -412,8 +426,11 @@ function DashboardView({ model }: { model: TenderOverviewModel }) {
         href: sectionHref(model.tender.id, "queries"),
         badge: threadStatusLabels[thread.status],
         badgeVariant: threadVariant(thread.status)
-      }))
-  ].slice(0, 5);
+      });
+    }
+  }
+
+  const visibleDecisionItems = decisionItems.slice(0, 5);
   const hasClarificationAlert =
     model.dashboardUpdateCount > 0 || model.blockedClarificationCount > 0;
   const hasFinancialsAlert = financialsStatus?.value === "human_review_required";
@@ -490,7 +507,7 @@ function DashboardView({ model }: { model: TenderOverviewModel }) {
 
       <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
         <div className="grid gap-4">
-          <DecisionList items={decisionItems} tenderId={model.tender.id} />
+          <DecisionList items={visibleDecisionItems} tenderId={model.tender.id} />
           <section id="review" className="rounded-lg border border-border bg-card p-5">
             <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
               <div>
@@ -823,7 +840,7 @@ function SourceExcerpt({
   tenderId: string;
 }) {
   return (
-    <div className="mt-3 rounded-md border border-border bg-muted px-3 py-3">
+    <div className="mt-3 rounded-md border border-border bg-muted p-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs font-medium text-muted-foreground">
           {source ? `${source.label}, p. ${source.page}` : "Fonte demo non trovata"}
@@ -1304,7 +1321,7 @@ function SourceInspector({
         <InfoRow label="Impatto" value={reviewItem ? formatTask(reviewItem.task) : "Dashboard"} />
       </div>
 
-      <blockquote className="mt-4 rounded-md border border-border bg-muted px-3 py-3 text-sm leading-6 text-muted-foreground">
+      <blockquote className="mt-4 rounded-md border border-border bg-muted p-3 text-sm leading-6 text-muted-foreground">
         {source?.synthetic_excerpt ?? "Seleziona una priorità per vedere l’estratto sintetico collegato."}
       </blockquote>
 
@@ -1400,10 +1417,14 @@ function ReviewItemRow({ item, compact = false }: { item: TramReviewItem; compac
 }
 
 function AuditContent({ model }: { model: TenderOverviewModel }) {
-  const latestGate = [...model.aiGateDecisions].sort(
-    (left, right) => Date.parse(right.created_at) - Date.parse(left.created_at)
-  )[0];
-  const sortedEvents = [...model.auditEvents].sort(
+  const latestGate = model.aiGateDecisions.reduce<TramAiGateDecision | undefined>(
+    (latest, decision) =>
+      !latest || Date.parse(decision.created_at) > Date.parse(latest.created_at)
+        ? decision
+        : latest,
+    undefined
+  );
+  const sortedEvents = model.auditEvents.toSorted(
     (left, right) => Date.parse(right.created_at) - Date.parse(left.created_at)
   );
   const externalUseStatus = getIndicator(model.indicators, "ai.external_use.status");

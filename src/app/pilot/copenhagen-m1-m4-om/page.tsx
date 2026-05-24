@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import type { ComponentType } from "react";
 import {
   AlertTriangle,
@@ -26,6 +27,12 @@ import {
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Pilot Copenhagen M1/M4 | TRAM",
+  description:
+    "Vista pilot locale per document map e text extract sanificati della gara Copenhagen M1/M4 O&M."
+};
 
 type PageProps = {
   searchParams?: Promise<{ area?: string; group?: string }>;
@@ -362,7 +369,7 @@ export default async function CphPilotPage({ searchParams }: PageProps) {
               </Link>
             ))}
             {hiddenGroupCount > 0 ? (
-              <div className="bg-muted/40 px-4 py-4 text-sm leading-6 text-muted-foreground">
+              <div className="bg-muted/40 p-4 text-sm leading-6 text-muted-foreground">
                 Altri {hiddenGroupCount} gruppi sono nascosti in questa vista iniziale. Seleziona
                 un’area per vedere l’elenco completo senza trasformare la dashboard in un indice
                 interminabile.
