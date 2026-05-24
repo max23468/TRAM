@@ -74,7 +74,7 @@ jobs:
           import re
           import sys
 
-          roots = [pathlib.Path("docs"), pathlib.Path("data"), pathlib.Path("README.md"), pathlib.Path("ROADMAP.md"), pathlib.Path("AGENTS.md")]
+          roots = [pathlib.Path("docs"), pathlib.Path("data"), pathlib.Path("README.md"), pathlib.Path("AGENTS.md")]
           pattern = re.compile(r"\b(perche|piu|attivita|qualita|criticita|possibilita|responsabilita|modalita)\b", re.IGNORECASE)
           offenders = []
 

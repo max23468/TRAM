@@ -2,6 +2,8 @@
 
 Questo documento governa setup locale, verifiche, segreti, dati esclusi e deploy futuri.
 
+Runtime, package manager, lockfile, script e versioni principali sono riassunti anche in `docs/TOOLCHAIN.md`.
+
 ## Setup Locale
 
 Requisiti attuali:
@@ -19,9 +21,7 @@ npm run dev
 npm run verify
 ```
 
-`npm run verify` esegue lint, typecheck, test e build.
-
-Verifica tecnica più recente sul branch `codex/docs-consolidation`: `npm run verify` completato con lint, typecheck, 16 test Vitest e build Next passati.
+`npm run verify` esegue lint, typecheck, test e build. Le verifiche recenti vanno lette dai log della PR o rieseguite sul branch corrente: non usare vecchi branch come prova corrente.
 
 ## Sviluppo App Locale
 

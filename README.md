@@ -18,9 +18,11 @@ Repository:
 
 ## Documenti Principali
 
-- [Roadmap](ROADMAP.md)
+- [Roadmap](docs/ROADMAP.md)
 - [Indice documentazione](docs/INDEX.md)
+- [Backlog](docs/BACKLOG.md)
 - [Contesto prodotto](docs/CONTEXT.md)
+- [Toolchain](docs/TOOLCHAIN.md)
 - [Architettura](docs/ARCHITECTURE.md)
 - [AI e pipeline documentale](docs/AI_AND_DOCUMENT_PIPELINE.md)
 - [UX e review workflow](docs/UX_REVIEW_WORKFLOW.md)
@@ -37,6 +39,8 @@ npm run dev
 ```bash
 npm run verify
 ```
+
+I comandi, le versioni runtime e i guardrail di toolchain sono riassunti in [`docs/TOOLCHAIN.md`](docs/TOOLCHAIN.md).
 
 ## Guardrail
 
