@@ -467,23 +467,23 @@ export function getFixtureSummary() {
   };
 }
 
-export function getTenderById(tenderId: string): TramTender | undefined {
+function getTenderById(tenderId: string): TramTender | undefined {
   return getTramFixtures().tenders.find((tender) => tender.id === tenderId);
 }
 
-export function getTenderDocuments(tenderId: string): TramDocument[] {
+function getTenderDocuments(tenderId: string): TramDocument[] {
   return getTramFixtures().documents.filter((document) => document.tender_id === tenderId);
 }
 
-export function getTenderIndicators(tenderId: string): TramIndicator[] {
+function getTenderIndicators(tenderId: string): TramIndicator[] {
   return getTramFixtures().indicators.filter((indicator) => indicator.tender_id === tenderId);
 }
 
-export function getTenderReviewItems(tenderId: string): TramReviewItem[] {
+function getTenderReviewItems(tenderId: string): TramReviewItem[] {
   return getTramFixtures().review_items.filter((item) => item.tender_id === tenderId);
 }
 
-export function getTenderClarificationImports(
+function getTenderClarificationImports(
   tenderId: string
 ): TramClarificationRegisterImport[] {
   return getTramFixtures().clarification_register_imports.filter(
@@ -495,35 +495,35 @@ export function getTenderClarificationThreads(tenderId: string): TramClarificati
   return getTramFixtures().clarification_threads.filter((thread) => thread.tender_id === tenderId);
 }
 
-export function getTenderTimelineEvents(tenderId: string): TramTimelineEvent[] {
+function getTenderTimelineEvents(tenderId: string): TramTimelineEvent[] {
   return getTramFixtures().timeline_events.filter((event) => event.tender_id === tenderId);
 }
 
-export function getTenderDeliverables(tenderId: string): TramDeliverable[] {
+function getTenderDeliverables(tenderId: string): TramDeliverable[] {
   return getTramFixtures().deliverables.filter((deliverable) => deliverable.tender_id === tenderId);
 }
 
-export function getTenderRequirements(tenderId: string): TramRequirement[] {
+function getTenderRequirements(tenderId: string): TramRequirement[] {
   return getTramFixtures().requirements.filter((requirement) => requirement.tender_id === tenderId);
 }
 
-export function getTenderFinancialItems(tenderId: string): TramFinancialItem[] {
+function getTenderFinancialItems(tenderId: string): TramFinancialItem[] {
   return getTramFixtures().financial_items.filter((item) => item.tender_id === tenderId);
 }
 
-export function getTenderCostDrivers(tenderId: string): TramCostDriver[] {
+function getTenderCostDrivers(tenderId: string): TramCostDriver[] {
   return getTramFixtures().cost_drivers.filter((driver) => driver.tender_id === tenderId);
 }
 
-export function getTenderRouteNetwork(tenderId: string): TramRouteNetwork | undefined {
+function getTenderRouteNetwork(tenderId: string): TramRouteNetwork | undefined {
   return getTramFixtures().route_networks.find((network) => network.tender_id === tenderId);
 }
 
-export function getTenderContradictions(tenderId: string): TramContradiction[] {
+function getTenderContradictions(tenderId: string): TramContradiction[] {
   return getTramFixtures().contradictions.filter((contradiction) => contradiction.tender_id === tenderId);
 }
 
-export function getTenderIngestionDocumentStatuses(tenderId: string): TramIngestionDocumentStatus[] {
+function getTenderIngestionDocumentStatuses(tenderId: string): TramIngestionDocumentStatus[] {
   const documents = getTenderDocuments(tenderId);
   const sourceReferences = getTramFixtures().source_references;
 
@@ -551,7 +551,7 @@ export function getTenderIngestionDocumentStatuses(tenderId: string): TramIngest
   });
 }
 
-export function getTenderPilotReadiness(tenderId: string): TramPilotReadiness {
+function getTenderPilotReadiness(tenderId: string): TramPilotReadiness {
   const documents = getTenderDocuments(tenderId);
   const timelineEvents = getTenderTimelineEvents(tenderId);
   const deliverables = getTenderDeliverables(tenderId);
@@ -584,11 +584,11 @@ export function getTenderPilotReadiness(tenderId: string): TramPilotReadiness {
   return buildPilotReadinessReport({ metrics });
 }
 
-export function getTenderAiGateDecisions(tenderId: string): TramAiGateDecision[] {
+function getTenderAiGateDecisions(tenderId: string): TramAiGateDecision[] {
   return getTramFixtures().ai_gate_decisions.filter((decision) => decision.tender_id === tenderId);
 }
 
-export function getTenderAuditEvents(tenderId: string): TramAuditEvent[] {
+function getTenderAuditEvents(tenderId: string): TramAuditEvent[] {
   return getTramFixtures().audit_events.filter((event) => event.tender_id === tenderId);
 }
 
