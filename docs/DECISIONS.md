@@ -11,7 +11,8 @@ Questo documento è il punto di ingresso per decisioni stabili e decisioni pende
 | D003 | Nessun pacchetto completo inviato a LLM | accepted | Parsing/OCR prima, chunk minimizzati poi |
 | D004 | Normalizzatori AI fuori dal client | accepted | Vedi ADR 001 |
 | D005 | Documenti governanti con nomi generici | accepted | Niente `tram-` o `v1` nei filename vivi |
-| D006 | Roadmap separata | accepted | `ROADMAP.md` governa milestone e debiti |
+| D006 | Roadmap separata | accepted | `docs/ROADMAP.md` governa milestone e stato operativo |
+| D026 | Basename Markdown univoci prevalgono sul template Atlas | accepted | `docs/DECISIONS.md` resta indice ADR; niente `docs/decisions/README.md` |
 | D007 | Nessun archivio massivo dei vecchi Markdown | accepted | Dopo consolidamento, storico affidato a Git |
 | D008 | Dashboard direzionale first | accepted | La prima esperienza utile è overview Tender, non chat o file browser |
 | D009 | Review queue core prodotto | accepted | Validazione umana, fonte e audit sono parte del flusso principale |
@@ -36,6 +37,7 @@ Questo documento è il punto di ingresso per decisioni stabili e decisioni pende
 
 - `docs/decisions/0001-normalizer-runtime-placement.md`: sede runtime dei normalizzatori AI.
 - `docs/decisions/0002-github-publishing-and-repo-governance.md`: pubblicazione GitHub e governance repository.
+- `docs/decisions/0000-template.md`: template per nuove ADR TRAM.
 
 ## Decisioni Pendenti
 
@@ -47,7 +49,7 @@ Questo documento è il punto di ingresso per decisioni stabili e decisioni pende
 - Policy definitiva per dati L1/L2 e provider esterni su Tender reali.
 - Ruoli applicativi completi e workflow approvativo oltre i permessi minimi.
 - Formato export controllato per Q&A, review, report o Excel.
-- Se e quando creare ADR dedicati per storage, AI provider policy, GitHub publishing e versioning.
+- Se e quando creare ADR dedicati per storage, AI provider policy e versioning.
 
 ## Debiti Da Recuperare
 
@@ -56,3 +58,4 @@ Questo documento è il punto di ingresso per decisioni stabili e decisioni pende
 - Creare runbook deploy solo quando il target sarà deciso.
 - Valutare `CHANGELOG.md` solo quando inizierà una release policy reale.
 - Conservare nello storico Git i vecchi Markdown senza rimetterli come fonte operativa.
+- Usare `docs/BACKLOG.md` per debiti e idee non ancora promosse in roadmap.

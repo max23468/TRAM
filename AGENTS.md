@@ -1,6 +1,6 @@
 # AGENTS.md - Istruzioni operative per TRAM
 
-Questo file definisce le regole operative persistenti per agenti, Codex e collaboratori che lavorano in `/Users/Matteo/Documents/TRAM`.
+Questo file definisce le regole operative persistenti per agenti, Codex e collaboratori che lavorano in `/Users/Matteo/Progetti/TRAM`.
 
 Scope: intera cartella TRAM, salvo futuri `AGENTS.md` più specifici in sottocartelle.
 
@@ -54,9 +54,11 @@ Non anticipare V2/V3 nel codice V1 se non come predisposizione ragionevole e doc
 Prima di proporre architetture, refactor, integrazioni, AI workflow, data model, UI o pipeline, partire dal set governante:
 
 - `README.md`
-- `ROADMAP.md`
 - `docs/INDEX.md`
 - `docs/CONTEXT.md`
+- `docs/ROADMAP.md`
+- `docs/BACKLOG.md`
+- `docs/TOOLCHAIN.md`
 - `docs/ARCHITECTURE.md`
 - `docs/AI_AND_DOCUMENT_PIPELINE.md`
 - `docs/UX_REVIEW_WORKFLOW.md`
@@ -296,7 +298,7 @@ Queste regole sono state adattate da pattern già usati in Pratix, DocMolder, Fi
 
 Regole trasferibili:
 
-- da Pratix: piano scritto prima del codice per decisioni importanti; documentazione viva; attenzione a UI italiana, glossario, versioning, changelog e pubblicazione reale quando esisterà GitHub;
+- da Pratix: piano scritto prima del codice per decisioni importanti; documentazione viva; attenzione a UI italiana, glossario, versioning, changelog e pubblicazione reale su GitHub;
 - da DocMolder: separare lavoro tra agenti solo con ownership chiara; non mescolare worktree sporchi; per VPS/deploy seguire runbook e verificare host, log e smoke, non solo stato attivo;
 - da FiscalBay: non dedurre dati assenti dalle fonti/API/documenti; deploy VPS solo su host esplicitamente confermato; “pubblica” e “deploya” non sono sinonimi se la policy non lo dice;
 - da SyncBay: non introdurre runtime, worker, integrazioni o workflow produttivi non decisi; per informazioni variabili usare fonti ufficiali aggiornate; documentare ADR per decisioni stabili; trattare dati reali come sensibili;
@@ -318,11 +320,11 @@ Quando in futuro più agenti lavorano su TRAM:
 - lasciare handoff sintetico con file toccati, verifiche, rischi e prossimi passi;
 - non delegare decisioni prodotto ambigue o task piccoli.
 
-## Git e GitHub futuri
+## Git e GitHub
 
-Quando TRAM diventerà una repo Git:
+TRAM è una repository Git pubblicata come repository privata `max23468/TRAM`, con branch base `main`.
 
-- GitHub sarà la fonte primaria del codice e della documentazione pubblicata, se deciso dal maintainer;
+- GitHub è la fonte primaria del codice e della documentazione pubblicata;
 - controllare sempre `git status --short` prima di editare;
 - per lavori non banali usare branch `codex/<tema>`;
 - mantenere commit atomici;
@@ -337,7 +339,7 @@ Quando TRAM diventerà una repo Git:
   - `ci:` per workflow/CI.
 - prima di PR o merge fare self-review del diff;
 - non aggiungere workflow GitHub Actions, bot, release flow o deploy automation senza decisione esplicita;
-- se esisterà una issue tipo `Codex feedback inbox`, controllarla prima di merge non banali;
+- controllare la `Codex feedback inbox` prima di merge non banali;
 - dopo merge, pulire branch locali/remoti non più necessari;
 - non lasciare branch `codex/*` stale se il lavoro è stato assorbito.
 
@@ -387,7 +389,7 @@ Per modifiche documentali:
 - non inventare test applicativi;
 - dichiarare che la verifica è documentale.
 
-Quando ci sarà codice:
+Per modifiche al codice:
 
 - definire comandi reali di lint, typecheck, test, build e smoke nel runbook;
 - valutare script dedicati tipo `verify_docs` e `verify_language` per controllare documentazione, link, segreti, apostrofi e accenti;
@@ -421,7 +423,9 @@ Documenti futuri consigliati quando servono:
 
 - ADR in `docs/decisions/` per decisioni permanenti;
 - runbook VPS dedicato quando servirà;
-- roadmap in file dedicato, con nome univoco;
+- roadmap in `docs/ROADMAP.md`;
+- backlog in `docs/BACKLOG.md`;
+- toolchain in `docs/TOOLCHAIN.md`;
 - changelog quando inizia lo sviluppo applicativo;
 - glossario prodotto in italiano;
 - protocollo benchmark AI;
