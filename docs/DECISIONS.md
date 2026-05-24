@@ -32,30 +32,30 @@ Questo documento è il punto di ingresso per decisioni stabili e decisioni pende
 | D023 | Fixture sintetiche come base app | accepted | Pacchetti reali restano benchmark riservati o rappresentativi fuori Git |
 | D024 | GitHub non implica deploy/release | accepted | Pubblicare, deployare e rilasciare restano azioni distinte |
 | D025 | TRAM pubblicata su GitHub privato | accepted | `max23468/TRAM`, CI/igiene repo senza deploy e senza branch protection premium |
+| D027 | Policy versioning e release TRAM | accepted | SemVer `0.x`, `package.json` come fonte versione, release distinta da deploy |
 
 ## ADR
 
 - `docs/decisions/0001-normalizer-runtime-placement.md`: sede runtime dei normalizzatori AI.
 - `docs/decisions/0002-github-publishing-and-repo-governance.md`: pubblicazione GitHub e governance repository.
+- `docs/decisions/0003-versioning-release-policy.md`: policy versioning e release TRAM.
 - `docs/decisions/0000-template.md`: template per nuove ADR TRAM.
 
 ## Decisioni Pendenti
 
 - Se conservare alcune evidenze benchmark non sintetizzabili oltre allo storico Git.
-- Quando introdurre `CHANGELOG.md`.
-- Policy versioning/release.
 - Target e runbook deploy futuri.
 - Hosting condiviso prima della V1: VPS, OCI, Vercel/Supabase o altro stack.
 - Policy definitiva per dati L1/L2 e provider esterni su Tender reali.
 - Ruoli applicativi completi e workflow approvativo oltre i permessi minimi.
 - Formato export controllato per Q&A, review, report o Excel.
-- Se e quando creare ADR dedicati per storage, AI provider policy e versioning.
+- Se e quando creare ADR dedicate per storage e AI provider policy.
 
 ## Debiti Da Recuperare
 
 - Verificare sul codice che tutte le route MVP siano ancora allineate alla roadmap dopo ogni slice Fase 4.
 - Trasformare le policy AI in test/fixture quando il gateway sarà implementato.
 - Creare runbook deploy solo quando il target sarà deciso.
-- Valutare `CHANGELOG.md` solo quando inizierà una release policy reale.
+- Creare `CHANGELOG.md` con la prima release applicativa dopo la policy.
 - Conservare nello storico Git i vecchi Markdown senza rimetterli come fonte operativa.
 - Usare `docs/BACKLOG.md` per debiti e idee non ancora promosse in roadmap.

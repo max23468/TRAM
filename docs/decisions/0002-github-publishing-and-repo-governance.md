@@ -64,6 +64,6 @@ Non si usa branch protection per TRAM finché resta una feature premium sulle re
 
 ## Follow-Up
 
-- Definire policy versioning/release solo quando ci sarà un flusso release reale.
+- Policy versioning/release definita da `docs/decisions/0003-versioning-release-policy.md`.
 - Creare runbook deploy solo quando il target sarà deciso.
 - Valutare automazioni aggiuntive solo se servono e restano coerenti con privacy, costi e perimetro TRAM.

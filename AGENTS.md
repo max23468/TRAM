@@ -343,11 +343,11 @@ TRAM è una repository Git pubblicata come repository privata `max23468/TRAM`, c
 - dopo merge, pulire branch locali/remoti non più necessari;
 - non lasciare branch `codex/*` stale se il lavoro è stato assorbito.
 
-Fino a policy TRAM specifica:
+Policy operativa corrente:
 
 - “pubblica” significa al massimo pubblicare su GitHub, non deploy o release;
 - “deploya” significa deploy solo se esiste runbook e target confermato;
-- “rilascia” richiede prima una policy versioning/release TRAM.
+- “rilascia” segue la policy versioning/release TRAM e non implica deploy.
 - “attiva”, “metti in produzione”, “manda”, “esegui su documenti reali” o formule simili richiedono di verificare prima policy dati, provider, costi, consenso operativo e rischi.
 
 Se il maintainer usa formule ambigue, chiedere conferma prima di azioni esterne o irreversibili.
@@ -365,18 +365,21 @@ Quando avremo una VPS TRAM:
 
 La chiave `ssh-key-tram.key` è un segreto locale. Non leggerla, non copiarla e non citarne il contenuto.
 
-## Versioning e release futuri
+## Versioning e release
 
-TRAM non ha ancora una policy SemVer/release.
+La policy SemVer/release è definita da
+`docs/decisions/0003-versioning-release-policy.md`.
 
-Quando inizierà lo sviluppo:
+Regole operative:
 
-- decidere single source of truth della versione;
-- decidere se mantenere `CHANGELOG.md`, roadmap e ADR;
-- classificare ogni modifica prima della chiusura;
-- non fare bump versione o release finché la policy non esiste;
+- `package.json` è la fonte canonica della versione applicativa;
+- modifiche solo documentali, governance GitHub o pianificazione non richiedono
+  bump versione, tag o GitHub Release;
+- una release richiede richiesta esplicita del maintainer;
+- per release applicative aggiornare anche `package-lock.json` e
+  `CHANGELOG.md` quando previsto dalla policy;
 - per docs-only e piani interni, evitare release applicative;
-- per cambi runtime futuri, associare test, changelog e release secondo policy.
+- deploy e release restano separati: una release non deploya TRAM.
 
 ## Testing e verifica
 

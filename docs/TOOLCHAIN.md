@@ -11,6 +11,7 @@ Questo documento riassume runtime, package manager, lockfile, comandi e verifich
 | TypeScript | `5.9.3` | `package.json` |
 | Next.js | `16.2.6` | `package.json` |
 | React | `19.2.6` | `package.json` |
+| Versione applicativa | `package.json` come fonte canonica | `docs/decisions/0003-versioning-release-policy.md` |
 | Python documentale | `3.12` nella `.venv` locale, per tool documentali futuri | `AGENTS.md`, `docs/OPERATIONS.md` |
 
 ## Package Manager E Lockfile
@@ -58,6 +59,8 @@ Questo documento riassume runtime, package manager, lockfile, comandi e verifich
 ## Guardrail
 
 - Non introdurre runtime, deploy, release o provider esterni solo per uniformità.
+- Non fare bump versione per modifiche solo documentali, governance GitHub o
+  pianificazione.
 - Non cambiare Node, npm, Next, React o Python documentale senza aggiornare questo documento e la decisione collegata.
 - Non committare `.venv`, pacchetti gara, working data, OCR, estratti, export, dump, `.env` o chiavi.
 - `docs/OPERATIONS.md` resta il runbook operativo; questo file è la matrice sintetica della toolchain.

@@ -14,13 +14,13 @@ Una voce nel backlog non è scope approvato.
 
 ## Decisioni Sospese
 
-- Policy versioning/release e quando introdurre `CHANGELOG.md`.
+- Creare `CHANGELOG.md` con la prima release applicativa dopo la policy SemVer.
 - Target e runbook deploy futuri.
 - Hosting condiviso prima della V1: VPS, OCI, Vercel/Supabase o altro stack.
 - Policy definitiva per dati `L1`/`L2` e provider esterni su Tender reali.
 - Ruoli applicativi completi e workflow approvativo oltre i permessi minimi.
 - Formato export controllato per Q&A, review, report o Excel.
-- ADR dedicate per storage, AI provider policy e versioning.
+- ADR dedicate per storage e AI provider policy.
 
 ## Idee Tecniche
 

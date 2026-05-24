@@ -14,6 +14,7 @@ Repository:
 - branch base: `main`;
 - lavori non banali: branch `codex/<tema>`;
 - pubblicazione GitHub governata da [`docs/decisions/0002-github-publishing-and-repo-governance.md`](docs/decisions/0002-github-publishing-and-repo-governance.md);
+- versioning e release governati da [`docs/decisions/0003-versioning-release-policy.md`](docs/decisions/0003-versioning-release-policy.md);
 - dati sensibili e pacchetti gara esclusi da Git tramite `.gitignore`.
 
 ## Documenti Principali

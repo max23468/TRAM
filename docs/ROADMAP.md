@@ -490,8 +490,8 @@ Le fixture devono coprire:
 
 - Verifica browser reale della Tender Shell: smoke desktop Safari completato il 2026-05-15 su `/tenders`, `/overview`, `/documents`, `/review` e `/audit`; smoke automatico completato su tutte le 12 route MVP; smoke Playwright WebKit desktop/mobile completato per S9; navigazione mobile a drawer verificata. Ripetere verifica responsive dopo le prossime patch UI.
 - Pilot reale Fase 7 con tre utenti interni non ancora eseguito: la UI mostra readiness e metriche, ma il feedback utente va raccolto prima di considerare validato l’MVP e prima di aprire una vera V1.
-- Formalizzare policy release quando TRAM sarà pubblicata su GitHub.
-- Decidere se introdurre `CHANGELOG.md` solo quando inizierà un flusso release reale.
+- Policy release formalizzata in `docs/decisions/0003-versioning-release-policy.md`; `CHANGELOG.md` da creare con la prima release applicativa.
+- Target deploy e runbook produttivo non ancora definiti: non fare deploy finché non esiste un target approvato.
 
 ## Regola Di Aggiornamento
 

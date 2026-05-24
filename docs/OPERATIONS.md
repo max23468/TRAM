@@ -188,13 +188,15 @@ La verifica è documentale quando non tocca codice applicativo. Non inventare te
 
 ## Deploy Futuro
 
-TRAM non ha ancora una policy release/deploy stabile.
+TRAM ha una policy versioning/release stabile in
+`docs/decisions/0003-versioning-release-policy.md`, ma non ha ancora una
+policy deploy stabile.
 
 Fino a nuova decisione:
 
 - “pubblica” significa al massimo pubblicare su GitHub;
 - “deploya” richiede runbook e target confermato;
-- “rilascia” richiede policy versioning/release;
+- “rilascia” segue la policy SemVer/release e non implica deploy;
 - VPS, backup, restore, migrazioni e cleanup remoto richiedono conferma o runbook approvato.
 
 ## OCI/VPS Futuro
