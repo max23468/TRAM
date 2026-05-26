@@ -2,6 +2,28 @@
 
 TRAM è una web app interna per analizzare, mappare e monitorare documenti di gara relativi al trasporto pubblico locale, con focus O&M.
 
+## Stato progetto
+
+- Fase: MVP iniziale con app locale Next.js e documentazione governante consolidata.
+- Versione/release: SemVer `0.x` con `package.json` come fonte versione; release
+  distinta da deploy secondo `docs/decisions/0003-versioning-release-policy.md`.
+- Deploy corrente: nessun target deploy approvato. Questa è un'eccezione
+  motivata ma temporanea: non inventare deploy prima di target, runbook,
+  ambiente e verifica post-deploy.
+- Pubblicazione proporzionata: docs-only/governance-only richiede review
+  documentale, link/coerenza e controllo naming, senza smoke, deploy o release.
+- Decisioni: `docs/DECISIONS.md`, `docs/DECISIONS_PENDING.md` e ADR in
+  `docs/decisions/`.
+
+## Fonti primarie e handoff
+
+- Regole operative: `AGENTS.md`.
+- Indice documentale: `docs/INDEX.md`.
+- Roadmap e backlog: `docs/ROADMAP.md`, `docs/BACKLOG.md`.
+- Toolchain e operations: `docs/TOOLCHAIN.md`, `docs/OPERATIONS.md`.
+- Architettura e AI pipeline: `docs/ARCHITECTURE.md`,
+  `docs/AI_AND_DOCUMENT_PIPELINE.md`.
+
 ## Obiettivo
 
 La V1 deve aiutare chi analizza documentazione di gara e prepara offerte tecniche, economiche e amministrative a trasformare pacchetti documentali complessi in una panoramica chiara, aggiornata, verificabile e criticamente utile.
