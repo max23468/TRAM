@@ -14,7 +14,8 @@ Questo indice è il punto di ingresso per la documentazione viva di TRAM. I vecc
 8. [`docs/UX_REVIEW_WORKFLOW.md`](UX_REVIEW_WORKFLOW.md) - dashboard, review queue e stati utente.
 9. [`docs/OPERATIONS.md`](OPERATIONS.md) - setup, verifiche, segreti, deploy futuro.
 10. [`docs/BRAND.md`](BRAND.md) - direzione visiva e tono.
-11. [`docs/DECISIONS.md`](DECISIONS.md) - decisioni stabili e pendenti.
+11. [`docs/DECISIONS.md`](DECISIONS.md) - decisioni stabili e indice ADR.
+12. [`docs/DECISIONS_PENDING.md`](DECISIONS_PENDING.md) - decisioni strutturali non ancora approvate.
 
 ## Regole
 
