@@ -8,8 +8,8 @@ Una voce nel backlog non è scope approvato.
 
 - Eseguire il pilot reale Fase 7 con tre utenti interni e raccogliere feedback classificato `P0`/`P1`/`P2` senza dati riservati.
 - Rafforzare robustezza T1/T2/T3 dopo il pilot: falsi positivi, falsi negativi, blocchi manuali e source coverage.
-- Migliorare timeline, document map e review queue dove il dry-run UX ha segnalato ambiguità o gerarchia insufficiente.
-- Riallineare ogni route pilot reale/rappresentativa al modello TRAM prima di usarla come evidenza prodotto.
+- Migliorare scadenze, mappa documenti e controlli dove il dry-run UX ha segnalato ambiguità o gerarchia insufficiente.
+- Validare con utenti il workspace MVP riallineato, inclusa la route CPH, prima di usarlo come evidenza prodotto stabile.
 - Ripetere smoke browser desktop/mobile quando cambiano superfici UI o flussi di review.
 
 ## Decisioni Sospese
@@ -26,7 +26,6 @@ Una voce nel backlog non è scope approvato.
 
 - Trasformare policy AI, gate e normalizzatori in test e fixture quando il gateway sarà implementato.
 - Definire metriche di qualità per T4-T8: source coverage, unsupported claim rate, false positive, false negative e review burden.
-- Valutare una guida operativa sintetica per il pilot interno, separata dai documenti governanti se serve un artefatto temporaneo.
 - Valutare un check dedicato ai link Markdown quando la documentazione cresce oltre il set governante attuale.
 
 ## Pattern Specifici Da Preservare

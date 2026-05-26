@@ -30,6 +30,8 @@ App locale:
 - Vitest;
 - ESLint;
 - storage adapter `filesystem | oci`;
+- workspace locale MVP in `.local/tram-workspace`;
+- upload locale controllato via API interne Next.js;
 - fixture sintetiche in `data/fixtures/`.
 
 Comandi principali:
@@ -125,6 +127,23 @@ Gli stati tecnici possono essere codificati in inglese nel modello, ma la UI dev
 7. Creazione di `SourceReference`, `ExtractionRun` e parser issues.
 8. Review queue per conflitti, file non letti o documenti dubbi.
 
+### Workspace Locale MVP
+
+Il workspace locale è il ponte operativo tra prototipo navigabile e uso quotidiano controllato:
+
+1. `/tenders/intake` raccoglie dati minimi gara e documenti selezionati dall’utente.
+2. `POST /api/local-tenders` salva i file nel driver storage locale, fuori dal repository.
+3. TRAM calcola hash, estensione, dimensione, parser atteso, stato documento e controlli iniziali.
+4. Il workspace viene salvato in `.local/tram-workspace/tenders/*.json`.
+5. `/tenders` legge i workspace locali e mostra solo le gare create dall’utente.
+6. `/tenders?vista=demo` apre esplicitamente la modalità dimostrativa con fixture sintetiche e Copenhagen.
+7. Le route `/tenders/:id/overview`, `/documents`, `/review`, `/audit` e sezioni specialistiche aprono la gara locale quando l’id è locale.
+8. `readWorkspaceTenderViewModel` normalizza workspace locale, fixture sintetiche e dataset dimostrativo Copenhagen in un payload unico per shell, overview, documenti, controlli, audit e sezioni operative.
+9. `/api/tenders/:id/documents/:documentId` è l’endpoint standard per aprire il file originale della gara; non esistono più endpoint documentali paralleli per dataset o route dimostrative.
+10. `WorkspaceTenderSectionPage` rende la stessa struttura per workspace reale, fixture sintetiche e Copenhagen, evitando pagine parallele con logiche diverse.
+
+Questo flusso non sostituisce Postgres, ruoli, job queue o worker Python della V1. È il perimetro MVP locale: utile, verificabile, senza provider esterni e senza contenuti documentali in Git.
+
 ### Estrazione E Normalizzazione
 
 1. Parser e regole producono candidati con fonte.
@@ -215,6 +234,8 @@ Lo storage applicativo è già astratto in `src/lib/storage/`:
 - `filesystem` è il driver locale di default, con root `.local/tram-storage`;
 - `oci` è predisposto ma fail-closed finché mancano bucket, IAM e runbook approvati;
 - le storage key non sicure vengono rifiutate.
+
+I workspace gara creati dalla UI locale sono metadati applicativi e vivono in `.local/tram-workspace`. Anche questa cartella resta fuori da Git.
 
 ## Rischi Architetturali
 

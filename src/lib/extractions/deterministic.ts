@@ -277,7 +277,7 @@ export function extractT4T8Candidates({
           risk: "high",
           sourceReference,
           task: "T6",
-          title: "Cost driver candidato"
+          title: "Costo da controllare"
         })
       );
     }

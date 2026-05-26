@@ -30,7 +30,7 @@ function reasonForCandidate(candidate: ExtractionCandidate) {
   }
 
   if (candidate.requiresReview) {
-    return "Candidato da validare prima di usarlo in dashboard.";
+    return "Dato da controllare prima di usarlo nel quadro gara.";
   }
 
   return "Candidato proposto con fonte disponibile.";

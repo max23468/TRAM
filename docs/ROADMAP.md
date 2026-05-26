@@ -22,7 +22,7 @@ Verifica tecnica più recente:
 npm run verify
 ```
 
-Esito: lint, typecheck, 41 test Vitest e build Next passati sul branch locale corrente.
+Esito: lint, typecheck, 42 test Vitest e build Next passati sul branch locale corrente.
 
 ## Perimetro MVP/V0
 
@@ -39,7 +39,7 @@ Tutte le aree `T1`-`T8` devono essere visibili o rappresentate, ma non tutte han
 Baricentro UX:
 
 - dashboard direzionale first;
-- prima schermata utile: `/tenders/:tender_id/overview`;
+- prima schermata utile: `/`, con accesso a preparazione gara, lista gare e quadro gara prioritario;
 - T1-T8 alimentano overview, rischi, stato e drill-down;
 - parser, review queue e viste specialistiche sono il motore di affidabilità;
 - l’MVP non deve stimare avanzamento o qualità dell’offerta non caricata.
@@ -170,6 +170,17 @@ Classificazione feedback:
 
 Ogni feedback deve avere sezione o route, descrizione osservabile, severità e decisione: fix immediato, backlog MVP, backlog V1 o fuori perimetro. Screenshot solo se non contengono dati riservati.
 
+Scheda minima feedback Fase 7:
+
+- identificativo sessione anonimo, data e pacchetto usato;
+- route o sezione osservata;
+- azione richiesta all’utente;
+- cosa l’utente capisce senza spiegazione;
+- punto in cui cerca una fonte, uno stato o una review e non li trova;
+- severità `P0`/`P1`/`P2`;
+- decisione: fix immediato, backlog MVP, backlog V1 o fuori perimetro;
+- eventuale rischio dati: nessuno screenshot o testo se contiene contenuti riservati.
+
 Criteri di uscita Fase 7:
 
 - tre utenti interni completano lo scenario;
@@ -190,6 +201,8 @@ Debiti non coperti:
 | Slice | Stato | Obiettivo | Verifica minima |
 | --- | --- | --- | --- |
 | F7-S1 - Piano pilot interno | completata | Definire scenario, checklist, classificazione feedback e criteri di uscita | Roadmap aggiornata |
+| F7-S1b - Rifondazione UI MVP | completata | Rendere home, preparazione gara, lista gare, gara demo, Copenhagen e viste collegate una sola grammatica operativa aderente al mock e comprensibile all’utente finale | `npm run verify`, Browser desktop, smoke mobile 390px |
+| F7-S1c - Workspace locale end-to-end | completata | Creare una gara da UI, selezionare documenti, generare inventario/hash, salvare fuori Git e aprire le viste operative sulla gara locale | API locale, storage `.local`, route `/tenders/:id/*`, `npm run verify`, smoke Browser |
 | F7-S2 - Sessioni con tre utenti | da fare | Eseguire scenario controllato su pacchetto reale o rappresentativo, non solo fixture sintetiche | Tre schede feedback classificate P0/P1/P2 senza dati riservati |
 | F7-S3 - Triage stabilizzazione | parzialmente avviata | Decidere fix immediati, backlog MVP, backlog V1 e fuori perimetro | Tutti i P0/P1 da sessioni reali hanno decisione owner/priorità |
 | F7-S4 - Fix e verifica post-pilot | parzialmente avviata | Correggere problemi bloccanti e ripetere gate proporzionati | `npm run verify` e smoke UI se cambiano superfici applicative |
@@ -210,14 +223,26 @@ Feedback CPH su pacchetto reale/rappresentativo:
 
 | Route | Feedback | Severità | Decisione |
 | --- | --- | --- | --- |
-| `/pilot/copenhagen-m1-m4-om` | La prima vista era un inventario tecnico e la prima correzione ha introdotto una dashboard CPH parallela non allineata al modello definito | P0 | Riallineare la route al modello TRAM: stato dashboard, fonti P0, blocchi, Q&A, route T1-T8, document map e source inspector senza esporre estratti grezzi come contenuto principale |
+| `/tenders/tender_copenhagen_m1_m4_om/*` | La prima vista era un inventario tecnico e la prima correzione ha introdotto una dashboard CPH parallela non allineata al modello definito | P0 | Assorbire Copenhagen nel percorso unico `/tenders/tender_copenhagen_m1_m4_om/*` e rimuovere la vecchia route parallela |
+
+Aggiornamento 2026-05-26: il primo riallineamento UI non era sufficiente. Il mock deve diventare grammatica di arrivo dell’intero MVP, non solo ispirazione parziale. Home, preparazione gara, lista gare, gare demo, Copenhagen e viste collegate condividono shell, lessico, gerarchia e componenti. La UI rivolta all’utente non deve mostrare gergo di sviluppo come codici priorità/task/privacy, fase, pilot, blocker o formulazioni tecniche non spiegabili a un utente che testa TRAM senza aver seguito lo sviluppo.
+
+Aggiornamento operativo 2026-05-26: la preparazione gara non può restare una bozza locale senza effetto. Il completamento MVP richiede che `/tenders/intake` crei una gara locale reale, salvi documenti in `.local/tram-storage`, registri workspace e inventario in `.local/tram-workspace`, mostri la gara in `/tenders` e apra tutte le viste `/tenders/:id/*` sul workspace locale senza dipendere dalle fixture.
+
+Correzione operativa 2026-05-26: Copenhagen non deve più comparire come pagina parallela rispetto alle altre gare. La card in lista e la navigazione interna aprono il percorso unico `/tenders/tender_copenhagen_m1_m4_om/*`; la vecchia route parallela è rimossa.
+
+Correzione operativa 2026-05-26: il workspace reale e i dati dimostrativi non devono più essere mescolati. `/` e `/tenders` mostrano solo gare locali create dall’utente; fixture sintetiche e Copenhagen sono accessibili da `/tenders?vista=demo` come modalità separata e dichiarata.
+
+Correzione architetturale 2026-05-26: workspace locale e Copenhagen devono passare dalla stessa grammatica tecnica. Il rendering della gara usa un view model unico, la vista documenti usa deep link uniformi `?source=...` e il file originale si apre sempre dallo stesso endpoint `/api/tenders/:id/documents/:documentId`, senza superfici locali o dimostrative separate.
+
+Correzione architetturale 2026-05-26: anche le fixture sintetiche non devono più usare una UI o una route page diversa. Gare locali, fixture sintetiche e Copenhagen passano tutte dal renderer workspace unico; i componenti legacy paralleli vengono rimossi dal percorso applicativo.
 
 Prossimo pilot reale/rappresentativo:
 
 - pacchetto scelto: `data/packages/copenhagen-m1-m4-om`;
 - inventario locale generato in `data/working/copenhagen-m1-m4-om/inventory/`, area esclusa da Git;
 - baseline inventario CPH: 59 file, di cui 51 PDF, 6 DOCX, 1 MPP e 1 XLSX;
-- prima vista applicativa su `/pilot/copenhagen-m1-m4-om`: overview allineata al modello TRAM con stato dashboard, route T1-T8, document map, source inspector e link al documento originale;
+- prima vista applicativa su `/tenders/tender_copenhagen_m1_m4_om/overview`: overview allineata al modello TRAM con stato dashboard, route T1-T8, document map, source inspector e link al documento originale;
 - non committare documenti, OCR, estratti grezzi, screenshot o contenuti riservati;
 - usare parsing locale e fixture derivate/minimizzate solo quando non espongono contenuti sensibili;
 - raccogliere feedback osservabile su dati effettivi: document map, timeline, deliverable, fonti e Da validare.
@@ -439,7 +464,9 @@ Criteri di uscita:
 
 Rotte previste:
 
+- `/`
 - `/tenders`
+- `/tenders/intake`
 - `/tenders/:tender_id/overview`
 - `/tenders/:tender_id/documents`
 - `/tenders/:tender_id/timeline`
@@ -454,7 +481,9 @@ Rotte previste:
 
 Per il primo slice operativo sono obbligatorie:
 
+- `/`;
 - `/tenders`;
+- `/tenders/intake`;
 - `/tenders/:tender_id/overview`;
 - `/tenders/:tender_id/documents`;
 - `/tenders/:tender_id/review`.
@@ -464,9 +493,10 @@ Per il primo slice operativo sono obbligatorie:
 - Non mostrare codici task (`T1`-`T8`) come nomi di sezione o titoli utente.
 - Non mostrare classi privacy nude (`L0`, `L1`, `L2`); usare label comprensibili.
 - Non usare `fixture`, `Slice 0` o nomi scaffold nella navigazione utente.
+- La preparazione gara crea un workspace locale controllato: documenti in `.local/tram-storage`, metadati gara in `.local/tram-workspace`, nessun contenuto documentale in Git.
 - Non mostrare `currentness`; usare `stato documenti`, `vigente`, `superato`, `da verificare`.
 - Tradurre stati raw come `needs_review`, `candidate`, `human_review_required`.
-- Usare `Q&A`, `Deliverables`, `Financials`, `Criticità`, `Da validare`, `Registro attività`.
+- Usare `Domande/Risposte`, `Consegne`, `Economia`, `Criticità`, `Controlli`, `Registro`.
 - Mantenere codici tecnici nel data model, nei test e nei documenti governanti, non nella superficie primaria.
 
 ## Fixture E Stati Da Coprire
@@ -488,7 +518,8 @@ Le fixture devono coprire:
 
 ## Debiti Visibili
 
-- Verifica browser reale della Tender Shell: smoke desktop Safari completato il 2026-05-15 su `/tenders`, `/overview`, `/documents`, `/review` e `/audit`; smoke automatico completato su tutte le 12 route MVP; smoke Playwright WebKit desktop/mobile completato per S9; navigazione mobile a drawer verificata. Ripetere verifica responsive dopo le prossime patch UI.
+- Verifica browser reale della shell TRAM: smoke desktop Browser completato il 2026-05-26 su `/`, `/tenders`, `/tenders/intake`, `/overview`, `/documents`, `/review`, `/audit` e Copenhagen; smoke mobile 390px completato su home, lista gare, preparazione gara, overview e Copenhagen senza overflow. Ripetere verifica responsive dopo le prossime patch UI.
+- Verifica workspace locale MVP: il 2026-05-26 è stata creata da UI una gara locale con tre file di prova, poi verificata su lista gare, overview, documenti, review, timeline e audit. Il campione QA è stato rimosso dopo la verifica. I dati utente vengono salvati in `.local/tram-workspace` e i file in `.local/tram-storage`, entrambi fuori Git.
 - Pilot reale Fase 7 con tre utenti interni non ancora eseguito: la UI mostra readiness e metriche, ma il feedback utente va raccolto prima di considerare validato l’MVP e prima di aprire una vera V1.
 - Policy release formalizzata in `docs/decisions/0003-versioning-release-policy.md`; `CHANGELOG.md` da creare con la prima release applicativa.
 - Target deploy e runbook produttivo non ancora definiti: non fare deploy finché non esiste un target approvato.

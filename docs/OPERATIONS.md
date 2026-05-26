@@ -36,7 +36,9 @@ Regole operative:
 
 Route locali minime da verificare quando esistono:
 
+- `/`;
 - `/tenders`;
+- `/tenders/intake`;
 - `/tenders/:tender_id/overview`;
 - `/tenders/:tender_id/documents`;
 - `/tenders/:tender_id/review`;
@@ -45,9 +47,12 @@ Route locali minime da verificare quando esistono:
 Storage locale:
 
 - root default `.local/tram-storage`;
+- workspace locali in `.local/tram-workspace`;
 - nessun documento reale in Git;
 - storage key validate e fail-closed;
 - driver `oci` inattivo se bucket, IAM e runbook non sono approvati.
+
+Nel MVP locale, l’upload da `/tenders/intake` è ammesso solo verso il server locale TRAM e deve salvare i file fuori dal repository. Non implica consenso a provider esterni, AI, deploy o condivisione.
 
 ## Git
 

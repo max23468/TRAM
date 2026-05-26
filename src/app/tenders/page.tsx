@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import type { ComponentType } from "react";
+import type { ReactNode } from "react";
 import {
   AlertTriangle,
   ArrowRight,
@@ -9,285 +9,398 @@ import {
   Layers3
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { TenderWorkspaceShell } from "@/features/navigation/tender-workspace-shell";
 import {
-  getTenderClarificationThreads,
-  getTenderOverviewModel,
-  getTramFixtures,
-  type TramTender
-} from "@/lib/fixtures";
+  InspectorInfoRow,
+  WorkspaceMetricCard,
+  WorkspacePanel
+} from "@/features/navigation/tender-workspace-primitives";
+import {
+  demoTendersHref,
+  getDashboardStateLabel,
+  getDashboardStateVariant,
+  getPrivacyLabel,
+  getPrivacyVariant,
+  getStageLabel,
+  getTransportLabel
+} from "@/features/navigation/tender-workspace-config";
+import { listDemoWorkspaceSummaries, type DemoWorkspaceSummary } from "@/lib/demo-workspace";
+import { listLocalTenderSummaries } from "@/lib/local-workspace/server";
+import type { LocalTenderSummary } from "@/lib/local-workspace/types";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Tender | TRAM",
+  title: "Gare | TRAM",
   description:
-    "Elenco operativo dei Tender demo con stato dashboard, review, documenti e policy AI."
-};
-
-const privacyLabels: Record<string, string> = {
-  L0: "Pubblico",
-  L1: "Uso interno",
-  L2: "Accesso ristretto"
-};
-
-const dashboardStateLabels: Record<string, string> = {
-  draft: "Bozza",
-  open_critical_issues: "Criticità aperte",
-  partially_validated: "Validazione parziale",
-  stale_due_to_new_docs: "Stale per nuovi documenti",
-  validated_internal: "Validato internamente"
-};
-
-const transportLabels: Record<string, string> = {
-  bus: "Bus",
-  bus_depot: "Deposito e-bus",
-  light_rail: "Light rail",
-  metro: "Metro"
+    "Elenco operativo delle gare con stato, priorità, documenti e prossimi controlli."
 };
 
 const filterOptions = [
   { id: "all", label: "Tutti" },
   { id: "attention", label: "Da seguire" },
-  { id: "stale", label: "Stale" },
-  { id: "validated", label: "Validati" },
+  { id: "stale", label: "Da aggiornare" },
+  { id: "validated", label: "Controllate" },
   { id: "draft", label: "Bozze" }
 ] as const;
 
 type FilterId = (typeof filterOptions)[number]["id"];
-type TenderModel = ReturnType<typeof getTenderOverviewModel>;
-
-function getStateVariant(state: TramTender["dashboard_state"]) {
-  if (state === "validated_internal") {
-    return "success";
-  }
-
-  if (state === "open_critical_issues" || state === "stale_due_to_new_docs") {
-    return "risk";
-  }
-
-  return "muted";
-}
-
-function matchesFilter(model: TenderModel, filter: FilterId) {
+function matchesDemoFilter(summary: DemoWorkspaceSummary, filter: FilterId) {
   if (filter === "all") {
     return true;
   }
 
   if (filter === "attention") {
-    return ["open_critical_issues", "partially_validated"].includes(
-      model.tender.dashboard_state
-    );
+    return ["open_critical_issues", "partially_validated"].includes(summary.dashboardState);
   }
 
   if (filter === "stale") {
-    return model.tender.dashboard_state === "stale_due_to_new_docs";
+    return summary.dashboardState === "stale_due_to_new_docs";
   }
 
   if (filter === "validated") {
-    return model.tender.dashboard_state === "validated_internal";
+    return summary.dashboardState === "validated_internal";
   }
 
-  return model.tender.dashboard_state === "draft";
+  return summary.dashboardState === "draft";
 }
 
-function getActiveReviewCount(model: TenderModel) {
-  return model.reviewItems.filter((item) =>
-    ["blocked", "needs_owner", "open", "contested"].includes(item.status)
-  ).length;
+function getFilterHref(filter: FilterId, isDemoMode: boolean) {
+  const params = new URLSearchParams();
+
+  if (filter !== "all") {
+    params.set("stato", filter);
+  }
+
+  if (isDemoMode) {
+    params.set("vista", "demo");
+  }
+
+  const query = params.toString();
+
+  return query ? `/tenders?${query}` : "/tenders";
 }
 
-function getHighPriorityReviewCount(model: TenderModel) {
-  return model.reviewItems.filter(
-    (item) =>
-      ["high", "critical"].includes(item.risk) &&
-      ["blocked", "needs_owner", "open", "contested"].includes(item.status)
-  ).length;
-}
-
-function getNextAction(model: TenderModel) {
-  const blockedReview = model.reviewItems.find((item) => item.status === "blocked");
-  const highReview = model.reviewItems.find(
-    (item) => item.risk === "critical" || item.risk === "high"
-  );
-  const dashboardQna = model.clarificationThreads.find(
-    (thread) => thread.requires_dashboard_update || thread.status === "blocked"
-  );
-
-  if (blockedReview) {
-    return blockedReview.title;
+function matchesLocalFilter(tender: LocalTenderSummary, filter: FilterId) {
+  if (filter === "all") {
+    return true;
   }
 
-  if (highReview) {
-    return highReview.title;
+  if (filter === "attention") {
+    return tender.openReviewCount > 0 || tender.documentCount === 0;
   }
 
-  if (dashboardQna) {
-    return dashboardQna.title;
+  if (filter === "draft") {
+    return tender.documentCount === 0;
   }
 
-  if (model.tender.dashboard_state === "validated_internal") {
-    return "Pronto per lettura interna";
-  }
-
-  return "Aprire overview e completare la prima review";
-}
-
-function getFilterHref(filter: FilterId) {
-  return filter === "all" ? "/tenders" : `/tenders?stato=${filter}`;
+  return false;
 }
 
 type TendersPageProps = {
-  searchParams?: Promise<{ stato?: string }>;
+  searchParams?: Promise<{ stato?: string; vista?: string }>;
 };
 
 export default async function TendersPage({ searchParams }: TendersPageProps) {
-  const fixtures = getTramFixtures();
   const params = await searchParams;
   const requestedFilter = params?.stato;
+  const isDemoMode = params?.vista === "demo";
   const selectedFilter = filterOptions.some((option) => option.id === requestedFilter)
     ? (requestedFilter as FilterId)
     : "all";
-  const models = fixtures.tenders.map((tender) => getTenderOverviewModel(tender.id));
-  const filteredModels = models.filter((model) => matchesFilter(model, selectedFilter));
-  const attentionCount = models.filter((model) => matchesFilter(model, "attention")).length;
-  const blockersCount = models.reduce(
-    (total, model) => total + getHighPriorityReviewCount(model),
+  const localTenders = await listLocalTenderSummaries();
+  const filteredLocalTenders = localTenders.filter((tender) =>
+    matchesLocalFilter(tender, selectedFilter)
+  );
+  const demoSummaries = isDemoMode ? await listDemoWorkspaceSummaries() : [];
+  const filteredDemoSummaries = demoSummaries.filter((summary) =>
+    matchesDemoFilter(summary, selectedFilter)
+  );
+  const localAttentionCount = localTenders.filter((tender) =>
+    matchesLocalFilter(tender, "attention")
+  ).length;
+  const localOpenReviewCount = localTenders.reduce(
+    (total, tender) => total + tender.openReviewCount,
     0
   );
-  const qnaImpactCount = models.reduce(
-    (total, model) => total + model.dashboardUpdateCount + model.blockedClarificationCount,
+  const attentionCount =
+    localAttentionCount +
+    (isDemoMode
+      ? demoSummaries.filter((summary) => matchesDemoFilter(summary, "attention")).length
+      : 0);
+  const blockersCount = demoSummaries.reduce(
+    (total, summary) => total + summary.highPriorityCount,
+    localOpenReviewCount
+  );
+  const qnaImpactCount = demoSummaries.reduce(
+    (total, summary) => total + summary.qnaCount,
+    0
+  );
+  const visibleTenderCount = filteredDemoSummaries.length + filteredLocalTenders.length;
+  const documentCount = localTenders.reduce(
+    (total, tender) => total + tender.documentCount,
     0
   );
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-8 px-6 py-8">
-      <nav className="flex items-center justify-between border-b border-border pb-4">
-        <Link className="text-sm font-medium text-muted-foreground" href="/">
-          TRAM
-        </Link>
-        <Badge variant="success">Demo sanificata</Badge>
-      </nav>
-
-      <section>
-        <p className="font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
-          Dashboard aggregata
-        </p>
-        <h1 className="mt-3 text-3xl font-semibold tracking-tight">Tender</h1>
-        <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
-          Vista di controllo sui Tender demo: stato, priorità, blocker, Q&A con impatto e accesso
-          diretto alla dashboard gara.
-        </p>
-      </section>
-
+    <TenderWorkspaceShell
+      description={
+        isDemoMode
+          ? "Modalità dimostrativa: esempi sintetici e pacchetti pubblici servono per esplorare TRAM senza confonderli con il workspace reale."
+          : "Workspace reale: qui compaiono solo le gare create localmente dall’utente, con documenti, inventario e controlli collegati."
+      }
+      headerBadges={
+        <>
+          <Badge variant="success">{isDemoMode ? "Modalità demo" : "Workspace reale"}</Badge>
+          <Badge variant="muted">{visibleTenderCount} gare in vista</Badge>
+        </>
+      }
+      productHref="/"
+      sectionEyebrow="gare attive"
+      sidebarBadges={
+        <>
+          <Badge variant="success">Operativo</Badge>
+          <Badge variant="muted">Uso interno</Badge>
+        </>
+      }
+      sidebarContent={
+          <AggregateSidebar
+            attentionCount={attentionCount}
+            blockersCount={blockersCount}
+            isDemoMode={isDemoMode}
+            localTenderCount={localTenders.length}
+            selectedFilter={selectedFilter}
+            visibleTenderCount={visibleTenderCount}
+          />
+      }
+      sidebarEyebrow="Area di lavoro"
+      sidebarSubtitle="Gare, fonti e controlli"
+      sidebarTitle="TRAM"
+      statusLabel={isDemoMode ? "Dati dimostrativi" : "Workspace reale"}
+      statusVariant="success"
+      title="Gare"
+      topActions={
+        <>
+          <Link className="text-sm font-medium text-primary hover:underline" href="/tenders/intake">
+            Prepara gara
+          </Link>
+          <Link
+            className="text-sm font-medium text-primary hover:underline"
+            href={isDemoMode ? "/tenders" : demoTendersHref}
+          >
+            {isDemoMode ? "Workspace reale" : "Dati dimostrativi"}
+          </Link>
+        </>
+      }
+    >
       <section className="grid gap-4 md:grid-cols-4" aria-label="Sintesi tender">
-        <SummaryCard icon={Layers3} label="Tender" value={String(models.length)} />
-        <SummaryCard icon={AlertTriangle} label="Da seguire" value={String(attentionCount)} />
-        <SummaryCard icon={ClipboardCheck} label="Blocker review" value={String(blockersCount)} />
-        <SummaryCard icon={FileQuestion} label="Q&A con impatto" value={String(qnaImpactCount)} />
+        <WorkspaceMetricCard icon={Layers3} label="Gare" value={String(visibleTenderCount)} />
+        <WorkspaceMetricCard icon={AlertTriangle} label="Da seguire" value={String(attentionCount)} tone={attentionCount > 0 ? "risk" : "default"} />
+        <WorkspaceMetricCard icon={ClipboardCheck} label="Controlli aperti" value={String(blockersCount)} tone={blockersCount > 0 ? "risk" : "default"} />
+        <WorkspaceMetricCard
+          icon={isDemoMode ? FileQuestion : Layers3}
+          label={isDemoMode ? "Domande aperte" : "Documenti"}
+          value={String(isDemoMode ? qnaImpactCount : documentCount)}
+        />
       </section>
 
-      <nav className="flex flex-wrap gap-2" aria-label="Filtri stato tender">
+      <section className="grid gap-4">
+        {visibleTenderCount === 0 ? <EmptyWorkspaceCard /> : null}
+        {filteredLocalTenders.map((tender) => (
+          <LocalTenderCard key={tender.id} tender={tender} />
+        ))}
+        {filteredDemoSummaries.map((summary) => (
+          <OperationalTenderCard
+            badges={
+              <>
+                <Badge variant={getDashboardStateVariant(summary.dashboardState)}>
+                  {getDashboardStateLabel(summary.dashboardState)}
+                </Badge>
+                <Badge variant="muted">{getStageLabel(summary.stageLabel)}</Badge>
+                <Badge variant={getPrivacyVariant(summary.privacyLabel)}>
+                  {getPrivacyLabel(summary.privacyLabel)}
+                </Badge>
+              </>
+            }
+            ctaLabel="Apri quadro"
+            footerLabel={getTransportLabel(summary.footerLabel)}
+            href={summary.href}
+            key={summary.id}
+            metrics={[
+              { label: "Controlli", value: String(summary.activeReviewCount) },
+              { label: "Critici", value: String(summary.highPriorityCount) },
+              { label: "Domande", value: String(summary.qnaCount) }
+            ]}
+            nextAction={summary.nextAction}
+            packageLabel={summary.packageLabel}
+            title={summary.title}
+          />
+        ))}
+      </section>
+    </TenderWorkspaceShell>
+  );
+}
+
+function AggregateSidebar({
+  attentionCount,
+  blockersCount,
+  isDemoMode,
+  localTenderCount,
+  selectedFilter,
+  visibleTenderCount
+}: {
+  attentionCount: number;
+  blockersCount: number;
+  isDemoMode: boolean;
+  localTenderCount: number;
+  selectedFilter: FilterId;
+  visibleTenderCount: number;
+}) {
+  return (
+    <div className="grid gap-4 text-sm">
+      <dl className="grid gap-3 rounded-md border border-[color:var(--sidebar-border)] bg-white/[0.04] p-3 text-[color:var(--sidebar-text)]">
+        <InspectorInfoRow label="Vista" value={isDemoMode ? "Dati dimostrativi" : "Workspace reale"} />
+        <InspectorInfoRow label="Filtro" value={filterOptions.find((option) => option.id === selectedFilter)?.label ?? "Tutti"} />
+        <InspectorInfoRow label="Gare locali" value={localTenderCount} />
+        <InspectorInfoRow label="Gare in vista" value={visibleTenderCount} />
+        <InspectorInfoRow label="Da seguire" value={attentionCount} />
+        <InspectorInfoRow label="Controlli aperti" value={blockersCount} />
+      </dl>
+      <Link
+        className="rounded-md bg-white/[0.10] px-2 py-2 font-medium text-white transition-colors active:scale-95"
+        href="/tenders/intake"
+      >
+        Prepara gara
+      </Link>
+      <Link
+        className="rounded-md px-2 py-2 font-medium text-[color:var(--sidebar-muted)] transition-colors hover:bg-white/[0.06] hover:text-white active:scale-95"
+        href={isDemoMode ? "/tenders" : demoTendersHref}
+      >
+        {isDemoMode ? "Workspace reale" : "Dati dimostrativi"}
+      </Link>
+      <nav className="grid gap-1" aria-label="Filtri stato gare">
         {filterOptions.map((option) => (
           <Link
             key={option.id}
             className={cn(
-              "rounded-md border px-3 py-2 text-sm font-medium transition-colors hover:bg-muted",
+              "rounded-md px-2 py-2 text-sm font-medium transition-colors active:scale-95",
               selectedFilter === option.id
-                ? "border-primary bg-secondary text-secondary-foreground"
-                : "border-border text-muted-foreground"
+                ? "bg-white/[0.10] text-white"
+                : "text-[color:var(--sidebar-muted)] hover:bg-white/[0.06] hover:text-white"
             )}
-            href={getFilterHref(option.id)}
+            href={getFilterHref(option.id, isDemoMode)}
           >
             {option.label}
           </Link>
         ))}
       </nav>
-
-      <section className="rounded-lg border border-primary/30 bg-secondary p-5">
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-          <div>
-            <Badge variant="success">Pilot reale</Badge>
-            <h2 className="mt-3 text-lg font-semibold">CPH M1/M4 O&amp;M</h2>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
-              Apri document map, file originali e testo estratto dai documenti pubblici della
-              procedura Copenhagen.
-            </p>
-          </div>
-          <Link
-            className="inline-flex items-center justify-center gap-2 rounded-md border border-primary bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-            href="/pilot/copenhagen-m1-m4-om"
-          >
-            Apri pilot CPH
-            <ArrowRight aria-hidden="true" size={15} />
-          </Link>
-        </div>
-      </section>
-
-      <section className="grid gap-4">
-        {filteredModels.map((model) => (
-          <Link
-            key={model.tender.id}
-            className="grid gap-5 rounded-lg border border-border bg-card p-5 transition-colors hover:bg-muted lg:grid-cols-[minmax(0,1fr)_280px]"
-            href={`/tenders/${model.tender.id}/overview`}
-          >
-            <div>
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge variant={getStateVariant(model.tender.dashboard_state)}>
-                  {dashboardStateLabels[model.tender.dashboard_state] ??
-                    model.tender.dashboard_state}
-                </Badge>
-                <Badge variant="muted">{model.tender.stage}</Badge>
-                <Badge variant={model.tender.privacy_level === "L2" ? "risk" : "muted"}>
-                  {privacyLabels[model.tender.privacy_level] ?? model.tender.privacy_level}
-                </Badge>
-              </div>
-              <p className="mt-4 text-lg font-semibold">{model.tender.name}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{model.tender.package_label}</p>
-              <p className="mt-4 text-sm leading-6">
-                <span className="font-medium">Prossima azione:</span> {getNextAction(model)}
-              </p>
-            </div>
-
-            <div className="grid gap-3 text-sm">
-              <div className="grid grid-cols-3 gap-2 rounded-md border border-border bg-muted p-3 text-center">
-                <Metric label="Review" value={String(getActiveReviewCount(model))} />
-                <Metric label="Blocker" value={String(getHighPriorityReviewCount(model))} />
-                <Metric
-                  label="Q&A"
-                  value={String(getTenderClarificationThreads(model.tender.id).length)}
-                />
-              </div>
-              <div className="flex items-center justify-between gap-3 text-muted-foreground">
-                <span>{transportLabels[model.tender.transport_mode] ?? model.tender.transport_mode}</span>
-                <span className="inline-flex items-center gap-1 font-medium text-primary">
-                  Apri overview
-                  <ArrowRight aria-hidden="true" size={15} />
-                </span>
-              </div>
-            </div>
-          </Link>
-        ))}
-      </section>
-    </main>
+    </div>
   );
 }
 
-function SummaryCard({
-  icon: Icon,
-  label,
-  value
+function EmptyWorkspaceCard() {
+  return (
+    <WorkspacePanel>
+      <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
+        <div>
+          <p className="text-[11px] font-medium uppercase text-muted-foreground">
+            Workspace reale
+          </p>
+          <h2 className="mt-1 text-lg font-semibold">Nessuna gara creata</h2>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            Crea una gara locale per caricare documenti, generare inventario e aprire le prime
+            sezioni operative. I dati dimostrativi restano separati.
+          </p>
+        </div>
+        <Link
+          className="inline-flex rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          href="/tenders/intake"
+        >
+          Prepara gara
+        </Link>
+      </div>
+    </WorkspacePanel>
+  );
+}
+
+function LocalTenderCard({ tender }: { tender: LocalTenderSummary }) {
+  return (
+    <OperationalTenderCard
+      badges={
+        <>
+          <Badge variant={tender.openReviewCount > 0 ? "risk" : "success"}>
+            {tender.statusLabel}
+          </Badge>
+          <Badge variant="default">Gara locale</Badge>
+          <Badge variant="muted">{tender.privacy}</Badge>
+        </>
+      }
+      ctaLabel="Apri quadro"
+      footerLabel={tender.stage}
+      href={`/tenders/${tender.id}/overview`}
+      metrics={[
+        { label: "Documenti", value: String(tender.documentCount) },
+        { label: "Controlli", value: String(tender.openReviewCount) },
+        { label: "Owner", value: tender.owner || "-" }
+      ]}
+      nextAction={
+        tender.openReviewCount > 0
+          ? "Aprire i controlli generati dall’inventario locale."
+          : "Aprire il quadro gara e verificare fonti e documenti."
+      }
+      packageLabel={tender.authority || "Workspace locale TRAM"}
+      title={tender.name}
+    />
+  );
+}
+
+function OperationalTenderCard({
+  badges,
+  ctaLabel,
+  footerLabel,
+  href,
+  metrics,
+  nextAction,
+  packageLabel,
+  title
 }: {
-  icon: ComponentType<{ "aria-hidden": true; size: number; className?: string }>;
-  label: string;
-  value: string;
+  badges: ReactNode;
+  ctaLabel: string;
+  footerLabel: string;
+  href: string;
+  metrics: Array<{ label: string; value: string }>;
+  nextAction: string;
+  packageLabel: string;
+  title: string;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-card p-4">
-      <div className="flex items-center justify-between gap-3">
-        <p className="text-xs font-medium uppercase text-muted-foreground">{label}</p>
-        <Icon aria-hidden={true} className="text-primary" size={18} />
+    <Link
+      className="grid gap-5 rounded-md border border-border bg-card p-5 shadow-[var(--shadow-card)] transition-colors hover:bg-muted active:scale-95 lg:grid-cols-[minmax(0,1fr)_280px]"
+      href={href}
+    >
+      <div>
+        <div className="flex flex-wrap items-center gap-2">{badges}</div>
+        <p className="mt-4 text-lg font-semibold">{title}</p>
+        <p className="mt-1 text-sm text-muted-foreground">{packageLabel}</p>
+        <p className="mt-4 text-sm leading-6">
+          <span className="font-medium">Prossima azione:</span> {nextAction}
+        </p>
       </div>
-      <p className="mt-3 text-2xl font-semibold">{value}</p>
-    </div>
+
+      <div className="grid gap-3 text-sm">
+        <div className="grid grid-cols-3 gap-2 rounded-md border border-border bg-muted p-3 text-center">
+          {metrics.map((metric) => (
+            <Metric key={metric.label} label={metric.label} value={metric.value} />
+          ))}
+        </div>
+        <div className="flex items-center justify-between gap-3 text-muted-foreground">
+          <span>{footerLabel}</span>
+          <span className="inline-flex items-center gap-1 font-medium text-primary">
+            {ctaLabel}
+            <ArrowRight aria-hidden="true" size={15} />
+          </span>
+        </div>
+      </div>
+    </Link>
   );
 }
 

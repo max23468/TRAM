@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+import { TenderWorkspaceRoutePage } from "@/features/navigation/tender-workspace-route-page";
 
 export const metadata: Metadata = {
-  title: "Financials | TRAM",
-  description: "Payment mechanism, pricing e dati economici con fonti e validazione umana."
+  title: "Economia | TRAM",
+  description: "Meccanismi economici, prezzi e penali con fonti e controllo umano."
 };
 
 type TenderRoutePageProps = {
@@ -14,11 +14,11 @@ export default async function FinancialsPage({ params }: TenderRoutePageProps) {
   const { tenderId } = await params;
 
   return (
-    <TenderSectionPage
+    <TenderWorkspaceRoutePage
       tenderId={tenderId}
       section="financials"
-      title="Financials"
-      description="Payment mechanism, pricing e dati economici analizzabili come elementi del Tender, con fonti e validazione umana."
+      title="Economia"
+      description="Meccanismi economici, prezzi e penali trattati come dati da controllare, con fonti e validazione umana."
     />
   );
 }

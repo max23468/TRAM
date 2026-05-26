@@ -176,6 +176,12 @@ describe("fixture TRAM MVP", () => {
     expect(() => assertFixturesDoNotReferenceReservedPaths()).not.toThrow();
   });
 
+  it("non usa una gara demo come fallback per id inesistenti", () => {
+    expect(() => getTenderOverviewModel("tender_non_esistente")).toThrow(
+      "Tender non trovato"
+    );
+  });
+
   it("copre i quattro archetipi MVP", () => {
     const fixtures = getTramFixtures();
     const ids = fixtures.tenders.map((tender) => tender.id);
@@ -361,16 +367,16 @@ describe("fixture TRAM MVP", () => {
     }
   });
 
-  it("espone readiness pilot senza dichiarare completato il pilot reale", () => {
+  it("espone prontezza tecnica senza dichiarare completato il test utenti", () => {
     const model = getTenderOverviewModel("tender_fx_cop_metro_om");
 
-    expect(model.pilotReadiness.status).toBe("ready_for_internal_pilot");
-    expect(model.pilotReadiness.completedUserCount).toBe(0);
-    expect(model.pilotReadiness.userCountTarget).toBe(3);
-    expect(model.pilotReadiness.blockers).toContain(
-      "Pilot reale con utenti interni non ancora completato."
+    expect(model.mvpReadiness.status).toBe("ready_for_user_test");
+    expect(model.mvpReadiness.completedUserCount).toBe(0);
+    expect(model.mvpReadiness.userCountTarget).toBe(3);
+    expect(model.mvpReadiness.blockers).toContain(
+      "Test con utenti interni non ancora completato."
     );
-    expect(model.pilotReadiness.metrics.taskCoverage.T1).toBeGreaterThan(0);
-    expect(model.pilotReadiness.metrics.taskCoverage.T8).toBeGreaterThan(0);
+    expect(model.mvpReadiness.metrics.taskCoverage.T1).toBeGreaterThan(0);
+    expect(model.mvpReadiness.metrics.taskCoverage.T8).toBeGreaterThan(0);
   });
 });

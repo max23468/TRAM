@@ -1,24 +1,30 @@
 import type { Metadata } from "next";
-import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+import { TenderWorkspaceRoutePage } from "@/features/navigation/tender-workspace-route-page";
 
 export const metadata: Metadata = {
-  title: "Document map | TRAM",
-  description: "Inventario documenti, versioni e riferimenti fonte del Tender."
+  title: "Documenti | TRAM",
+  description: "Inventario documenti, versioni e riferimenti fonte della gara."
 };
 
 type TenderRoutePageProps = {
   params: Promise<{ tenderId: string }>;
+  searchParams: Promise<{ source?: string }>;
 };
 
-export default async function DocumentsPage({ params }: TenderRoutePageProps) {
+export default async function DocumentsPage({
+  params,
+  searchParams
+}: TenderRoutePageProps) {
   const { tenderId } = await params;
+  const { source } = await searchParams;
 
   return (
-    <TenderSectionPage
+    <TenderWorkspaceRoutePage
+      sourceId={source}
       tenderId={tenderId}
       section="documents"
-      title="Document map"
-      description="Inventario documenti, famiglie, versioni, stato aggiornamento e riferimenti fonte sintetici."
+      title="Documenti"
+      description="Inventario documenti, famiglie, versioni, stato di aggiornamento e riferimenti fonte."
     />
   );
 }

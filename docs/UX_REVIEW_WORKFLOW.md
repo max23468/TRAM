@@ -17,22 +17,25 @@ TRAM deve essere un’app operativa, non una landing page e non una chat generic
 - financials e payment;
 - cost driver;
 - contraddizioni candidate;
-- chiarimenti/Q&A;
+- domande/risposte e chiarimenti;
 - review queue;
 - audit/source view.
 
 ## Rotte E Obiettivo Utente
 
-- `/tenders`: capire quali gare richiedono attenzione, filtrare per stato, priorità, owner, scadenze e blocker.
+- `/`: entrare nel workspace reale, capire se esistono gare locali e raggiungere preparazione, lista gare o modalità dimostrativa.
+- `/tenders/intake`: creare una gara locale con dati minimi, selezione documenti, inventario/hash, storage fuori Git e apertura immediata del quadro gara.
+- `/tenders`: vedere solo gare create nel workspace locale, filtrare per stato e aprire i controlli reali dell’utente.
+- `/tenders?vista=demo`: esplorare fixture sintetiche e Copenhagen senza mescolarle alle gare operative.
 - `/tenders/:tender_id/overview`: vedere sintesi direzionale, criticità, prossime scadenze, stato documenti, review aperte e azioni prioritarie.
 - `/tenders/:tender_id/documents`: ispezionare document map, versioni, famiglie, addendum, documenti superati e parser issues.
-- `/tenders/:tender_id/timeline`: vedere eventi, deadline, milestone, submission, addendum, Q&A e conflitti temporali.
-- `/tenders/:tender_id/deliverables`: gestire deliverable, obbligatorietà, formato, owner, deadline, fonte e stato.
+- `/tenders/:tender_id/timeline`: vedere scadenze, milestone, submission, addendum, domande/risposte e conflitti temporali.
+- `/tenders/:tender_id/deliverables`: gestire consegne, obbligatorietà, formato, owner, scadenza, fonte e stato.
 - `/tenders/:tender_id/requirements`: navigare requisiti O&M, KPI, mandatory, compliance, safety, customer experience e fonte.
-- `/tenders/:tender_id/financials`: leggere financials, payment mechanism, penali, incentivi e stati di review senza esporre valori non validati in overview.
-- `/tenders/:tender_id/cost-drivers`: vedere driver di costo collegati a requisiti, KPI, risorse, asset, personale e rischi.
-- `/tenders/:tender_id/contradictions`: lavorare su contraddizioni candidate e punti da verificare.
-- `/tenders/:tender_id/queries`: gestire Q&A, domande candidate, bozze, approvazione, risposte e incorporazione.
+- `/tenders/:tender_id/financials`: leggere economia di gara, meccanismi di pagamento, penali, incentivi e stati di review senza esporre valori non validati in overview.
+- `/tenders/:tender_id/cost-drivers`: vedere costi collegati a requisiti, KPI, risorse, asset, personale e rischi.
+- `/tenders/:tender_id/contradictions`: lavorare su criticità candidate e punti da verificare.
+- `/tenders/:tender_id/queries`: gestire domande/risposte, bozze, approvazione, risposte ricevute e incorporazione.
 - `/tenders/:tender_id/review`: validare, correggere, contestare e chiudere item.
 - `/tenders/:tender_id/audit`: consultare eventi, AI gate, parser run, review, policy e source lineage.
 
@@ -48,6 +51,10 @@ Le viste devono privilegiare:
 - riferimenti fonte;
 - pannelli di dettaglio;
 - accesso rapido alla review.
+
+Nel MVP locale, una gara creata dall’utente deve comparire nella lista gare reale e usare le stesse route operative delle gare dimostrative. Le gare dimostrative restano accessibili solo tramite vista esplicita. Se l’id appartiene a un workspace locale, le viste mostrano inventario, controlli generati, registro e sezioni operative basate sui documenti caricati, senza trasformare automaticamente dati non estratti in verità.
+
+Per tutte le gare che passano dal workspace unificato, la vista `/documents` deve usare lo stesso schema: lista fonti con deep link `?source=...`, pannello ispettore coerente, bottone `Apri file` sul documento originale quando il file esiste davvero e, quando disponibile, testo estratto o sintetico come supporto alla verifica.
 
 Card e componenti incorniciati vanno usati per item ripetuti, modali o tool realmente separati, non come decorazione generale.
 
@@ -168,6 +175,21 @@ La UI deve distinguere chiaramente:
 
 Le label utente devono essere italiane e comprensibili. Codici come `T1`, `L0`, `currentness`, `needs_review` o `blocked_by_policy` restano nel modello e nei documenti tecnici, non come testo primario.
 
+Per il MVP, la nomenclatura visibile deve privilegiare il lessico dell’utente finale:
+
+- `Gare`, non `Tender` come titolo primario di lista;
+- `Quadro gara`, non `Dashboard Tender`;
+- `Scadenze`, non `Timeline` quando la vista serve a decidere date e milestone;
+- `Consegne`, non `Deliverables`;
+- `Economia`, non `Financials`;
+- `Costi`, non `Cost driver`;
+- `Domande/Risposte`, non solo `Q&A` quando c’è spazio;
+- `Controlli`, non `Da validare` come destinazione principale;
+- `Registro`, non `Audit`;
+- `fonti prioritarie`, non `P0/P1`;
+- `documenti pubblici`, `uso interno`, `accesso ristretto`, non `L0/L1/L2`;
+- `dati dimostrativi`, non `fixture` o `Demo MVP`.
+
 ## Source Inspector E Audit
 
 Ogni dato rilevante deve poter aprire un pannello fonte con:
@@ -223,17 +245,18 @@ Indicatori calcolati devono indicare formula, dipendenze, fonte e comportamento 
 
 Termini consigliati:
 
-- `Gare` o `Tender` secondo contesto, evitando oscillazioni nello stesso livello UI;
+- `Gare` come titolo primario di lista;
+- `Quadro gara`;
 - `Documenti`;
 - `Scadenze`;
-- `Deliverables`;
+- `Consegne`;
 - `Requisiti`;
-- `Financials`;
-- `Cost driver`;
+- `Economia`;
+- `Costi`;
 - `Criticità`;
-- `Q&A`;
-- `Da validare`;
-- `Registro attività`;
+- `Domande/Risposte`;
+- `Controlli`;
+- `Registro`;
 - `Fonte`;
 - `Stato documenti`;
 - `Vigente`;
@@ -248,6 +271,7 @@ Termini da evitare nella UI primaria:
 - codici task come titolo;
 - classi privacy nude;
 - stati raw in inglese;
+- termini di fase o sviluppo come `pilot`, `Fase 7`, `stabilizzare`, `blocker`, `evidence-first`;
 - copy promozionale.
 
 ## Responsive, Empty Ed Error States

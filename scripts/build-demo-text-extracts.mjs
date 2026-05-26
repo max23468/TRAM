@@ -3,7 +3,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 function usage() {
-  console.error("Usage: npm run pilot:extract-text -- <package-id>");
+  console.error("Usage: npm run demo:extract-text -- <package-id>");
 }
 
 function run(command, args) {
@@ -48,7 +48,7 @@ const inventoryPath = path.join(
   "working",
   packageId,
   "inventory",
-  "local-pilot-inventory.json"
+  "local-inventory.json"
 );
 const inventory = JSON.parse(await readFile(inventoryPath, "utf8"));
 const outputDir = path.join(cwd, "data", "working", packageId, "text-extracts");

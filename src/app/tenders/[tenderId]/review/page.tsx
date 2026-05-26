@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+import { TenderWorkspaceRoutePage } from "@/features/navigation/tender-workspace-route-page";
 
 export const metadata: Metadata = {
-  title: "Da validare | TRAM",
-  description: "Coda prioritaria per validare, correggere o bloccare dati proposti."
+  title: "Controlli | TRAM",
+  description: "Coda prioritaria per confermare, correggere o contestare dati proposti."
 };
 
 type TenderRoutePageProps = {
@@ -14,11 +14,11 @@ export default async function ReviewPage({ params }: TenderRoutePageProps) {
   const { tenderId } = await params;
 
   return (
-    <TenderSectionPage
+    <TenderWorkspaceRoutePage
       tenderId={tenderId}
       section="review"
-      title="Da validare"
-      description="Coda prioritaria per validare, correggere, contestare o bloccare dati proposti."
+      title="Controlli"
+      description="Coda prioritaria per confermare, correggere, contestare o lasciare da chiarire i dati proposti."
     />
   );
 }

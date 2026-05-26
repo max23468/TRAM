@@ -76,8 +76,8 @@ export type ExtractionQualityMetrics = {
   taskCoverage: Record<ExtractionTask, number>;
 };
 
-export type PilotReadinessReport = {
-  status: "ready_for_internal_pilot" | "blocked";
+export type MvpReadinessReport = {
+  status: "ready_for_user_test" | "blocked";
   userCountTarget: number;
   completedUserCount: number;
   summary: string;

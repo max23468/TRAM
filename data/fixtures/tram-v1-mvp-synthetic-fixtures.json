@@ -15,7 +15,7 @@
       "privacy_level": "L1",
       "dashboard_state": "open_critical_issues",
       "owner_role": "owner",
-      "package_label": "Demo sanificata metropolitana O&M"
+      "package_label": "Gara dimostrativa metropolitana O&M"
     },
     {
       "id": "tender_fx_luas_light_rail_om",
@@ -107,7 +107,7 @@
     {
       "id": "doc_fx_qna_register",
       "tender_id": "tender_fx_cop_metro_om",
-      "title": "Registro Q&A",
+      "title": "Domande/Risposte",
       "family": "clarification_register",
       "version": "v1.0",
       "currentness": "under_review",
@@ -182,8 +182,8 @@
     {
       "id": "src_fx_005",
       "document_id": "doc_fx_itt",
-      "label": "Istruzioni, Q&A",
-      "synthetic_excerpt": "Le risposte Q&A approvate prevalgono sulle indicazioni precedenti se incompatibili.",
+      "label": "Istruzioni, domande e risposte",
+      "synthetic_excerpt": "Le risposte ufficiali approvate prevalgono sulle indicazioni precedenti se incompatibili.",
       "page": 9
     },
     {
@@ -217,22 +217,22 @@
     {
       "id": "src_fx_qna_register",
       "document_id": "doc_fx_qna_register",
-      "label": "Registro Q&A, riga sintetica 1",
-      "synthetic_excerpt": "Il registro Q&A contiene numero, oggetto, riferimento documento, domanda, risposta e classificazione.",
+      "label": "Domande/Risposte, riga sintetica 1",
+      "synthetic_excerpt": "Il registro Domande/Risposte contiene numero, oggetto, riferimento documento, domanda, risposta e classificazione.",
       "page": 1
     },
     {
       "id": "src_fx_qna_correction_schedule",
       "document_id": "doc_fx_qna_register",
-      "label": "Registro Q&A, correzione sintetica",
-      "synthetic_excerpt": "Una risposta dell’ente rettifica un dato di calendario e richiede aggiornamento della dashboard.",
+      "label": "Domande/Risposte, correzione sintetica",
+      "synthetic_excerpt": "Una risposta dell’ente rettifica un dato di calendario e richiede aggiornamento del quadro gara.",
       "page": 1
     },
     {
       "id": "src_fx_qna_missing_attachment",
       "document_id": "doc_fx_qna_register",
-      "label": "Registro Q&A, allegato mancante",
-      "synthetic_excerpt": "Una risposta rimanda a un allegato non ancora caricato nel Tender.",
+      "label": "Domande/Risposte, allegato mancante",
+      "synthetic_excerpt": "Una risposta rimanda a un allegato non ancora caricato nella gara.",
       "page": 1
     },
     {
@@ -308,14 +308,14 @@
     {
       "id": "src_fx_qna_redline_scope",
       "document_id": "doc_fx_qna_register",
-      "label": "Registro Q&A, perimetro redline",
+      "label": "Domande/Risposte, perimetro redline",
       "synthetic_excerpt": "Una risposta chiarisce quali modifiche redline sono da incorporare nel set corrente.",
       "page": 2
     },
     {
       "id": "src_fx_qna_sensitive_question",
       "document_id": "doc_fx_qna_register",
-      "label": "Registro Q&A, domanda sensibile",
+      "label": "Domande/Risposte, domanda sensibile",
       "synthetic_excerpt": "Una bozza interna contiene un dubbio da approvare prima di qualunque export esterno.",
       "page": 3
     },
@@ -698,7 +698,7 @@
       "id": "rev_fx_qna_001",
       "tender_id": "tender_fx_cop_metro_om",
       "task": "T8",
-      "title": "Integrare risposta Q&A correttiva nella dashboard",
+      "title": "Integrare risposta correttiva nel quadro gara",
       "risk": "high",
       "status": "needs_owner",
       "source_reference_id": "src_fx_qna_correction_schedule"
@@ -707,7 +707,7 @@
       "id": "rev_fx_qna_002",
       "tender_id": "tender_fx_cop_metro_om",
       "task": "T1",
-      "title": "Caricare allegato citato dal registro Q&A",
+      "title": "Caricare allegato citato dal registro Domande/Risposte",
       "risk": "high",
       "status": "blocked",
       "source_reference_id": "src_fx_qna_missing_attachment"
@@ -725,7 +725,7 @@
       "id": "rev_fx_003",
       "tender_id": "tender_fx_milano_bus_lots",
       "task": "T5",
-      "title": "Payment mechanism da analizzare con AI gate L1",
+      "title": "Meccanismo economico da controllare con approvazione interna",
       "risk": "high",
       "status": "needs_owner",
       "source_reference_id": "src_fx_003"
@@ -823,7 +823,7 @@
     {
       "id": "clar_fx_metro_requirement_clarification",
       "tender_id": "tender_fx_cop_metro_om",
-      "title": "Q&A requisito operativo",
+      "title": "Risposta su requisito operativo",
       "status": "incorporated",
       "source_channel": "q_and_a_register",
       "source_register_row_no": "4",
@@ -854,7 +854,7 @@
       "authority_platform_reference": "portale_ente:registro_qna_sintetico",
       "question_summary": "Domanda sintetica con risposta che rimanda a materiale esterno.",
       "answer_summary": "Risposta sintetica non incorporabile finché l’allegato citato non è presente.",
-      "blocked_reason": "Allegato citato dalla risposta Q&A non disponibile nel Tender.",
+      "blocked_reason": "Allegato citato dalla risposta ufficiale non disponibile nella gara.",
       "requires_dashboard_update": false,
       "approval_required": true,
       "approved_by": null,
@@ -863,7 +863,7 @@
     {
       "id": "clar_fx_metro_internal_draft",
       "tender_id": "tender_fx_cop_metro_om",
-      "title": "Bozza Q&A da valutare",
+      "title": "Bozza di domanda da valutare",
       "status": "draft_question",
       "source_channel": "internal_draft",
       "source_register_row_no": null,
@@ -883,7 +883,7 @@
     {
       "id": "clar_fx_milano_deadline_question",
       "tender_id": "tender_fx_milano_bus_lots",
-      "title": "Q&A su finestra di aggiornamento lotti",
+      "title": "Domanda su finestra di aggiornamento lotti",
       "status": "sent_to_authority",
       "source_channel": "procurement_portal",
       "source_register_row_no": null,
@@ -914,7 +914,7 @@
     {
       "id": "time_fx_metro_qna_deadline",
       "tender_id": "tender_fx_cop_metro_om",
-      "title": "Termine ricezione Q&A",
+      "title": "Termine ricezione domande",
       "date_label": "18/06/2026",
       "status": "confirmed",
       "impact": "high",
@@ -924,7 +924,7 @@
       "id": "time_fx_metro_submission",
       "tender_id": "tender_fx_cop_metro_om",
       "title": "Presentazione offerta",
-      "date_label": "09/07/2026, modificata da Q&A",
+      "date_label": "09/07/2026, modificata da risposta",
       "status": "changed_by_qna",
       "impact": "high",
       "source_reference_id": "src_fx_qna_correction_schedule"
@@ -1222,7 +1222,7 @@
           "id": "route_node_fx_cop_qna",
           "tender_id": "tender_fx_cop_metro_om",
           "node_key": "q_and_a",
-          "label": "Q&A",
+          "label": "Domande",
           "route_token": "route-qna",
           "state": "answered",
           "risk": "high",
@@ -1304,7 +1304,7 @@
           "state": "unclear",
           "source_reference_ids": ["src_fx_qna_correction_schedule"],
           "review_item_ids": ["rev_fx_qna_001"],
-          "label": "Q&A modifica deadline"
+          "label": "Domande modificano scadenza"
         },
         {
           "id": "route_edge_fx_cop_fin_cost",
@@ -1315,7 +1315,7 @@
           "state": "proposed",
           "source_reference_ids": ["src_fx_metro_pricing_indexation"],
           "review_item_ids": [],
-          "label": "AI L1 ammessa, driver costo da review"
+          "label": "Analisi interna ammessa, costo da controllare"
         }
       ]
     },
@@ -1392,7 +1392,7 @@
           "id": "route_node_fx_luas_qna",
           "tender_id": "tender_fx_luas_light_rail_om",
           "node_key": "q_and_a",
-          "label": "Q&A",
+          "label": "Domande",
           "route_token": "route-qna",
           "state": "answered",
           "risk": "medium",
@@ -1518,7 +1518,7 @@
           "route_token": "route-core",
           "state": "unclear",
           "risk": "high",
-          "count_label": "deadline",
+          "count_label": "scadenza",
           "target_route": "/tenders/tender_fx_milano_bus_lots/timeline",
           "source_reference_ids": ["src_fx_003"],
           "review_item_ids": ["rev_fx_003"],
@@ -1562,11 +1562,11 @@
           "id": "route_node_fx_milano_qna",
           "tender_id": "tender_fx_milano_bus_lots",
           "node_key": "q_and_a",
-          "label": "Q&A",
+          "label": "Domande",
           "route_token": "route-qna",
           "state": "proposed",
           "risk": "medium",
-          "count_label": "deadline",
+          "count_label": "scadenza",
           "target_route": "/tenders/tender_fx_milano_bus_lots/queries",
           "source_reference_ids": ["src_fx_003"],
           "review_item_ids": [],
@@ -1644,7 +1644,7 @@
           "state": "unclear",
           "source_reference_ids": ["src_fx_003"],
           "review_item_ids": ["rev_fx_003"],
-          "label": "Q&A modifica deadline sintetica"
+          "label": "Domande modificano scadenza sintetica"
         },
         {
           "id": "route_edge_fx_milano_fin_criticalities",
@@ -1655,7 +1655,7 @@
           "state": "proposed",
           "source_reference_ids": ["src_fx_003"],
           "review_item_ids": ["rev_fx_003"],
-          "label": "PEF sintetico in attesa di approvazione L1"
+          "label": "PEF sintetico in attesa di approvazione interna"
         },
         {
           "id": "route_edge_fx_milano_fin_cost",
@@ -1743,7 +1743,7 @@
           "id": "route_node_fx_metro_pq_qna",
           "tender_id": "tender_fx_metrolink_ppp_pq",
           "node_key": "q_and_a",
-          "label": "Q&A",
+          "label": "Domande",
           "route_token": "route-qna",
           "state": "confirmed",
           "risk": "low",
@@ -1836,7 +1836,7 @@
           "state": "confirmed",
           "source_reference_ids": ["src_fx_004"],
           "review_item_ids": ["rev_fx_004"],
-          "label": "review pronta senza blocker"
+          "label": "controlli pronti senza blocchi"
         }
       ]
     },
@@ -1913,7 +1913,7 @@
           "id": "route_node_fx_depot_qna",
           "tender_id": "tender_fx_depot_ebus_om",
           "node_key": "q_and_a",
-          "label": "Q&A",
+          "label": "Domande",
           "route_token": "route-qna",
           "state": "not_started",
           "risk": null,
@@ -2004,7 +2004,7 @@
     {
       "id": "con_fx_metro_submission_deadline",
       "tender_id": "tender_fx_cop_metro_om",
-      "title": "Scadenza offerta diversa tra istruzioni e Q&A",
+      "title": "Scadenza offerta diversa tra istruzioni e risposte",
       "status": "candidate",
       "risk": "high",
       "source_reference_ids": ["src_fx_001", "src_fx_qna_correction_schedule"]
@@ -2012,7 +2012,7 @@
     {
       "id": "con_fx_metro_attachment_gap",
       "tender_id": "tender_fx_cop_metro_om",
-      "title": "Risposta Q&A cita allegato non presente nel set caricato",
+      "title": "Risposta ufficiale cita allegato non presente nel set caricato",
       "status": "blocked",
       "risk": "high",
       "source_reference_ids": ["src_fx_qna_missing_attachment"]
@@ -2119,36 +2119,36 @@
       "id": "audit_fx_001",
       "tender_id": "tender_fx_cop_metro_om",
       "event_type": "validation",
-      "title": "Tender fixture creato",
+      "title": "Gara dimostrativa creata",
       "status": "completed",
       "task": "audit",
       "related_record_id": "tender_fx_cop_metro_om",
-      "actor": "fixture.owner@example.invalid",
-      "action": "fixture_tender_created",
+      "actor": "Responsabile gara",
+      "action": "Creazione gara dimostrativa",
       "created_at": "2026-05-13T12:00:00+02:00"
     },
     {
       "id": "audit_fx_002",
       "tender_id": "tender_fx_milano_bus_lots",
       "event_type": "ai_gate",
-      "title": "Gate AI L1 in attesa owner",
+      "title": "Controllo AI in attesa di approvazione interna",
       "status": "blocked",
       "task": "T5",
       "related_record_id": "gate_fx_002",
-      "actor": "fixture.reviewer@example.invalid",
-      "action": "l1_ai_gate_pending_owner",
+      "actor": "Revisore",
+      "action": "Approvazione interna richiesta",
       "created_at": "2026-05-13T12:05:00+02:00"
     },
     {
       "id": "audit_fx_003",
       "tender_id": "tender_fx_cop_metro_om",
       "event_type": "ai_gate",
-      "title": "Dato L2 bloccato per uso esterno",
+      "title": "Dato riservato bloccato per uso esterno",
       "status": "blocked",
       "task": "T5",
       "related_record_id": "gate_fx_003",
-      "actor": "fixture.system@example.invalid",
-      "action": "l2_effective_internal_offer_blocked",
+      "actor": "Sistema TRAM",
+      "action": "Uso esterno bloccato da regole dati",
       "created_at": "2026-05-14T16:05:00+02:00"
     },
     {
@@ -2159,8 +2159,8 @@
       "status": "suspended",
       "task": "T1",
       "related_record_id": "gate_fx_004",
-      "actor": "fixture.system@example.invalid",
-      "action": "free_quota_exhausted_job_suspended",
+      "actor": "Sistema TRAM",
+      "action": "Lavoro sospeso per quota gratuita esaurita",
       "created_at": "2026-05-15T11:10:00+02:00"
     },
     {
@@ -2171,20 +2171,20 @@
       "status": "blocked",
       "task": "T8",
       "related_record_id": "gate_fx_005",
-      "actor": "fixture.system@example.invalid",
-      "action": "provider_policy_stale_requires_review",
+      "actor": "Sistema TRAM",
+      "action": "Regole provider da ricontrollare",
       "created_at": "2026-05-15T11:15:00+02:00"
     },
     {
       "id": "audit_fx_006",
       "tender_id": "tender_fx_cop_metro_om",
       "event_type": "validation",
-      "title": "Review item contestato",
+      "title": "Controllo contestato",
       "status": "completed",
       "task": "T4",
       "related_record_id": "rev_fx_007",
-      "actor": "fixture.reviewer@example.invalid",
-      "action": "review_item_contested",
+      "actor": "Revisore",
+      "action": "Dato contestato dopo controllo fonte",
       "created_at": "2026-05-15T11:20:00+02:00"
     }
   ]

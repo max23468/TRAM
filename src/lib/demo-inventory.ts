@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
-export type PilotInventoryFile = {
+export type DemoInventoryFile = {
   id: string;
   tenderId: string;
   packageId: string;
@@ -16,7 +16,7 @@ export type PilotInventoryFile = {
   issueCodes: string[];
 };
 
-export type PilotInventory = {
+export type DemoInventory = {
   generatedAt: string;
   tenderId: string;
   packageId: string;
@@ -24,10 +24,10 @@ export type PilotInventory = {
   rootLabel: string;
   fileCount: number;
   totalSizeBytes: number;
-  files: PilotInventoryFile[];
+  files: DemoInventoryFile[];
 };
 
-export type PilotSummary = {
+export type DemoInventorySummary = {
   generatedAt: string;
   tenderId: string;
   packageId: string;
@@ -42,7 +42,7 @@ export type PilotSummary = {
   topLevelFolderCounts: Record<string, number>;
 };
 
-export type PilotTextExtractSummary = {
+export type DemoTextExtractSummary = {
   generatedAt: string;
   packageId: string;
   extractedCount: number;
@@ -50,27 +50,27 @@ export type PilotTextExtractSummary = {
   skippedCount: number;
 };
 
-export const cphPackageId = "copenhagen-m1-m4-om";
+export const copenhagenDemoPackageId = "copenhagen-m1-m4-om";
 
 const repoRoot = process.cwd();
-const packageRoot = path.join(repoRoot, "data", "packages", cphPackageId);
+const packageRoot = path.join(repoRoot, "data", "packages", copenhagenDemoPackageId);
 const inventoryPath = path.join(
   repoRoot,
   "data",
   "working",
-  cphPackageId,
+  copenhagenDemoPackageId,
   "inventory",
-  "local-pilot-inventory.json"
+  "local-inventory.json"
 );
 const summaryPath = path.join(
   repoRoot,
   "data",
   "working",
-  cphPackageId,
+  copenhagenDemoPackageId,
   "inventory",
-  "local-pilot-summary.json"
+  "local-summary.json"
 );
-const textExtractDir = path.join(repoRoot, "data", "working", cphPackageId, "text-extracts");
+const textExtractDir = path.join(repoRoot, "data", "working", copenhagenDemoPackageId, "text-extracts");
 const textSummaryPath = path.join(textExtractDir, "summary.json");
 
 async function readJson<T>(filePath: string): Promise<T | null> {
@@ -81,19 +81,19 @@ async function readJson<T>(filePath: string): Promise<T | null> {
   }
 }
 
-export async function getCphPilotInventory() {
-  return readJson<PilotInventory>(inventoryPath);
+export async function getDemoInventory() {
+  return readJson<DemoInventory>(inventoryPath);
 }
 
-export async function getCphPilotSummary() {
-  return readJson<PilotSummary>(summaryPath);
+export async function getDemoInventorySummary() {
+  return readJson<DemoInventorySummary>(summaryPath);
 }
 
-export async function getCphTextExtractSummary() {
-  return readJson<PilotTextExtractSummary>(textSummaryPath);
+export async function getDemoTextExtractSummary() {
+  return readJson<DemoTextExtractSummary>(textSummaryPath);
 }
 
-export async function getCphTextExtract(fileId: string) {
+export async function getDemoTextExtract(fileId: string) {
   if (!/^[a-z0-9._-]+$/i.test(fileId)) {
     return null;
   }
@@ -105,7 +105,7 @@ export async function getCphTextExtract(fileId: string) {
   }
 }
 
-export function resolveCphDocumentPath(file: PilotInventoryFile) {
+export function resolveDemoDocumentPath(file: DemoInventoryFile) {
   const resolvedPath = path.resolve(packageRoot, file.relativePath);
 
   if (!resolvedPath.startsWith(packageRoot)) {
@@ -129,13 +129,13 @@ export function formatBytes(bytes: number) {
   return `${(kilobytes / 1024).toFixed(1)} MB`;
 }
 
-export function getTopLevelFolder(file: PilotInventoryFile) {
+export function getTopLevelFolder(file: DemoInventoryFile) {
   return file.relativePath.split("/")[0] ?? "[root]";
 }
 
-export type CphPilotPriority = "critical" | "high" | "normal";
+export type DemoDocumentPriority = "critical" | "high" | "normal";
 
-export type CphPilotDocumentVersion = PilotInventoryFile & {
+export type DemoDocumentVersion = DemoInventoryFile & {
   areaId: string;
   areaLabel: string;
   documentCode: string | null;
@@ -148,27 +148,27 @@ export type CphPilotDocumentVersion = PilotInventoryFile & {
   versionNumber: number | null;
 };
 
-export type CphPilotDocumentGroup = {
+export type DemoDocumentGroup = {
   id: string;
   areaId: string;
   areaLabel: string;
-  currentVersion: CphPilotDocumentVersion;
+  currentVersion: DemoDocumentVersion;
   documentCode: string | null;
   familyKey: string;
   familyLabel: string;
   formats: string[];
   hasTrackChanges: boolean;
-  priority: CphPilotPriority;
+  priority: DemoDocumentPriority;
   reviewFocus: string;
-  sourceTextVersion: CphPilotDocumentVersion | null;
+  sourceTextVersion: DemoDocumentVersion | null;
   title: string;
-  versions: CphPilotDocumentVersion[];
+  versions: DemoDocumentVersion[];
 };
 
 type FamilyInfo = {
   key: string;
   label: string;
-  priority: CphPilotPriority;
+  priority: DemoDocumentPriority;
   reviewFocus: string;
 };
 
@@ -238,7 +238,7 @@ function inferVersion(fileName: string) {
   };
 }
 
-function inferArea(file: PilotInventoryFile) {
+function inferArea(file: DemoInventoryFile) {
   const topLevelFolder = getTopLevelFolder(file);
 
   if (topLevelFolder.startsWith("a.")) {
@@ -268,7 +268,7 @@ function inferArea(file: PilotInventoryFile) {
   };
 }
 
-function inferFamily(file: PilotInventoryFile): FamilyInfo {
+function inferFamily(file: DemoInventoryFile): FamilyInfo {
   const searchableName = file.fileName.toLowerCase();
 
   if (file.extension === ".mpp" || searchableName.includes("procurement schedule")) {
@@ -416,7 +416,7 @@ function inferFamily(file: PilotInventoryFile): FamilyInfo {
   };
 }
 
-function cleanDocumentTitle(file: PilotInventoryFile, family: FamilyInfo) {
+function cleanDocumentTitle(file: DemoInventoryFile, family: FamilyInfo) {
   const withoutExtension = file.fileName.replace(/\.[^.]+$/, "");
   const cleaned = withoutExtension
     .replace(/^\d+\.\s*/, "")
@@ -433,7 +433,7 @@ function cleanDocumentTitle(file: PilotInventoryFile, family: FamilyInfo) {
   return cleaned || family.label;
 }
 
-function getGroupKey(file: PilotInventoryFile, family: FamilyInfo, title: string) {
+function getGroupKey(file: DemoInventoryFile, family: FamilyInfo, title: string) {
   if (family.key === "procurement_schedule") {
     return family.key;
   }
@@ -443,7 +443,7 @@ function getGroupKey(file: PilotInventoryFile, family: FamilyInfo, title: string
   return `${family.key}:${documentCode ?? slugify(title)}`;
 }
 
-function formatRank(version: CphPilotDocumentVersion) {
+function formatRank(version: DemoDocumentVersion) {
   if (version.familyKey === "procurement_schedule" && version.extension === ".mpp") {
     return 5;
   }
@@ -463,7 +463,7 @@ function formatRank(version: CphPilotDocumentVersion) {
   return 1;
 }
 
-function currentVersionScore(version: CphPilotDocumentVersion) {
+function currentVersionScore(version: DemoDocumentVersion) {
   return (
     (version.versionNumber ?? 0) * 100 +
     formatRank(version) * 10 +
@@ -471,12 +471,12 @@ function currentVersionScore(version: CphPilotDocumentVersion) {
   );
 }
 
-function versionSort(left: CphPilotDocumentVersion, right: CphPilotDocumentVersion) {
+function versionSort(left: DemoDocumentVersion, right: DemoDocumentVersion) {
   return currentVersionScore(right) - currentVersionScore(left);
 }
 
-function groupSort(left: CphPilotDocumentGroup, right: CphPilotDocumentGroup) {
-  const priorityScore: Record<CphPilotPriority, number> = {
+function groupSort(left: DemoDocumentGroup, right: DemoDocumentGroup) {
+  const priorityScore: Record<DemoDocumentPriority, number> = {
     critical: 0,
     high: 1,
     normal: 2
@@ -492,15 +492,15 @@ function groupSort(left: CphPilotDocumentGroup, right: CphPilotDocumentGroup) {
   );
 }
 
-export function buildCphPilotDocumentGroups(inventory: PilotInventory) {
-  const buckets = new Map<string, CphPilotDocumentVersion[]>();
+export function buildDemoDocumentGroups(inventory: DemoInventory) {
+  const buckets = new Map<string, DemoDocumentVersion[]>();
 
   for (const file of inventory.files) {
     const area = inferArea(file);
     const family = inferFamily(file);
     const title = cleanDocumentTitle(file, family);
     const version = inferVersion(file.fileName);
-    const documentVersion: CphPilotDocumentVersion = {
+    const documentVersion: DemoDocumentVersion = {
       ...file,
       areaId: area.id,
       areaLabel: area.label,
@@ -542,7 +542,7 @@ export function buildCphPilotDocumentGroups(inventory: PilotInventory) {
         sourceTextVersion,
         title: currentVersion.shortTitle,
         versions: sortedVersions
-      } satisfies CphPilotDocumentGroup;
+      } satisfies DemoDocumentGroup;
     })
     .sort(groupSort);
 }

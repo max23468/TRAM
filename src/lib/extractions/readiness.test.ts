@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildPilotReadinessReport, type ExtractionQualityMetrics } from ".";
+import { buildMvpReadinessReport, type ExtractionQualityMetrics } from ".";
 
 const metrics: ExtractionQualityMetrics = {
   blockedCount: 0,
@@ -19,20 +19,20 @@ const metrics: ExtractionQualityMetrics = {
   }
 };
 
-describe("pilot readiness report", () => {
-  it("distingue pilot-ready da pilot reale non ancora completato", () => {
-    const report = buildPilotReadinessReport({ metrics });
+describe("MVP readiness report", () => {
+  it("distingue prontezza tecnica da test utenti non ancora completato", () => {
+    const report = buildMvpReadinessReport({ metrics });
 
     expect(report).toMatchObject({
       completedUserCount: 0,
-      status: "ready_for_internal_pilot",
+      status: "ready_for_user_test",
       userCountTarget: 3
     });
-    expect(report.blockers).toContain("Pilot reale con utenti interni non ancora completato.");
+    expect(report.blockers).toContain("Test con utenti interni non ancora completato.");
   });
 
   it("blocca readiness quando ci sono claim senza fonte", () => {
-    const report = buildPilotReadinessReport({
+    const report = buildMvpReadinessReport({
       completedUserCount: 3,
       metrics: {
         ...metrics,
@@ -42,7 +42,7 @@ describe("pilot readiness report", () => {
     });
 
     expect(report.status).toBe("blocked");
-    expect(report.blockers).toContain("Alcuni candidati non hanno fonte collegata.");
-    expect(report.blockers).toContain("Esistono claim non supportati da source reference.");
+    expect(report.blockers).toContain("Alcuni dati proposti non hanno fonte collegata.");
+    expect(report.blockers).toContain("Esistono dati non supportati da una fonte.");
   });
 });

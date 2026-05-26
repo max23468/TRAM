@@ -16,7 +16,9 @@ type MetadataSidecar = Pick<
 >;
 
 export function createFilesystemStorageDriver(root = ".local/tram-storage"): StorageDriver {
-  const rootPath = path.resolve(process.cwd(), root);
+  const rootPath = path.isAbsolute(root)
+    ? root
+    : path.join(/* turbopackIgnore: true */ process.cwd(), root);
 
   function resolveKey(key: string) {
     assertSafeObjectKey(key);

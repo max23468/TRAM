@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+import { TenderWorkspaceRoutePage } from "@/features/navigation/tender-workspace-route-page";
 
 export const metadata: Metadata = {
-  title: "Cost driver | TRAM",
-  description: "Famiglie costo e dipendenze operative proposte con fonti verificabili."
+  title: "Costi | TRAM",
+  description: "Fattori operativi che possono incidere su costo, rischio o lavoro dell’offerta."
 };
 
 type TenderRoutePageProps = {
@@ -14,11 +14,11 @@ export default async function CostDriversPage({ params }: TenderRoutePageProps) 
   const { tenderId } = await params;
 
   return (
-    <TenderSectionPage
+    <TenderWorkspaceRoutePage
       tenderId={tenderId}
       section="cost-drivers"
-      title="Cost driver"
-      description="Famiglie costo e dipendenze operative proposte, senza importi inventati o assunzioni economiche libere."
+      title="Costi"
+      description="Fattori operativi che possono incidere su costo, rischio o lavoro dell’offerta, sempre collegati a una fonte."
     />
   );
 }

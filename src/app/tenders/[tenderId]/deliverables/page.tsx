@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+import { TenderWorkspaceRoutePage } from "@/features/navigation/tender-workspace-route-page";
 
 export const metadata: Metadata = {
-  title: "Deliverables | TRAM",
-  description: "Submission, formati, limiti e stato validazione dei deliverables del Tender."
+  title: "Consegne | TRAM",
+  description: "Documenti da preparare, formati, limiti e controlli collegati."
 };
 
 type TenderRoutePageProps = {
@@ -14,11 +14,11 @@ export default async function DeliverablesPage({ params }: TenderRoutePageProps)
   const { tenderId } = await params;
 
   return (
-    <TenderSectionPage
+    <TenderWorkspaceRoutePage
       tenderId={tenderId}
       section="deliverables"
-      title="Deliverables"
-      description="Elenco submission, formati, limiti e stato validazione dei deliverables del Tender."
+      title="Consegne"
+      description="Elenco dei documenti da preparare, con formati, limiti, buste e stato dei controlli."
     />
   );
 }

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+import { TenderWorkspaceRoutePage } from "@/features/navigation/tender-workspace-route-page";
 
 export const metadata: Metadata = {
-  title: "Timeline | TRAM",
-  description: "Scadenze, milestone, addendum e conflitti calendario del Tender."
+  title: "Scadenze | TRAM",
+  description: "Scadenze, milestone, addendum e conflitti calendario della gara."
 };
 
 type TenderRoutePageProps = {
@@ -14,11 +14,11 @@ export default async function TimelinePage({ params }: TenderRoutePageProps) {
   const { tenderId } = await params;
 
   return (
-    <TenderSectionPage
+    <TenderWorkspaceRoutePage
       tenderId={tenderId}
       section="timeline"
-      title="Timeline"
-      description="Vista per scadenze, milestone, addendum e conflitti calendario da validare."
+      title="Scadenze"
+      description="Scadenze, milestone, addendum e conflitti calendario da controllare con le fonti."
     />
   );
 }

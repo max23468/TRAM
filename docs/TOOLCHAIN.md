@@ -32,8 +32,8 @@ Questo documento riassume runtime, package manager, lockfile, comandi e verifich
 | `npm run build` | build Next.js |
 | `npm run verify` | lint, typecheck, test e build |
 | `npm run quality:react-doctor` | React Doctor completo con fail su errori |
-| `npm run pilot:inventory` | inventario locale pilot, senza committare working data |
-| `npm run pilot:extract-text` | estrazione testo locale pilot, senza contenuti riservati in Git |
+| `npm run demo:inventory` | inventario locale demo, senza committare working data |
+| `npm run demo:extract-text` | estrazione testo locale demo, senza contenuti riservati in Git |
 
 ## Workflow GitHub
 

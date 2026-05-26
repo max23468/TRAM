@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
-  buildCphPilotDocumentGroups,
-  type PilotInventory,
-  type PilotInventoryFile
-} from "./pilot-cph";
+  buildDemoDocumentGroups,
+  type DemoInventory,
+  type DemoInventoryFile
+} from "./demo-inventory";
 
-function file(overrides: Partial<PilotInventoryFile>): PilotInventoryFile {
+function file(overrides: Partial<DemoInventoryFile>): DemoInventoryFile {
   return {
-    id: overrides.id ?? "pilot_test_file",
+    id: overrides.id ?? "demo_test_file",
     tenderId: "tender_cph_m1_m4_om",
     packageId: "copenhagen-m1-m4-om",
     relativePath: overrides.relativePath ?? `a. Tender documents/${overrides.fileName}`,
@@ -22,7 +22,7 @@ function file(overrides: Partial<PilotInventoryFile>): PilotInventoryFile {
   };
 }
 
-function inventory(files: PilotInventoryFile[]): PilotInventory {
+function inventory(files: DemoInventoryFile[]): DemoInventory {
   return {
     generatedAt: "2026-05-16T12:00:00.000Z",
     tenderId: "tender_cph_m1_m4_om",
@@ -35,9 +35,9 @@ function inventory(files: PilotInventoryFile[]): PilotInventory {
   };
 }
 
-describe("CPH pilot document groups", () => {
+describe("demo inventory document groups", () => {
   it("non classifica ogni file della cartella Conditions come condizioni contrattuali", () => {
-    const groups = buildCphPilotDocumentGroups(
+    const groups = buildDemoDocumentGroups(
       inventory([
         file({
           id: "personal_data_pdf",

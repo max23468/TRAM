@@ -21,7 +21,7 @@ const parserByExtension = {
 
 function usage() {
   console.error(
-    "Usage: npm run pilot:inventory -- <package-root> <package-id> <tender-id> [package-label]"
+    "Usage: npm run demo:inventory -- <package-root> <package-id> <tender-id> [package-label]"
   );
 }
 
@@ -46,7 +46,7 @@ function assertAllowedInput(rootPath) {
   const relative = path.relative(process.cwd(), rootPath).split(path.sep).join("/");
 
   if (!relative.startsWith("data/packages/") && !relative.startsWith("data/working/")) {
-    throw new Error("Il pacchetto pilot deve stare sotto data/packages o data/working.");
+    throw new Error("Il pacchetto demo deve stare sotto data/packages o data/working.");
   }
 }
 
@@ -114,7 +114,7 @@ async function buildRecord({ filePath, packageId, rootPath, tenderId }) {
   }
 
   return {
-    id: `pilot_${sha256.slice(0, 16)}`,
+    id: `demo_${sha256.slice(0, 16)}`,
     tenderId,
     packageId,
     relativePath,
@@ -176,7 +176,7 @@ assertAllowedInput(rootPath);
 const rootStat = await stat(rootPath);
 
 if (!rootStat.isDirectory()) {
-  throw new Error("La root del pacchetto pilot deve essere una directory.");
+  throw new Error("La root del pacchetto demo deve essere una directory.");
 }
 
 const packageId = toSafeSegment(packageIdArg);
@@ -210,11 +210,11 @@ const summary = buildSummary({
 
 await mkdir(outputDir, { recursive: true });
 await writeFile(
-  path.join(outputDir, "local-pilot-inventory.json"),
+  path.join(outputDir, "local-inventory.json"),
   `${JSON.stringify(inventory, null, 2)}\n`
 );
 await writeFile(
-  path.join(outputDir, "local-pilot-summary.json"),
+  path.join(outputDir, "local-summary.json"),
   `${JSON.stringify(summary, null, 2)}\n`
 );
 

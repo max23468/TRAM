@@ -1,167 +1,234 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowRight, Database, FileJson, ShieldCheck } from "lucide-react";
+import type { ReactNode } from "react";
+import { ArrowRight, CalendarDays, ClipboardCheck, FileText, Layers3 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button-variants";
-import { getFixtureSummary, getTramFixtures } from "@/lib/fixtures";
-import { cn } from "@/lib/utils";
+import { TenderWorkspaceShell } from "@/features/navigation/tender-workspace-shell";
+import {
+  InspectorInfoRow,
+  WorkspaceMetricCard,
+  WorkspacePanel
+} from "@/features/navigation/tender-workspace-primitives";
+import { demoTendersHref } from "@/features/navigation/tender-workspace-config";
+import { listLocalTenderSummaries } from "@/lib/local-workspace/server";
+import type { LocalTenderSummary } from "@/lib/local-workspace/types";
 
 export const metadata: Metadata = {
   title: "TRAM",
-  description:
-    "Dashboard MVP per analizzare e monitorare documenti di gara del trasporto pubblico locale."
+  description: "Workspace operativo per controllare gare TPL, fonti e priorità."
 };
 
-const setupCards = [
-  {
-    title: "Demo sanificata",
-    description: "Dataset dimostrativo senza dati o path verso pacchetti reali.",
-    icon: FileJson
-  },
-  {
-    title: "Storage adapter",
-    description: "Filesystem locale attivo; OCI predisposto e fail-closed.",
-    icon: Database
-  },
-  {
-    title: "Guardrail dati",
-    description: ".gitignore, .env.example e blocco dati reali nella demo MVP.",
-    icon: ShieldCheck
-  }
-];
-
-const privacyLabels: Record<string, string> = {
-  L0: "Pubblico",
-  L1: "Uso interno",
-  L2: "Accesso ristretto"
-};
-
-const dashboardStateLabels: Record<string, string> = {
-  draft: "Bozza",
-  open_critical_issues: "Criticità aperte",
-  partially_validated: "Validazione parziale",
-  stale_due_to_new_docs: "Stale per nuovi documenti",
-  validated_internal: "Validato internamente",
-  // Etichette legacy mantenute solo per eventuali fixture vecchie durante sviluppo locale.
-  review_required: "Validazione richiesta",
-  stale_documents: "Documenti da aggiornare",
-  policy_blocked: "Policy bloccante",
-  ready: "Pronto"
-};
-
-export default function Home() {
-  const fixtures = getTramFixtures();
-  const summary = getFixtureSummary();
+export default async function Home() {
+  const localTenders = await listLocalTenderSummaries();
+  const openReviewCount = localTenders.reduce(
+    (total, tender) => total + tender.openReviewCount,
+    0
+  );
+  const documentCount = localTenders.reduce(
+    (total, tender) => total + tender.documentCount,
+    0
+  );
+  const tendersToShow = localTenders.slice(0, 3);
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col gap-10 px-6 py-8">
-      <nav className="flex items-center justify-between border-b border-border pb-4">
-        <div>
-          <p className="text-sm font-semibold">TRAM</p>
-          <p className="text-xs text-muted-foreground">
-            Tender Requirements Analysis & Monitoring
-          </p>
-        </div>
-        <Badge variant="success">Demo MVP</Badge>
-      </nav>
+    <TenderWorkspaceShell
+      description="Entra nel lavoro quotidiano: crea o apri una gara reale del workspace locale, controlla documenti, fonti e decisioni ancora aperte."
+      headerBadges={
+        <>
+          <Badge variant="success">Workspace reale</Badge>
+          <Badge variant="muted">{localTenders.length} gare locali</Badge>
+        </>
+      }
+      productHref="/"
+      sectionEyebrow="workspace"
+      sidebarBadges={
+        <>
+          <Badge variant="success">Operativo</Badge>
+          <Badge variant="muted">Uso locale</Badge>
+        </>
+      }
+      sidebarContent={
+        <HomeSidebar localTenderCount={localTenders.length} openReviewCount={openReviewCount} />
+      }
+      sidebarEyebrow="Area di lavoro"
+      sidebarSubtitle="Gare, fonti e controlli"
+      sidebarTitle="TRAM"
+      statusLabel="Workspace reale"
+      statusVariant="success"
+      title="Controllo gare"
+      topActions={
+        <>
+          <Link className="text-sm font-medium text-primary hover:underline" href="/tenders/intake">
+            Prepara gara
+          </Link>
+          <Link className="text-sm font-medium text-primary hover:underline" href="/tenders">
+            Apri gare
+          </Link>
+        </>
+      }
+    >
+      <section className="grid gap-4 md:grid-cols-4" aria-label="Sintesi lavoro">
+        <WorkspaceMetricCard icon={Layers3} label="Gare in lavoro" value={String(localTenders.length)} />
+        <WorkspaceMetricCard
+          icon={ClipboardCheck}
+          label="Controlli aperti"
+          tone={openReviewCount > 0 ? "risk" : "success"}
+          value={String(openReviewCount)}
+        />
+        <WorkspaceMetricCard icon={FileText} label="Documenti" value={String(documentCount)} />
+        <WorkspaceMetricCard
+          icon={CalendarDays}
+          label="Prossimo passo"
+          value={localTenders.length > 0 ? "Apri gara" : "Crea gara"}
+        />
+      </section>
 
-      <section className="grid gap-8 md:grid-cols-[1.3fr_0.7fr]">
-        <div className="flex flex-col justify-center">
-          <h1 className="max-w-3xl text-4xl font-semibold tracking-tight">
-            Base applicativa pronta per roadmap MVP, demo sanificata e storage controllato.
-          </h1>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-muted-foreground">
-            Scaffold Next.js App Router con dati demo sanificati, nessun documento reale e
-            separazione esplicita tra dominio, dataset applicativo e storage documentale.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link className={cn(buttonVariants(), "w-fit")} href="/tenders">
-              Apri tender
-              <ArrowRight aria-hidden="true" size={16} />
-            </Link>
-            <Link
-              className={cn(buttonVariants({ variant: "secondary" }), "w-fit")}
-              href="/tenders/tender_fx_cop_metro_om/overview"
-            >
-              Apri demo
+      <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
+        <WorkspacePanel>
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p className="text-[11px] font-medium uppercase text-muted-foreground">
+                Punto di partenza
+              </p>
+              <h2 className="mt-1 text-lg font-semibold">
+                {tendersToShow.length > 0 ? "Gare operative" : "Nessuna gara creata"}
+              </h2>
+            </div>
+            <Link className="text-sm font-medium text-primary hover:underline" href="/tenders">
+              Vedi workspace
             </Link>
           </div>
-        </div>
 
-        <aside className="rounded-lg border border-border bg-card p-5">
-          <p className="text-xs font-medium uppercase text-muted-foreground">
-            Dataset demo
+          <div className="mt-4 grid gap-3">
+            {tendersToShow.length > 0 ? (
+              tendersToShow.map((tender) => <HomeTenderSummaryLink key={tender.id} tender={tender} />)
+            ) : (
+              <p className="rounded-md border border-border bg-muted p-4 text-sm leading-6 text-muted-foreground">
+                Il workspace reale è vuoto. Crea una gara locale per iniziare a caricare documenti,
+                generare inventario e aprire i primi controlli.
+              </p>
+            )}
+
+            <HomeTenderLink
+              badges={
+                <>
+                  <Badge variant="default">Nuova gara</Badge>
+                  <Badge variant="muted">Workspace locale</Badge>
+                </>
+              }
+              description="Imposta dati minimi, pacchetto documentale e regole dati."
+              href="/tenders/intake"
+              title="Prepara una nuova gara"
+            />
+          </div>
+        </WorkspacePanel>
+
+        <WorkspacePanel>
+          <p className="text-[11px] font-medium uppercase text-muted-foreground">Demo separata</p>
+          <h2 className="mt-1 text-lg font-semibold">Dati dimostrativi</h2>
+          <p className="mt-3 text-sm leading-6 text-muted-foreground">
+            Esempi e gara Copenhagen restano disponibili per esplorare TRAM, ma non sono più
+            mescolati al workspace operativo.
           </p>
-          <dl className="mt-4 grid grid-cols-2 gap-4">
-            <div>
-              <dt className="text-xs text-muted-foreground">Tender</dt>
-              <dd className="mt-1 text-2xl font-semibold">{summary.tendersCount}</dd>
-            </div>
-            <div>
-              <dt className="text-xs text-muted-foreground">Documenti</dt>
-              <dd className="mt-1 text-2xl font-semibold">{summary.documentsCount}</dd>
-            </div>
-            <div>
-              <dt className="text-xs text-muted-foreground">Da validare</dt>
-              <dd className="mt-1 text-2xl font-semibold">{summary.reviewItemsCount}</dd>
-            </div>
-            <div>
-              <dt className="text-xs text-muted-foreground">Q&A</dt>
-              <dd className="mt-1 text-2xl font-semibold">
-                {summary.clarificationThreadsCount}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs text-muted-foreground">Policy AI</dt>
-              <dd className="mt-1 text-2xl font-semibold">
-                {summary.aiGateDecisionsCount}
-              </dd>
-            </div>
-          </dl>
-          <p className="mt-5 rounded-md bg-muted p-3 text-xs text-muted-foreground">
-            Versione dati demo {summary.fixtureVersion}. Nessun riferimento a documenti reali.
-          </p>
-        </aside>
+          <Link
+            className="mt-5 inline-flex rounded-md border border-border bg-background px-3 py-2 text-sm font-medium transition-colors hover:bg-muted"
+            href={demoTendersHref}
+          >
+            Apri modalità demo
+          </Link>
+        </WorkspacePanel>
       </section>
+    </TenderWorkspaceShell>
+  );
+}
 
-      <section className="grid gap-4 md:grid-cols-3">
-        {setupCards.map((card) => (
-          <article key={card.title} className="rounded-lg border border-border bg-card p-5">
-            <card.icon className="text-primary" aria-hidden="true" size={20} />
-            <h2 className="mt-4 text-base font-semibold">{card.title}</h2>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">{card.description}</p>
-          </article>
-        ))}
-      </section>
+function HomeSidebar({
+  localTenderCount,
+  openReviewCount
+}: {
+  localTenderCount: number;
+  openReviewCount: number;
+}) {
+  return (
+    <div className="grid gap-4">
+      <dl className="grid gap-3 text-sm text-[color:var(--sidebar-text)]">
+        <InspectorInfoRow label="Vista" value="Workspace reale" />
+        <InspectorInfoRow label="Gare locali" value={localTenderCount} />
+        <InspectorInfoRow label="Controlli aperti" value={openReviewCount} />
+      </dl>
+      <nav className="grid gap-1 text-sm" aria-label="Ingresso TRAM">
+        <Link
+          className="rounded-md bg-white/[0.10] px-2 py-2 font-medium text-white transition-colors active:scale-95"
+          href="/"
+        >
+          Home
+        </Link>
+        <Link
+          className="rounded-md px-2 py-2 font-medium text-[color:var(--sidebar-muted)] transition-colors hover:bg-white/[0.06] hover:text-white active:scale-95"
+          href="/tenders"
+        >
+          Gare
+        </Link>
+        <Link
+          className="rounded-md px-2 py-2 font-medium text-[color:var(--sidebar-muted)] transition-colors hover:bg-white/[0.06] hover:text-white active:scale-95"
+          href="/tenders/intake"
+        >
+          Prepara gara
+        </Link>
+        <Link
+          className="rounded-md px-2 py-2 font-medium text-[color:var(--sidebar-muted)] transition-colors hover:bg-white/[0.06] hover:text-white active:scale-95"
+          href={demoTendersHref}
+        >
+          Dati dimostrativi
+        </Link>
+      </nav>
+    </div>
+  );
+}
 
-      <section className="rounded-lg border border-border bg-card">
-        <div className="border-b border-border px-5 py-4">
-          <h2 className="text-sm font-semibold">Tender demo</h2>
-        </div>
-        <div className="divide-y divide-border">
-          {fixtures.tenders.map((tender) => (
-            <Link
-              key={tender.id}
-              className="grid gap-3 px-5 py-4 transition-colors hover:bg-muted md:grid-cols-[1fr_auto]"
-              href={`/tenders/${tender.id}/overview`}
-            >
-              <div>
-                <p className="font-medium">{tender.name}</p>
-                <p className="mt-1 text-sm text-muted-foreground">{tender.package_label}</p>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge>{tender.stage}</Badge>
-                <Badge variant={tender.privacy_level === "L2" ? "risk" : "muted"}>
-                  {privacyLabels[tender.privacy_level] ?? tender.privacy_level}
-                </Badge>
-                <Badge variant="muted">
-                  {dashboardStateLabels[tender.dashboard_state] ?? tender.dashboard_state}
-                </Badge>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-    </main>
+function HomeTenderSummaryLink({ tender }: { tender: LocalTenderSummary }) {
+  return (
+    <HomeTenderLink
+      badges={
+        <>
+          <Badge variant={tender.openReviewCount > 0 ? "risk" : "success"}>
+            {tender.statusLabel}
+          </Badge>
+          <Badge variant="muted">{tender.privacy}</Badge>
+        </>
+      }
+      description={`${tender.documentCount} documenti · ${tender.openReviewCount} controlli aperti`}
+      href={`/tenders/${tender.id}/overview`}
+      title={tender.name}
+    />
+  );
+}
+
+function HomeTenderLink({
+  badges,
+  description,
+  href,
+  title
+}: {
+  badges: ReactNode;
+  description: string;
+  href: string;
+  title: string;
+}) {
+  return (
+    <Link
+      className="grid gap-3 rounded-md border border-border bg-muted p-4 transition-colors hover:bg-card active:scale-95 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center"
+      href={href}
+    >
+      <span>
+        <span className="flex flex-wrap gap-2">{badges}</span>
+        <span className="mt-3 block text-sm font-semibold text-foreground">{title}</span>
+        <span className="mt-1 block text-sm leading-5 text-muted-foreground">{description}</span>
+      </span>
+      <span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
+        Apri
+        <ArrowRight aria-hidden="true" size={15} />
+      </span>
+    </Link>
   );
 }

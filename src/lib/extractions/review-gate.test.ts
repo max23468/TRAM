@@ -58,7 +58,7 @@ describe("extraction review gate and quality metrics", () => {
       }),
       expect.objectContaining({
         candidateId: "review",
-        reason: "Candidato da validare prima di usarlo in dashboard.",
+        reason: "Dato da controllare prima di usarlo nel quadro gara.",
         severity: "warning"
       })
     ]);

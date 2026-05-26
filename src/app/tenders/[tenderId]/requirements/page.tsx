@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+import { TenderWorkspaceRoutePage } from "@/features/navigation/tender-workspace-route-page";
 
 export const metadata: Metadata = {
   title: "Requisiti e KPI | TRAM",
@@ -14,7 +14,7 @@ export default async function RequirementsPage({ params }: TenderRoutePageProps)
   const { tenderId } = await params;
 
   return (
-    <TenderSectionPage
+    <TenderWorkspaceRoutePage
       tenderId={tenderId}
       section="requirements"
       title="Requisiti e KPI"

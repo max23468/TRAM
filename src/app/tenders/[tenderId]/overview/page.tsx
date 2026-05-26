@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { TenderSectionPage } from "@/features/navigation/tender-section-page";
+import { TenderWorkspaceRoutePage } from "@/features/navigation/tender-workspace-route-page";
 
 export const metadata: Metadata = {
-  title: "Dashboard Tender | TRAM",
-  description: "Quadro operativo evidence-first del Tender con stato, fonti e blocchi."
+  title: "Quadro gara | TRAM",
+  description: "Stato operativo della gara con fonti, priorità e prossime decisioni."
 };
 
 type TenderRoutePageProps = {
@@ -14,11 +14,11 @@ export default async function OverviewPage({ params }: TenderRoutePageProps) {
   const { tenderId } = await params;
 
   return (
-    <TenderSectionPage
+    <TenderWorkspaceRoutePage
       tenderId={tenderId}
       section="overview"
-      title="Dashboard Tender"
-      description="Quadro operativo evidence-first del Tender, con stato, fonti, blocchi e prossime decisioni."
+      title="Quadro gara"
+      description="Stato operativo della gara: priorità, fonti, scadenze, controlli aperti e prossime decisioni."
     />
   );
 }

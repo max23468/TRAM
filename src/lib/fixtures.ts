@@ -1,6 +1,6 @@
 import { z } from "zod";
 import rawFixtures from "../../data/fixtures/tram-v1-mvp-synthetic-fixtures.json";
-import { buildPilotReadinessReport } from "./extractions/pilot";
+import { buildMvpReadinessReport } from "./extractions/readiness";
 import type { ExtractionQualityMetrics } from "./extractions/types";
 
 export const PRIMARY_ROUTE_NODE_KEYS = [
@@ -36,7 +36,7 @@ export const ROUTE_VIEW_CONTRACTS = [
     primaryShape: "TenderOverview",
     secondaryShapes: [
       "IndicatorValue",
-      "TenderRouteStrip",
+      "TenderNavigationSummary",
       "ReviewItemSummary",
       "TenderPolicySummary"
     ],
@@ -439,7 +439,7 @@ export type TramIngestionDocumentStatus = {
   issue_codes: string[];
   source_reference_count: number;
 };
-export type TramPilotReadiness = ReturnType<typeof buildPilotReadinessReport>;
+export type TramMvpReadiness = ReturnType<typeof buildMvpReadinessReport>;
 
 let cachedFixtures: TramFixtures | null = null;
 
@@ -467,7 +467,7 @@ export function getFixtureSummary() {
   };
 }
 
-function getTenderById(tenderId: string): TramTender | undefined {
+export function getTenderById(tenderId: string): TramTender | undefined {
   return getTramFixtures().tenders.find((tender) => tender.id === tenderId);
 }
 
@@ -551,7 +551,7 @@ function getTenderIngestionDocumentStatuses(tenderId: string): TramIngestionDocu
   });
 }
 
-function getTenderPilotReadiness(tenderId: string): TramPilotReadiness {
+function getTenderMvpReadiness(tenderId: string): TramMvpReadiness {
   const documents = getTenderDocuments(tenderId);
   const timelineEvents = getTenderTimelineEvents(tenderId);
   const deliverables = getTenderDeliverables(tenderId);
@@ -581,7 +581,7 @@ function getTenderPilotReadiness(tenderId: string): TramPilotReadiness {
     taskCoverage
   };
 
-  return buildPilotReadinessReport({ metrics });
+  return buildMvpReadinessReport({ metrics });
 }
 
 function getTenderAiGateDecisions(tenderId: string): TramAiGateDecision[] {
@@ -600,8 +600,12 @@ export function getSourceReferenceById(sourceReferenceId: string): TramSourceRef
 
 export function getTenderOverviewModel(tenderId: string) {
   const fixtures = getTramFixtures();
-  const fallbackTender = fixtures.tenders[0];
-  const tender = getTenderById(tenderId) ?? fallbackTender;
+  const tender = getTenderById(tenderId);
+
+  if (!tender) {
+    throw new Error(`Tender non trovato: ${tenderId}`);
+  }
+
   const documents = getTenderDocuments(tender.id);
   const documentIds = new Set(documents.map((document) => document.id));
   const sourceReferences = fixtures.source_references.filter((sourceReference) =>
@@ -619,7 +623,7 @@ export function getTenderOverviewModel(tenderId: string) {
   const routeNetwork = getTenderRouteNetwork(tender.id);
   const contradictions = getTenderContradictions(tender.id);
   const ingestionDocumentStatuses = getTenderIngestionDocumentStatuses(tender.id);
-  const pilotReadiness = getTenderPilotReadiness(tender.id);
+  const mvpReadiness = getTenderMvpReadiness(tender.id);
   const aiGateDecisions = getTenderAiGateDecisions(tender.id);
   const auditEvents = getTenderAuditEvents(tender.id);
 
@@ -639,7 +643,7 @@ export function getTenderOverviewModel(tenderId: string) {
     routeNetwork,
     contradictions,
     ingestionDocumentStatuses,
-    pilotReadiness,
+    mvpReadiness,
     aiGateDecisions,
     auditEvents,
     needsReviewCount: reviewItems.filter((item) =>
