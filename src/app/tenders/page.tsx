@@ -148,20 +148,16 @@ export default async function TendersPage({ searchParams }: TendersPageProps) {
           ? "Modalità dimostrativa: esempi sintetici e pacchetti pubblici servono per esplorare TRAM senza confonderli con il workspace reale."
           : "Workspace reale: qui compaiono solo le gare create localmente dall’utente, con documenti, inventario e controlli collegati."
       }
-      headerBadges={
-        <>
-          <Badge variant="success">{isDemoMode ? "Modalità demo" : "Workspace reale"}</Badge>
-          <Badge variant="muted">{visibleTenderCount} gare in vista</Badge>
-        </>
-      }
+      headerBadgeItems={[
+        { label: isDemoMode ? "Modalità demo" : "Workspace reale", variant: "success" },
+        { label: `${visibleTenderCount} gare in vista`, variant: "muted" }
+      ]}
       productHref="/"
       sectionEyebrow="gare attive"
-      sidebarBadges={
-        <>
-          <Badge variant="success">Operativo</Badge>
-          <Badge variant="muted">Uso interno</Badge>
-        </>
-      }
+      sidebarBadgeItems={[
+        { label: "Operativo", variant: "success" },
+        { label: "Uso interno", variant: "muted" }
+      ]}
       sidebarContent={
           <AggregateSidebar
             attentionCount={attentionCount}
@@ -266,13 +262,13 @@ function AggregateSidebar({
         <InspectorInfoRow label="Controlli aperti" value={blockersCount} />
       </dl>
       <Link
-        className="rounded-md bg-white/[0.10] px-2 py-2 font-medium text-white transition-colors active:scale-95"
+        className="rounded-md bg-white/[0.10] p-2 font-medium text-white transition-colors active:scale-95"
         href="/tenders/intake"
       >
         Prepara gara
       </Link>
       <Link
-        className="rounded-md px-2 py-2 font-medium text-[color:var(--sidebar-muted)] transition-colors hover:bg-white/[0.06] hover:text-white active:scale-95"
+        className="rounded-md p-2 font-medium text-[color:var(--sidebar-muted)] transition-colors hover:bg-white/[0.06] hover:text-white active:scale-95"
         href={isDemoMode ? "/tenders" : demoTendersHref}
       >
         {isDemoMode ? "Workspace reale" : "Dati dimostrativi"}
@@ -282,7 +278,7 @@ function AggregateSidebar({
           <Link
             key={option.id}
             className={cn(
-              "rounded-md px-2 py-2 text-sm font-medium transition-colors active:scale-95",
+              "rounded-md p-2 text-sm font-medium transition-colors active:scale-95",
               selectedFilter === option.id
                 ? "bg-white/[0.10] text-white"
                 : "text-[color:var(--sidebar-muted)] hover:bg-white/[0.06] hover:text-white"

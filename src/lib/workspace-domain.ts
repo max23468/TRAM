@@ -275,9 +275,11 @@ export function buildLocalDomainCandidates({
   tenderId
 }: LocalCandidateInput): WorkspaceDomainCandidate[] {
   const matched = documents
-    .map((document) => ({ document, score: localMatchScore(section, document) }))
-    .filter((item) => item.score > 0)
-    .sort((left, right) => right.score - left.score || left.document.fileName.localeCompare(right.document.fileName))
+    .reduce<{ document: LocalTenderDocument; score: number }[]>((items, document) => {
+      const score = localMatchScore(section, document);
+      return score > 0 ? [...items, { document, score }] : items;
+    }, [])
+    .toSorted((left, right) => right.score - left.score || left.document.fileName.localeCompare(right.document.fileName))
     .slice(0, 6);
 
   return matched.map(({ document, score }) => {

@@ -5,16 +5,23 @@ import { cn } from "@/lib/utils";
 import { TenderSideNav } from "./tender-side-nav";
 import type { TenderNavigationSection } from "./tender-workspace-config";
 
+type ShellBadgeItem = {
+  label: string;
+  variant?: "default" | "muted" | "risk" | "success";
+};
+
 export function TenderWorkspaceShell({
   children,
   className,
   currentSection,
   description,
+  headerBadgeItems,
   headerBadges,
   productHref = "/tenders",
   productLabel = "TRAM",
   sectionEyebrow,
   sections,
+  sidebarBadgeItems,
   sidebarBadges,
   sidebarContent,
   sidebarEyebrow = "Gara",
@@ -30,11 +37,13 @@ export function TenderWorkspaceShell({
   className?: string;
   currentSection?: string;
   description: string;
+  headerBadgeItems?: readonly ShellBadgeItem[];
   headerBadges?: ReactNode;
   productHref?: string;
   productLabel?: string;
   sectionEyebrow: string;
   sections?: readonly TenderNavigationSection[];
+  sidebarBadgeItems?: readonly ShellBadgeItem[];
   sidebarBadges?: ReactNode;
   sidebarContent?: ReactNode;
   sidebarEyebrow?: string;
@@ -47,6 +56,18 @@ export function TenderWorkspaceShell({
   topActions?: ReactNode;
 }) {
   const shouldRenderTenderNav = tenderId && currentSection && sections;
+  const renderedHeaderBadges =
+    headerBadgeItems?.map((badge) => (
+      <Badge key={`${badge.variant ?? "default"}:${badge.label}`} variant={badge.variant ?? "default"}>
+        {badge.label}
+      </Badge>
+    )) ?? headerBadges;
+  const renderedSidebarBadges =
+    sidebarBadgeItems?.map((badge) => (
+      <Badge key={`${badge.variant ?? "default"}:${badge.label}`} variant={badge.variant ?? "default"}>
+        {badge.label}
+      </Badge>
+    )) ?? sidebarBadges;
 
   return (
     <main className={cn("min-h-screen bg-background px-2 py-2 sm:px-4 sm:py-4", className)}>
@@ -80,7 +101,7 @@ export function TenderWorkspaceShell({
                 {sidebarSubtitle}
               </p>
             ) : null}
-            {sidebarBadges ? <div className="mt-4 flex flex-wrap gap-2">{sidebarBadges}</div> : null}
+            {renderedSidebarBadges ? <div className="mt-4 flex flex-wrap gap-2">{renderedSidebarBadges}</div> : null}
           </div>
 
           {shouldRenderTenderNav ? (
@@ -123,9 +144,9 @@ export function TenderWorkspaceShell({
                     {description}
                   </p>
                 </div>
-                {headerBadges ? (
+                {renderedHeaderBadges ? (
                   <div className="flex max-w-full flex-wrap justify-start gap-2 lg:justify-end">
-                    {headerBadges}
+                    {renderedHeaderBadges}
                   </div>
                 ) : null}
               </div>

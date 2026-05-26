@@ -56,6 +56,5 @@ Questo documento è il punto di ingresso per decisioni stabili e decisioni pende
 - Verificare sul codice che tutte le route MVP siano ancora allineate alla roadmap dopo ogni slice Fase 4.
 - Trasformare le policy AI in test/fixture quando il gateway sarà implementato.
 - Creare runbook deploy solo quando il target sarà deciso.
-- Creare `CHANGELOG.md` con la prima release applicativa dopo la policy.
 - Conservare nello storico Git i vecchi Markdown senza rimetterli come fonte operativa.
 - Usare `docs/BACKLOG.md` per debiti e idee non ancora promosse in roadmap.

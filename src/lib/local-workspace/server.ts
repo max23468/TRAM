@@ -176,60 +176,60 @@ export async function createLocalTenderWorkspace(input: CreateLocalTenderInput) 
   const tenderId = `local_${safeSegment(normalized.name)}_${Date.now().toString(36)}`;
   const packageId = `package_${Date.now().toString(36)}`;
   const storage = createStorageDriver();
-  const documents: LocalTenderDocument[] = [];
+  const documents = await Promise.all(
+    normalized.files.map(async (file, index): Promise<LocalTenderDocument> => {
+      const body = new Uint8Array(await file.arrayBuffer());
+      const extension = path.extname(file.name).toLowerCase();
+      const parserPlan = getParserPlan(extension, file.type);
+      const sha256 = createHash("sha256").update(body).digest("hex");
+      const status: LocalTenderDocumentStatus =
+        file.size === 0 ? "File vuoto" : parserPlan.status;
+      const issues: string[] = [];
 
-  for (const [index, file] of normalized.files.entries()) {
-    const body = new Uint8Array(await file.arrayBuffer());
-    const extension = path.extname(file.name).toLowerCase();
-    const parserPlan = getParserPlan(extension, file.type);
-    const sha256 = createHash("sha256").update(body).digest("hex");
-    const status: LocalTenderDocumentStatus =
-      file.size === 0 ? "File vuoto" : parserPlan.status;
-    const issues: string[] = [];
-
-    if (status === "File vuoto") {
-      issues.push("File vuoto: non può produrre fonti verificabili.");
-    }
-
-    if (status === "Non supportato") {
-      issues.push("Formato non supportato dalla pipeline locale dell’MVP.");
-    }
-
-    if (status === "Verifica OCR") {
-      issues.push("PDF da controllare: può richiedere OCR.");
-    }
-
-    const safeName = safeSegment(path.basename(file.name, extension), "documento");
-    const storageKey = `tenders/${tenderId}/packages/${packageId}/documents/${sha256.slice(
-      0,
-      16
-    )}-${safeName}${extension}`;
-
-    await storage.putObject({
-      body,
-      contentType: parserPlan.contentType,
-      key: storageKey,
-      metadata: {
-        fileName: file.name,
-        packageId,
-        tenderId
+      if (status === "File vuoto") {
+        issues.push("File vuoto: non può produrre fonti verificabili.");
       }
-    });
 
-    documents.push({
-      contentType: parserPlan.contentType,
-      extension: extension || "none",
-      fileName: file.name,
-      id: `doc_${sha256.slice(0, 16)}_${index}`,
-      issues,
-      parserLabel: parserPlan.parserLabel,
-      relativePath: file.name,
-      sha256,
-      sizeBytes: file.size,
-      status,
-      storageKey
-    });
-  }
+      if (status === "Non supportato") {
+        issues.push("Formato non supportato dalla pipeline locale dell’MVP.");
+      }
+
+      if (status === "Verifica OCR") {
+        issues.push("PDF da controllare: può richiedere OCR.");
+      }
+
+      const safeName = safeSegment(path.basename(file.name, extension), "documento");
+      const storageKey = `tenders/${tenderId}/packages/${packageId}/documents/${sha256.slice(
+        0,
+        16
+      )}-${safeName}${extension}`;
+
+      await storage.putObject({
+        body,
+        contentType: parserPlan.contentType,
+        key: storageKey,
+        metadata: {
+          fileName: file.name,
+          packageId,
+          tenderId
+        }
+      });
+
+      return {
+        contentType: parserPlan.contentType,
+        extension: extension || "none",
+        fileName: file.name,
+        id: `doc_${sha256.slice(0, 16)}_${index}`,
+        issues,
+        parserLabel: parserPlan.parserLabel,
+        relativePath: file.name,
+        sha256,
+        sizeBytes: file.size,
+        status,
+        storageKey
+      };
+    })
+  );
 
   const reviewItems = documents
     .map((document) => reviewItemFromDocument(document, now))
@@ -324,14 +324,17 @@ export async function readLocalTenderStoredDocument({
   }
 }
 
-export async function listLocalTenderWorkspaces() {
+async function listLocalTenderWorkspaces() {
   try {
     const entries = await readdir(tendersRoot, { withFileTypes: true });
-    const workspaces = await Promise.all(
-      entries
-        .filter((entry) => entry.isFile() && entry.name.endsWith(".json"))
-        .map((entry) => readWorkspaceFile(path.join(tendersRoot, entry.name)))
+    const workspaceReads = entries.reduce<Promise<LocalTenderWorkspace | null>[]>(
+      (reads, entry) =>
+        entry.isFile() && entry.name.endsWith(".json")
+          ? [...reads, readWorkspaceFile(path.join(tendersRoot, entry.name))]
+          : reads,
+      []
     );
+    const workspaces = await Promise.all(workspaceReads);
 
     return workspaces
       .filter((workspace): workspace is LocalTenderWorkspace => Boolean(workspace))

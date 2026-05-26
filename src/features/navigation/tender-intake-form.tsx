@@ -122,15 +122,17 @@ function getDraftScore(draft: IntakeDraft) {
   return checks.filter(Boolean).length;
 }
 
+const savedAtFormatter = new Intl.DateTimeFormat("it-IT", {
+  dateStyle: "short",
+  timeStyle: "short"
+});
+
 function formatSavedAt(value: string) {
   if (!value) {
     return "Non ancora salvata";
   }
 
-  return new Intl.DateTimeFormat("it-IT", {
-    dateStyle: "short",
-    timeStyle: "short"
-  }).format(new Date(value));
+  return savedAtFormatter.format(new Date(value));
 }
 
 function formatBytes(bytes: number) {
@@ -309,6 +311,7 @@ export function TenderIntakeForm() {
               creare inventario, hash e controlli iniziali.
             </span>
             <input
+              aria-label="Seleziona documenti"
               className="sr-only"
               multiple
               onChange={(event) => {
@@ -332,7 +335,7 @@ export function TenderIntakeForm() {
                     {file.name}
                   </li>
                 ))}
-                {files.length > 8 ? <li>{files.length - 8} altri file...</li> : null}
+                {files.length > 8 ? <li>{files.length - 8} altri file…</li> : null}
               </ul>
             </div>
           ) : null}
@@ -362,6 +365,7 @@ export function TenderIntakeForm() {
           <WorkspaceKicker>Note operative</WorkspaceKicker>
           <h2 className="mt-1 text-lg font-semibold">Punti da ricordare</h2>
           <textarea
+            aria-label="Note operative"
             className="mt-4 min-h-32 w-full resize-y rounded-md border border-border bg-background px-3 py-2 text-sm leading-6 outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
             onChange={(event) => updateDraft("notes", event.target.value)}
             placeholder="Scadenze dubbie, documenti mancanti, vincoli di riservatezza, domande già emerse."
@@ -469,6 +473,7 @@ function TextField({
     <label className="grid gap-2 text-sm font-medium">
       <span>{label}</span>
       <input
+        aria-label={label}
         className="h-10 rounded-md border border-border bg-background px-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
@@ -493,6 +498,7 @@ function SelectField({
     <label className="grid gap-2 text-sm font-medium">
       <span>{label}</span>
       <select
+        aria-label={label}
         className="h-10 rounded-md border border-border bg-background px-3 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
         onChange={(event) => onChange(event.target.value)}
         value={value}
@@ -528,6 +534,7 @@ function CheckTile({
       <span className="flex items-center justify-between gap-3">
         <Icon aria-hidden="true" size={17} />
         <input
+          aria-label={label}
           checked={checked}
           className="size-4 accent-[color:var(--primary)]"
           onChange={(event) => onChange(event.target.checked)}

@@ -33,20 +33,16 @@ export default async function Home() {
   return (
     <TenderWorkspaceShell
       description="Entra nel lavoro quotidiano: crea o apri una gara reale del workspace locale, controlla documenti, fonti e decisioni ancora aperte."
-      headerBadges={
-        <>
-          <Badge variant="success">Workspace reale</Badge>
-          <Badge variant="muted">{localTenders.length} gare locali</Badge>
-        </>
-      }
+      headerBadgeItems={[
+        { label: "Workspace reale", variant: "success" },
+        { label: `${localTenders.length} gare locali`, variant: "muted" }
+      ]}
       productHref="/"
       sectionEyebrow="workspace"
-      sidebarBadges={
-        <>
-          <Badge variant="success">Operativo</Badge>
-          <Badge variant="muted">Uso locale</Badge>
-        </>
-      }
+      sidebarBadgeItems={[
+        { label: "Operativo", variant: "success" },
+        { label: "Uso locale", variant: "muted" }
+      ]}
       sidebarContent={
         <HomeSidebar localTenderCount={localTenders.length} openReviewCount={openReviewCount} />
       }
@@ -158,25 +154,25 @@ function HomeSidebar({
       </dl>
       <nav className="grid gap-1 text-sm" aria-label="Ingresso TRAM">
         <Link
-          className="rounded-md bg-white/[0.10] px-2 py-2 font-medium text-white transition-colors active:scale-95"
+          className="rounded-md bg-white/[0.10] p-2 font-medium text-white transition-colors active:scale-95"
           href="/"
         >
           Home
         </Link>
         <Link
-          className="rounded-md px-2 py-2 font-medium text-[color:var(--sidebar-muted)] transition-colors hover:bg-white/[0.06] hover:text-white active:scale-95"
+          className="rounded-md p-2 font-medium text-[color:var(--sidebar-muted)] transition-colors hover:bg-white/[0.06] hover:text-white active:scale-95"
           href="/tenders"
         >
           Gare
         </Link>
         <Link
-          className="rounded-md px-2 py-2 font-medium text-[color:var(--sidebar-muted)] transition-colors hover:bg-white/[0.06] hover:text-white active:scale-95"
+          className="rounded-md p-2 font-medium text-[color:var(--sidebar-muted)] transition-colors hover:bg-white/[0.06] hover:text-white active:scale-95"
           href="/tenders/intake"
         >
           Prepara gara
         </Link>
         <Link
-          className="rounded-md px-2 py-2 font-medium text-[color:var(--sidebar-muted)] transition-colors hover:bg-white/[0.06] hover:text-white active:scale-95"
+          className="rounded-md p-2 font-medium text-[color:var(--sidebar-muted)] transition-colors hover:bg-white/[0.06] hover:text-white active:scale-95"
           href={demoTendersHref}
         >
           Dati dimostrativi

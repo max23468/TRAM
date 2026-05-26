@@ -16,7 +16,7 @@ export function LocalReviewActions({
   status: LocalTenderReviewStatus;
   tenderId: string;
 }) {
-  const router = useRouter();
+  const { refresh } = useRouter();
   const [pendingStatus, setPendingStatus] = useState<LocalTenderReviewStatus | null>(null);
 
   async function updateStatus(nextStatus: LocalTenderReviewStatus) {
@@ -27,7 +27,7 @@ export function LocalReviewActions({
       method: "PATCH"
     });
     setPendingStatus(null);
-    router.refresh();
+    refresh();
   }
 
   return (

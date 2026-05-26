@@ -15,8 +15,7 @@ export default async function DocumentsPage({
   params,
   searchParams
 }: TenderRoutePageProps) {
-  const { tenderId } = await params;
-  const { source } = await searchParams;
+  const [{ tenderId }, { source }] = await Promise.all([params, searchParams]);
 
   return (
     <TenderWorkspaceRoutePage

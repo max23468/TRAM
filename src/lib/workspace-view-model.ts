@@ -1203,7 +1203,7 @@ function buildFixtureOverview(model: FixtureTenderOverviewModel): WorkspaceOverv
   const deliverableSource = buildFixtureDomainCandidates(model, "deliverables")[0];
   const requirementSource = buildFixtureDomainCandidates(model, "requirements")[0];
   const financialSource = buildFixtureDomainCandidates(model, "financials")[0];
-  const lastAuditEvent = [...model.auditEvents].sort((left, right) =>
+  const lastAuditEvent = model.auditEvents.toSorted((left, right) =>
     right.created_at.localeCompare(left.created_at)
   )[0];
 
@@ -1330,8 +1330,8 @@ function buildFixtureReviewItems(model: FixtureTenderOverviewModel): WorkspaceRe
 }
 
 function buildFixtureAuditItems(model: FixtureTenderOverviewModel): WorkspaceAuditItemView[] {
-  const auditEvents: WorkspaceAuditItemView[] = [...model.auditEvents]
-    .sort((left, right) => right.created_at.localeCompare(left.created_at))
+  const auditEvents: WorkspaceAuditItemView[] = model.auditEvents
+    .toSorted((left, right) => right.created_at.localeCompare(left.created_at))
     .map((event) => ({
       badge: {
         label: formatFixtureStatus(event.status),
@@ -1342,8 +1342,8 @@ function buildFixtureAuditItems(model: FixtureTenderOverviewModel): WorkspaceAud
       title: event.title
     }));
 
-  const aiGateEvents: WorkspaceAuditItemView[] = [...model.aiGateDecisions]
-    .sort((left, right) => right.created_at.localeCompare(left.created_at))
+  const aiGateEvents: WorkspaceAuditItemView[] = model.aiGateDecisions
+    .toSorted((left, right) => right.created_at.localeCompare(left.created_at))
     .map((decision) => ({
       badge: {
         label: formatFixtureAiDecisionShort(decision.decision),
@@ -1364,7 +1364,7 @@ function buildFixtureAuditItems(model: FixtureTenderOverviewModel): WorkspaceAud
   return [...auditEvents, ...aiGateEvents];
 }
 
-export function buildFixtureWorkspaceViewModel({
+function buildFixtureWorkspaceViewModel({
   description,
   section,
   sourceId,
@@ -1796,7 +1796,7 @@ function buildDemoInventoryAuditItems({
   ];
 }
 
-export function buildLocalWorkspaceViewModel({
+function buildLocalWorkspaceViewModel({
   description,
   section,
   sourceId,
@@ -1863,7 +1863,7 @@ export function buildLocalWorkspaceViewModel({
   };
 }
 
-export async function buildDemoInventoryWorkspaceViewModel({
+async function buildDemoInventoryWorkspaceViewModel({
   description,
   section,
   sourceId,

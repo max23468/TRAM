@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ClipboardList, FileCheck2, FileText, ShieldCheck } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { TenderIntakeForm } from "@/features/navigation/tender-intake-form";
 import { TenderWorkspaceShell } from "@/features/navigation/tender-workspace-shell";
 import { WorkspaceMetricCard } from "@/features/navigation/tender-workspace-primitives";
@@ -16,20 +15,16 @@ export default function TenderIntakePage() {
   return (
     <TenderWorkspaceShell
       description="Imposta dati minimi, riferimento al pacchetto documentale e regole dati prima di avviare controlli, fonti e scadenze."
-      headerBadges={
-        <>
-          <Badge variant="default">Nuova gara</Badge>
-          <Badge variant="muted">Workspace locale</Badge>
-        </>
-      }
+      headerBadgeItems={[
+        { label: "Nuova gara" },
+        { label: "Workspace locale", variant: "muted" }
+      ]}
       productHref="/"
       sectionEyebrow="preparazione gara"
-      sidebarBadges={
-        <>
-          <Badge variant="default">Bozza</Badge>
-          <Badge variant="muted">Uso interno</Badge>
-        </>
-      }
+      sidebarBadgeItems={[
+        { label: "Bozza" },
+        { label: "Uso interno", variant: "muted" }
+      ]}
       sidebarContent={<TenderIntakeSidebar />}
       sidebarEyebrow="Area di lavoro"
       sidebarSubtitle="Dati minimi, pacchetto e regole"
@@ -58,19 +53,19 @@ function TenderIntakeSidebar() {
   return (
     <nav className="grid gap-1 text-sm" aria-label="Preparazione gara">
       <Link
-        className="rounded-md bg-white/[0.10] px-2 py-2 font-medium text-white transition-colors active:scale-95"
+        className="rounded-md bg-white/[0.10] p-2 font-medium text-white transition-colors active:scale-95"
         href="/tenders/intake"
       >
         Preparazione
       </Link>
       <Link
-        className="rounded-md px-2 py-2 font-medium text-[color:var(--sidebar-muted)] transition-colors hover:bg-white/[0.06] hover:text-white active:scale-95"
+        className="rounded-md p-2 font-medium text-[color:var(--sidebar-muted)] transition-colors hover:bg-white/[0.06] hover:text-white active:scale-95"
         href="/tenders"
       >
         Gare
       </Link>
       <Link
-        className="rounded-md px-2 py-2 font-medium text-[color:var(--sidebar-muted)] transition-colors hover:bg-white/[0.06] hover:text-white active:scale-95"
+        className="rounded-md p-2 font-medium text-[color:var(--sidebar-muted)] transition-colors hover:bg-white/[0.06] hover:text-white active:scale-95"
         href={demoTendersHref}
       >
         Dati dimostrativi
