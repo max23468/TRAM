@@ -8,7 +8,7 @@ Questo documento riassume runtime, package manager, lockfile, comandi e verifich
 | --- | --- | --- |
 | Node.js | `24.x` in GitHub Actions; locale compatibile con Next.js 16 | `.github/workflows/quality.yml`, `docs/OPERATIONS.md` |
 | npm | package manager canonico | `package-lock.json`, `docs/OPERATIONS.md` |
-| TypeScript | `5.9.3` | `package.json` |
+| TypeScript | `6.0.3` | `package.json` |
 | Next.js | `16.2.6` | `package.json` |
 | React | `19.2.6` | `package.json` |
 | Versione applicativa | `package.json` come fonte canonica | `docs/decisions/0003-versioning-release-policy.md` |
@@ -61,6 +61,6 @@ Questo documento riassume runtime, package manager, lockfile, comandi e verifich
 - Non introdurre runtime, deploy, release o provider esterni solo per uniformità.
 - Non fare bump versione per modifiche solo documentali, governance GitHub o
   pianificazione.
-- Non cambiare Node, npm, Next, React o Python documentale senza aggiornare questo documento e la decisione collegata.
+- Non cambiare Node, npm, Next, React, TypeScript o Python documentale senza aggiornare questo documento e la decisione collegata.
 - Non committare `.venv`, pacchetti gara, working data, OCR, estratti, export, dump, `.env` o chiavi.
 - `docs/OPERATIONS.md` resta il runbook operativo; questo file è la matrice sintetica della toolchain.
