@@ -345,7 +345,7 @@ TRAM è una repository Git pubblicata come repository privata `max23468/TRAM`, c
 
 Policy operativa corrente:
 
-- “pubblica” significa al massimo pubblicare su GitHub, non deploy o release;
+- “pubblica” significa completare il flusso con PR/merge su GitHub e includere deploy/attivazione solo se il target operativo esiste ed è parte del flusso; in ogni caso la chiusura include cleanup branch/worktree locali e remoti non più necessari;
 - “deploya” significa deploy solo se esiste runbook e target confermato;
 - “rilascia” segue la policy versioning/release TRAM e non implica deploy.
 - “attiva”, “metti in produzione”, “manda”, “esegui su documenti reali” o formule simili richiedono di verificare prima policy dati, provider, costi, consenso operativo e rischi.
