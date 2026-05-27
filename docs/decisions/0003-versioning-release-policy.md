@@ -46,10 +46,9 @@ Una release TRAM richiede richiesta esplicita del maintainer e include:
 5. tag Git `vX.Y.Z`;
 6. GitHub Release solo se utile e se non genera automazioni indesiderate.
 
-Se GitHub Actions non è disponibile o il budget è esaurito, le Actions non sono
-gate di release: la release può procedere solo con verifiche locali dichiarate
-e commit/tag esplicitamente pubblicati con attenzione a non attivare workflow
-non necessari.
+Se GitHub Actions non è disponibile, la release resta sospesa finché non sono
+eseguite le verifiche locali equivalenti documentate e approvate nel runbook:
+la pubblicazione esplicita richiede comunque verifiche locali dichiarate e commit/tag tracciati.
 
 Deploy e release restano separati. Una release non deploya TRAM. Un deploy
 richiede target e runbook approvati in `docs/OPERATIONS.md` o documento
