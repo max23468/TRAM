@@ -32,9 +32,9 @@ jobs:
         shell: bash
         run: |
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            base_ref="${GITHUB_BASE_REF:-main}"
-            git fetch origin "$base_ref" --depth=1
-            git diff --check "origin/${base_ref}...HEAD"
+            base_sha="${{ github.event.pull_request.base.sha }}"
+            git fetch origin "$base_sha" --depth=1
+            git diff --check "${base_sha}..${GITHUB_SHA}"
           else
             git diff-tree --check --no-commit-id -r HEAD
           fi
