@@ -300,7 +300,7 @@ Regole trasferibili:
 
 - da Pratix: piano scritto prima del codice per decisioni importanti; documentazione viva; attenzione a UI italiana, glossario, versioning, changelog e pubblicazione reale su GitHub;
 - da DocMolder: separare lavoro tra agenti solo con ownership chiara; non mescolare worktree sporchi; per VPS/deploy seguire runbook e verificare host, log e smoke, non solo stato attivo;
-- da FiscalBay: non dedurre dati assenti dalle fonti/API/documenti; deploy VPS solo su host esplicitamente confermato; “pubblica” e “deploya” non sono sinonimi se la policy non lo dice;
+- da FiscalBay: non dedurre dati assenti dalle fonti/API/documenti; deploy VPS solo su host esplicitamente confermato; in TRAM, “pubblica” include sempre il flusso operativo completo previsto dalla policy corrente e comprende anche le attività operative correlate quando richieste da quel flusso.
 - da SyncBay: non introdurre runtime, worker, integrazioni o workflow produttivi non decisi; per informazioni variabili usare fonti ufficiali aggiornate; documentare ADR per decisioni stabili; trattare dati reali come sensibili;
 - da SendChimp: mantenere una fase docs-first finché il perimetro non è deciso; non introdurre backend, frontend, worker, job queue, automazioni produttive, token persistenti, webhook o integrazioni reali senza richiesta esplicita e documentazione aggiornata; distinguere sempre automatismo e conferma manuale; prevedere check dedicati per documentazione, link, segreti, apostrofi e accenti;
 - da tutti: scope contenuto, Git status iniziale, no segreti in repo, no dati reali in fixture/log/screenshot, Conventional Commit quando ci sarà Git, verifiche proporzionate, self-review, prossimi passi concreti.
@@ -345,9 +345,9 @@ TRAM è una repository Git pubblicata come repository privata `max23468/TRAM`, c
 
 Policy operativa corrente:
 
-- “pubblica” significa completare il flusso con PR/merge su GitHub e includere deploy/attivazione solo se il target operativo esiste ed è parte del flusso; in ogni caso la chiusura include cleanup branch/worktree locali e remoti non più necessari;
+- “pubblica” significa completare il flusso completo su GitHub (PR/merge, verifica, pulizia branch/worktree locali e remoti) e includere deploy/attivazione quando il lavoro impatta runtime o quando la fase corrente lo richiede.
 - “deploya” significa deploy solo se esiste runbook e target confermato;
-- “rilascia” segue la policy versioning/release TRAM e non implica deploy.
+- “rilascia” segue la policy versioning/release TRAM e include il rilascio operativo completo dove applicabile.
 - “attiva”, “metti in produzione”, “manda”, “esegui su documenti reali” o formule simili richiedono di verificare prima policy dati, provider, costi, consenso operativo e rischi.
 
 Se il maintainer usa formule ambigue, chiedere conferma prima di azioni esterne o irreversibili.
