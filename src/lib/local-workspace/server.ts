@@ -384,7 +384,11 @@ export async function updateLocalReviewItemStatus({
   const workspace = await readLocalTenderWorkspace(tenderId);
 
   if (!workspace) {
-    return null;
+    return { status: "workspace_not_found" as const };
+  }
+
+  if (!workspace.reviewItems.some((item) => item.id === reviewItemId)) {
+    return { status: "review_item_not_found" as const, workspace };
   }
 
   const nextWorkspace: LocalTenderWorkspace = {
@@ -405,5 +409,5 @@ export async function updateLocalReviewItemStatus({
   };
 
   await writeWorkspace(nextWorkspace);
-  return nextWorkspace;
+  return { status: "updated" as const, workspace: nextWorkspace };
 }

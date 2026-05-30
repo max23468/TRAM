@@ -17,15 +17,19 @@ function parseStatus(value: unknown): LocalTenderReviewStatus {
 export async function PATCH(request: NextRequest, { params }: LocalReviewRouteParams) {
   const { reviewItemId, tenderId } = await params;
   const body = (await request.json().catch(() => ({}))) as { status?: string };
-  const workspace = await updateLocalReviewItemStatus({
+  const result = await updateLocalReviewItemStatus({
     reviewItemId,
     status: parseStatus(body.status),
     tenderId
   });
 
-  if (!workspace) {
+  if (result.status === "workspace_not_found") {
     return NextResponse.json({ error: "Gara locale non trovata" }, { status: 404 });
   }
 
-  return NextResponse.json({ workspace });
+  if (result.status === "review_item_not_found") {
+    return NextResponse.json({ error: "Controllo locale non trovato" }, { status: 404 });
+  }
+
+  return NextResponse.json({ workspace: result.workspace });
 }
