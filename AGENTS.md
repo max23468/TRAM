@@ -7,8 +7,8 @@ Scope: intera cartella TRAM, salvo futuri `AGENTS.md` più specifici in sottocar
 ## Priorità delle istruzioni
 
 1. Istruzioni di sistema/developer ricevute nella sessione corrente.
-2. Questo file `AGENTS.md`.
-3. Eventuali `AGENTS.md` più profondi nella cartella toccata.
+2. Eventuali `AGENTS.md` più profondi nella cartella toccata, che prevalgono sulle regole root per il loro scope.
+3. Questo file `AGENTS.md`.
 4. Documentazione TRAM in `docs/` e guide operative in `data/`.
 5. Decisioni esplicite del maintainer in chat.
 6. Convenzioni dedotte da codice, test e configurazioni vicine.
@@ -207,6 +207,9 @@ Python 3.12 è scelta intenzionale per stabilità delle librerie native/document
 - Non creare `README.md`, `notes.md`, `plan.md`, `roadmap.md` o `index.md` duplicabili se non esplicitamente deciso.
 - Usare nomi descrittivi e univoci, per esempio `AI_AND_DOCUMENT_PIPELINE.md` o un ADR numerato quando serve dettaglio stabile.
 - Non creare documenti duplicati: integrare documenti esistenti quando la decisione appartiene a una sezione già presente.
+- Durante migrazioni, rinomini o merge documentali non perdere contenuti utili:
+  aggiornare link e indici, preservare ciò che resta valido e dichiarare nel
+  riepilogo ciò che viene rimosso perché superato.
 - Se uno step viene saltato, annotarlo come debito o decisione da recuperare.
 - Per modifiche solo documentali, la verifica minima è rilettura, coerenza dei link e controllo naming.
 
@@ -343,7 +346,8 @@ TRAM è una repository Git pubblicata come repository privata `max23468/TRAM`, c
 - non aggiungere workflow GitHub Actions, bot, release flow o deploy automation senza decisione esplicita;
 - controllare la `Codex feedback inbox` prima di merge non banali;
 - controllare la `Codex feedback inbox` anche prima di PR ready, pubblicazione, deploy o release;
-- dopo merge, pulire branch locali/remoti non più necessari;
+- dopo merge/pubblicazione controllare `git branch -vv` e `git worktree list`,
+  poi pulire branch/worktree locali o remoti non più necessari;
 - non lasciare branch `codex/*` stale se il lavoro è stato assorbito.
 
 Policy operativa corrente:
@@ -384,6 +388,8 @@ Regole operative:
   `CHANGELOG.md` quando previsto dalla policy;
 - per docs-only e piani interni, evitare release applicative;
 - deploy e release restano separati: una release non deploya TRAM.
+- Release Please non è adottato: non delegare changelog, versioni, tag o GitHub
+  Release a bot automatici senza nuova decisione esplicita.
 
 ## Testing e verifica
 
@@ -463,6 +469,7 @@ Nelle risposte finali:
 - riassumere cosa è cambiato o scoperto;
 - indicare file principali quando utile;
 - riportare verifiche solo quando aggiungono valore o quando ci sono limiti/rischi;
+- dichiarare stato publish/release/deploy e branch/worktree quando applicabile;
 - dichiarare rischi residui concreti;
 - includere sempre il prossimo passo consigliato quando esiste un seguito operativo reale;
 - evitare footer rituali sui test;
