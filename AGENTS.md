@@ -7,8 +7,8 @@ Scope: intera cartella TRAM, salvo futuri `AGENTS.md` più specifici in sottocar
 ## Priorità delle istruzioni
 
 1. Istruzioni di sistema/developer ricevute nella sessione corrente.
-2. Questo file `AGENTS.md`.
-3. Eventuali `AGENTS.md` più profondi nella cartella toccata, che prevalgono sulle regole root per il loro scope.
+2. Eventuali `AGENTS.md` più profondi nella cartella toccata, che prevalgono sulle regole root per il loro scope.
+3. Questo file `AGENTS.md`.
 4. Documentazione TRAM in `docs/` e guide operative in `data/`.
 5. Decisioni esplicite del maintainer in chat.
 6. Convenzioni dedotte da codice, test e configurazioni vicine.
