@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
@@ -37,6 +37,8 @@ type IntakeDraft = {
   stage: string;
   updatedAt: string;
 };
+
+type UpdateDraft = <Value extends keyof IntakeDraft>(key: Value, value: IntakeDraft[Value]) => void;
 
 const initialDraft: IntakeDraft = {
   authority: "",
@@ -164,18 +166,6 @@ export function TenderIntakeForm() {
   const canOpenWork = score >= 7 && fileCount > 0;
   const canCreateTender = draft.name.trim().length > 0 && fileCount > 0 && !isSubmitting;
 
-  const statusBadge = useMemo(() => {
-    if (canOpenWork) {
-      return <Badge variant="success">Pronta per il primo controllo</Badge>;
-    }
-
-    if (score >= 4) {
-      return <Badge variant="default">In preparazione</Badge>;
-    }
-
-    return <Badge variant="muted">Da completare</Badge>;
-  }, [canOpenWork, score]);
-
   function updateDraft<Value extends keyof IntakeDraft>(key: Value, value: IntakeDraft[Value]) {
     storeDraft({
       ...draft,
@@ -243,218 +233,407 @@ export function TenderIntakeForm() {
   return (
     <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_340px]">
       <div className="grid gap-5">
-        <WorkspacePanel>
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <WorkspaceKicker>Anagrafica</WorkspaceKicker>
-              <h2 className="mt-1 text-lg font-semibold">Dati minimi gara</h2>
-            </div>
-            {statusBadge}
-          </div>
-
-          <div className="mt-5 grid gap-4 md:grid-cols-2">
-            <TextField
-              label="Nome gara"
-              onChange={(value) => updateDraft("name", value)}
-              placeholder="Es. Metro Copenhagen M1/M4"
-              value={draft.name}
-            />
-            <TextField
-              label="Ente o committente"
-              onChange={(value) => updateDraft("authority", value)}
-              placeholder="Es. Metroselskabet"
-              value={draft.authority}
-            />
-            <TextField
-              label="Città o area"
-              onChange={(value) => updateDraft("city", value)}
-              placeholder="Es. Copenhagen"
-              value={draft.city}
-            />
-            <TextField
-              label="Responsabile interno"
-              onChange={(value) => updateDraft("owner", value)}
-              placeholder="Nome o team"
-              value={draft.owner}
-            />
-            <SelectField
-              label="Fase"
-              onChange={(value) => updateDraft("stage", value)}
-              options={stageOptions}
-              value={draft.stage}
-            />
-            <SelectField
-              label="Regole dati"
-              onChange={(value) => updateDraft("privacy", value)}
-              options={privacyOptions}
-              value={draft.privacy}
-            />
-          </div>
-        </WorkspacePanel>
-
-        <WorkspacePanel>
-          <WorkspaceKicker>Pacchetto documenti</WorkspaceKicker>
-          <h2 className="mt-1 text-lg font-semibold">Documenti da inventariare</h2>
-          <div className="mt-5">
-            <TextField
-              label="Cartella, drive o codice pacchetto"
-              onChange={(value) => updateDraft("packageReference", value)}
-              placeholder="Es. SharePoint/Gare/2026/Copenhagen"
-              value={draft.packageReference}
-            />
-          </div>
-          <label className="mt-4 flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-border bg-muted px-4 py-6 text-center transition-colors hover:bg-card active:scale-[0.99]">
-            <UploadCloud aria-hidden="true" className="text-primary" size={26} />
-            <span className="mt-3 text-sm font-semibold">Seleziona documenti</span>
-            <span className="mt-1 max-w-lg text-sm leading-6 text-muted-foreground">
-              I file vengono inviati solo al server locale TRAM, salvati fuori dal repo e usati per
-              creare inventario, hash e controlli iniziali.
-            </span>
-            <input
-              aria-label="Seleziona documenti"
-              className="sr-only"
-              multiple
-              onChange={(event) => {
-                const nextFiles = Array.from(event.target.files ?? []);
-                setFiles(nextFiles);
-                updateDraft("documentsChecked", nextFiles.length > 0);
-                setSubmitError("");
-              }}
-              type="file"
-            />
-          </label>
-          {fileCount > 0 ? (
-            <div className="mt-4 rounded-md border border-border bg-background p-3">
-              <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
-                <span className="font-medium">{fileCount} file selezionati</span>
-                <span className="text-muted-foreground">{formatBytes(totalFileSize)}</span>
-              </div>
-              <ul className="mt-3 grid max-h-36 gap-2 overflow-auto text-sm text-muted-foreground">
-                {files.slice(0, 8).map((file) => (
-                  <li key={`${file.name}-${file.size}`} className="truncate">
-                    {file.name}
-                  </li>
-                ))}
-                {files.length > 8 ? <li>{files.length - 8} altri file…</li> : null}
-              </ul>
-            </div>
-          ) : null}
-          <div className="mt-4 grid gap-3 sm:grid-cols-3">
-            <CheckTile
-              checked={fileCount > 0 || draft.documentsChecked}
-              icon={FolderOpen}
-              label="Inventario documenti"
-              onChange={(checked) => updateDraft("documentsChecked", checked)}
-            />
-            <CheckTile
-              checked={draft.sourcePolicyChecked}
-              icon={ShieldCheck}
-              label="Regole fonti"
-              onChange={(checked) => updateDraft("sourcePolicyChecked", checked)}
-            />
-            <CheckTile
-              checked={draft.firstDeadlinesChecked}
-              icon={ClipboardCheck}
-              label="Prime scadenze"
-              onChange={(checked) => updateDraft("firstDeadlinesChecked", checked)}
-            />
-          </div>
-        </WorkspacePanel>
-
-        <WorkspacePanel>
-          <WorkspaceKicker>Note operative</WorkspaceKicker>
-          <h2 className="mt-1 text-lg font-semibold">Punti da ricordare</h2>
-          <textarea
-            aria-label="Note operative"
-            className="mt-4 min-h-32 w-full resize-y rounded-md border border-border bg-background px-3 py-2 text-sm leading-6 outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
-            onChange={(event) => updateDraft("notes", event.target.value)}
-            placeholder="Scadenze dubbie, documenti mancanti, vincoli di riservatezza, domande già emerse."
-            value={draft.notes}
-          />
-        </WorkspacePanel>
+        <TenderDetailsPanel
+          canOpenWork={canOpenWork}
+          draft={draft}
+          score={score}
+          updateDraft={updateDraft}
+        />
+        <DocumentPackagePanel
+          draft={draft}
+          fileCount={fileCount}
+          files={files}
+          setFiles={setFiles}
+          setSubmitError={setSubmitError}
+          totalFileSize={totalFileSize}
+          updateDraft={updateDraft}
+        />
+        <NotesPanel draft={draft} updateDraft={updateDraft} />
       </div>
 
-      <aside className="grid gap-5 xl:sticky xl:top-6 xl:self-start">
-        <WorkspacePanel>
-          <WorkspaceKicker>Preparazione</WorkspaceKicker>
-          <h2 className="mt-1 text-lg font-semibold">Stato bozza</h2>
-          <div className="mt-4 rounded-md border border-border bg-muted p-4">
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-sm text-muted-foreground">Completamento</span>
-              <span className="text-2xl font-semibold tabular-nums">{progressLabel}</span>
-            </div>
-            <div className="mt-3 h-2 rounded-full bg-border">
-              <div
-                className="h-full rounded-full bg-primary transition-[width]"
-                style={{ width: `${Math.round((score / 9) * 100)}%` }}
-              />
-            </div>
-          </div>
-
-          <dl className="mt-4 grid gap-3 text-sm">
-            <InfoRow label="Ultimo salvataggio" value={formatSavedAt(draft.updatedAt)} />
-            <InfoRow label="Regole dati" value={draft.privacy} />
-            <InfoRow label="Documenti selezionati" value={fileCount > 0 ? `${fileCount} file` : "Nessuno"} />
-            <InfoRow label="Stato" value={canOpenWork ? "Pronta" : "In preparazione"} />
-          </dl>
-
-          <div className="mt-5 grid gap-2">
-            <button
-              className={cn(buttonVariants({ variant: "default" }), "w-full")}
-              disabled={!canCreateTender}
-              onClick={handleCreateTender}
-              type="button"
-            >
-              {isSubmitting ? <Loader2 aria-hidden="true" className="animate-spin" size={16} /> : <UploadCloud aria-hidden="true" size={16} />}
-              Crea gara locale
-            </button>
-            <button
-              className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
-              onClick={handleManualSave}
-              type="button"
-            >
-              <Save aria-hidden="true" size={16} />
-              {manualSaveLabel}
-            </button>
-            <button
-              className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
-              onClick={handleReset}
-              type="button"
-            >
-              <RotateCcw aria-hidden="true" size={16} />
-              Pulisci bozza
-            </button>
-          </div>
-          {submitError ? (
-            <p className="mt-3 rounded-md border border-amber-300 bg-amber-50 p-3 text-sm leading-5 text-amber-950">
-              {submitError}
-            </p>
-          ) : null}
-        </WorkspacePanel>
-
-        <WorkspacePanel>
-          <WorkspaceKicker>Prossimo passo</WorkspaceKicker>
-          <h2 className="mt-1 text-lg font-semibold">Dopo la creazione</h2>
-          <p className="mt-3 text-sm leading-6 text-muted-foreground">
-            TRAM crea una gara locale, salva i documenti fuori dal repository e apre subito il
-            quadro gara con inventario, controlli iniziali e registro.
-          </p>
-          <div className="mt-5 grid gap-2">
-            <Link className={cn(buttonVariants({ variant: "default" }), "w-full")} href="/tenders">
-              <FileText aria-hidden="true" size={16} />
-              Apri gare
-            </Link>
-            <Link
-              className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
-              href={demoTendersHref}
-            >
-              Apri dati dimostrativi
-              <ArrowRight aria-hidden="true" size={16} />
-            </Link>
-          </div>
-        </WorkspacePanel>
-      </aside>
+      <IntakeSidebar
+        canCreateTender={canCreateTender}
+        canOpenWork={canOpenWork}
+        draft={draft}
+        fileCount={fileCount}
+        handleCreateTender={handleCreateTender}
+        handleManualSave={handleManualSave}
+        handleReset={handleReset}
+        isSubmitting={isSubmitting}
+        manualSaveLabel={manualSaveLabel}
+        progressLabel={progressLabel}
+        score={score}
+        submitError={submitError}
+      />
     </section>
+  );
+}
+
+function TenderDetailsPanel({
+  canOpenWork,
+  draft,
+  score,
+  updateDraft
+}: {
+  canOpenWork: boolean;
+  draft: IntakeDraft;
+  score: number;
+  updateDraft: UpdateDraft;
+}) {
+  return (
+    <WorkspacePanel>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <WorkspaceKicker>Anagrafica</WorkspaceKicker>
+          <h2 className="mt-1 text-lg font-semibold">Dati minimi gara</h2>
+        </div>
+        <DraftStatusBadge canOpenWork={canOpenWork} score={score} />
+      </div>
+
+      <div className="mt-5 grid gap-4 md:grid-cols-2">
+        <TextField
+          label="Nome gara"
+          onChange={(value) => updateDraft("name", value)}
+          placeholder="Es. Metro Copenhagen M1/M4"
+          value={draft.name}
+        />
+        <TextField
+          label="Ente o committente"
+          onChange={(value) => updateDraft("authority", value)}
+          placeholder="Es. Metroselskabet"
+          value={draft.authority}
+        />
+        <TextField
+          label="Città o area"
+          onChange={(value) => updateDraft("city", value)}
+          placeholder="Es. Copenhagen"
+          value={draft.city}
+        />
+        <TextField
+          label="Responsabile interno"
+          onChange={(value) => updateDraft("owner", value)}
+          placeholder="Nome o team"
+          value={draft.owner}
+        />
+        <SelectField
+          label="Fase"
+          onChange={(value) => updateDraft("stage", value)}
+          options={stageOptions}
+          value={draft.stage}
+        />
+        <SelectField
+          label="Regole dati"
+          onChange={(value) => updateDraft("privacy", value)}
+          options={privacyOptions}
+          value={draft.privacy}
+        />
+      </div>
+    </WorkspacePanel>
+  );
+}
+
+function DraftStatusBadge({ canOpenWork, score }: { canOpenWork: boolean; score: number }) {
+  if (canOpenWork) {
+    return <Badge variant="success">Pronta per il primo controllo</Badge>;
+  }
+
+  if (score >= 4) {
+    return <Badge variant="default">In preparazione</Badge>;
+  }
+
+  return <Badge variant="muted">Da completare</Badge>;
+}
+
+function DocumentPackagePanel({
+  draft,
+  fileCount,
+  files,
+  setFiles,
+  setSubmitError,
+  totalFileSize,
+  updateDraft
+}: {
+  draft: IntakeDraft;
+  fileCount: number;
+  files: File[];
+  setFiles: (files: File[]) => void;
+  setSubmitError: (error: string) => void;
+  totalFileSize: number;
+  updateDraft: UpdateDraft;
+}) {
+  return (
+    <WorkspacePanel>
+      <WorkspaceKicker>Pacchetto documenti</WorkspaceKicker>
+      <h2 className="mt-1 text-lg font-semibold">Documenti da inventariare</h2>
+      <div className="mt-5">
+        <TextField
+          label="Cartella, drive o codice pacchetto"
+          onChange={(value) => updateDraft("packageReference", value)}
+          placeholder="Es. SharePoint/Gare/2026/Copenhagen"
+          value={draft.packageReference}
+        />
+      </div>
+      <label className="mt-4 flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-border bg-muted px-4 py-6 text-center transition-colors hover:bg-card active:scale-[0.99]">
+        <UploadCloud aria-hidden="true" className="text-primary" size={26} />
+        <span className="mt-3 text-sm font-semibold">Seleziona documenti</span>
+        <span className="mt-1 max-w-lg text-sm leading-6 text-muted-foreground">
+          I file vengono inviati solo al server locale TRAM, salvati fuori dal repo e usati per
+          creare inventario, hash e controlli iniziali.
+        </span>
+        <input
+          aria-label="Seleziona documenti"
+          className="sr-only"
+          multiple
+          onChange={(event) => {
+            const nextFiles = Array.from(event.target.files ?? []);
+            setFiles(nextFiles);
+            updateDraft("documentsChecked", nextFiles.length > 0);
+            setSubmitError("");
+          }}
+          type="file"
+        />
+      </label>
+      <SelectedFilesSummary fileCount={fileCount} files={files} totalFileSize={totalFileSize} />
+      <DocumentChecklist draft={draft} fileCount={fileCount} updateDraft={updateDraft} />
+    </WorkspacePanel>
+  );
+}
+
+function SelectedFilesSummary({
+  fileCount,
+  files,
+  totalFileSize
+}: {
+  fileCount: number;
+  files: File[];
+  totalFileSize: number;
+}) {
+  if (fileCount === 0) {
+    return null;
+  }
+
+  return (
+    <div className="mt-4 rounded-md border border-border bg-background p-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
+        <span className="font-medium">{fileCount} file selezionati</span>
+        <span className="text-muted-foreground">{formatBytes(totalFileSize)}</span>
+      </div>
+      <ul className="mt-3 grid max-h-36 gap-2 overflow-auto text-sm text-muted-foreground">
+        {files.slice(0, 8).map((file) => (
+          <li key={`${file.name}-${file.size}`} className="truncate">
+            {file.name}
+          </li>
+        ))}
+        {files.length > 8 ? <li>{files.length - 8} altri file…</li> : null}
+      </ul>
+    </div>
+  );
+}
+
+function DocumentChecklist({
+  draft,
+  fileCount,
+  updateDraft
+}: {
+  draft: IntakeDraft;
+  fileCount: number;
+  updateDraft: UpdateDraft;
+}) {
+  return (
+    <div className="mt-4 grid gap-3 sm:grid-cols-3">
+      <CheckTile
+        checked={fileCount > 0 || draft.documentsChecked}
+        icon={FolderOpen}
+        label="Inventario documenti"
+        onChange={(checked) => updateDraft("documentsChecked", checked)}
+      />
+      <CheckTile
+        checked={draft.sourcePolicyChecked}
+        icon={ShieldCheck}
+        label="Regole fonti"
+        onChange={(checked) => updateDraft("sourcePolicyChecked", checked)}
+      />
+      <CheckTile
+        checked={draft.firstDeadlinesChecked}
+        icon={ClipboardCheck}
+        label="Prime scadenze"
+        onChange={(checked) => updateDraft("firstDeadlinesChecked", checked)}
+      />
+    </div>
+  );
+}
+
+function NotesPanel({ draft, updateDraft }: { draft: IntakeDraft; updateDraft: UpdateDraft }) {
+  return (
+    <WorkspacePanel>
+      <WorkspaceKicker>Note operative</WorkspaceKicker>
+      <h2 className="mt-1 text-lg font-semibold">Punti da ricordare</h2>
+      <textarea
+        aria-label="Note operative"
+        className="mt-4 min-h-32 w-full resize-y rounded-md border border-border bg-background px-3 py-2 text-sm leading-6 outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20"
+        onChange={(event) => updateDraft("notes", event.target.value)}
+        placeholder="Scadenze dubbie, documenti mancanti, vincoli di riservatezza, domande già emerse."
+        value={draft.notes}
+      />
+    </WorkspacePanel>
+  );
+}
+
+function IntakeSidebar({
+  canCreateTender,
+  canOpenWork,
+  draft,
+  fileCount,
+  handleCreateTender,
+  handleManualSave,
+  handleReset,
+  isSubmitting,
+  manualSaveLabel,
+  progressLabel,
+  score,
+  submitError
+}: {
+  canCreateTender: boolean;
+  canOpenWork: boolean;
+  draft: IntakeDraft;
+  fileCount: number;
+  handleCreateTender: () => void;
+  handleManualSave: () => void;
+  handleReset: () => void;
+  isSubmitting: boolean;
+  manualSaveLabel: string;
+  progressLabel: string;
+  score: number;
+  submitError: string;
+}) {
+  return (
+    <aside className="grid gap-5 xl:sticky xl:top-6 xl:self-start">
+      <DraftProgressPanel
+        canCreateTender={canCreateTender}
+        canOpenWork={canOpenWork}
+        draft={draft}
+        fileCount={fileCount}
+        handleCreateTender={handleCreateTender}
+        handleManualSave={handleManualSave}
+        handleReset={handleReset}
+        isSubmitting={isSubmitting}
+        manualSaveLabel={manualSaveLabel}
+        progressLabel={progressLabel}
+        score={score}
+        submitError={submitError}
+      />
+      <NextStepPanel />
+    </aside>
+  );
+}
+
+function DraftProgressPanel({
+  canCreateTender,
+  canOpenWork,
+  draft,
+  fileCount,
+  handleCreateTender,
+  handleManualSave,
+  handleReset,
+  isSubmitting,
+  manualSaveLabel,
+  progressLabel,
+  score,
+  submitError
+}: {
+  canCreateTender: boolean;
+  canOpenWork: boolean;
+  draft: IntakeDraft;
+  fileCount: number;
+  handleCreateTender: () => void;
+  handleManualSave: () => void;
+  handleReset: () => void;
+  isSubmitting: boolean;
+  manualSaveLabel: string;
+  progressLabel: string;
+  score: number;
+  submitError: string;
+}) {
+  return (
+    <WorkspacePanel>
+      <WorkspaceKicker>Preparazione</WorkspaceKicker>
+      <h2 className="mt-1 text-lg font-semibold">Stato bozza</h2>
+      <div className="mt-4 rounded-md border border-border bg-muted p-4">
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-sm text-muted-foreground">Completamento</span>
+          <span className="text-2xl font-semibold tabular-nums">{progressLabel}</span>
+        </div>
+        <div className="mt-3 h-2 rounded-full bg-border">
+          <div
+            className="h-full rounded-full bg-primary transition-[width]"
+            style={{ width: `${Math.round((score / 9) * 100)}%` }}
+          />
+        </div>
+      </div>
+
+      <dl className="mt-4 grid gap-3 text-sm">
+        <InfoRow label="Ultimo salvataggio" value={formatSavedAt(draft.updatedAt)} />
+        <InfoRow label="Regole dati" value={draft.privacy} />
+        <InfoRow label="Documenti selezionati" value={fileCount > 0 ? `${fileCount} file` : "Nessuno"} />
+        <InfoRow label="Stato" value={canOpenWork ? "Pronta" : "In preparazione"} />
+      </dl>
+
+      <div className="mt-5 grid gap-2">
+        <button
+          className={cn(buttonVariants({ variant: "default" }), "w-full")}
+          disabled={!canCreateTender}
+          onClick={handleCreateTender}
+          type="button"
+        >
+          {isSubmitting ? <Loader2 aria-hidden="true" className="animate-spin" size={16} /> : <UploadCloud aria-hidden="true" size={16} />}
+          Crea gara locale
+        </button>
+        <button
+          className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
+          onClick={handleManualSave}
+          type="button"
+        >
+          <Save aria-hidden="true" size={16} />
+          {manualSaveLabel}
+        </button>
+        <button
+          className={cn(buttonVariants({ variant: "secondary" }), "w-full")}
+          onClick={handleReset}
+          type="button"
+        >
+          <RotateCcw aria-hidden="true" size={16} />
+          Pulisci bozza
+        </button>
+      </div>
+      {submitError ? (
+        <p className="mt-3 rounded-md border border-amber-300 bg-amber-50 p-3 text-sm leading-5 text-amber-950">
+          {submitError}
+        </p>
+      ) : null}
+    </WorkspacePanel>
+  );
+}
+
+function NextStepPanel() {
+  return (
+    <WorkspacePanel>
+      <WorkspaceKicker>Prossimo passo</WorkspaceKicker>
+      <h2 className="mt-1 text-lg font-semibold">Dopo la creazione</h2>
+      <p className="mt-3 text-sm leading-6 text-muted-foreground">
+        TRAM crea una gara locale, salva i documenti fuori dal repository e apre subito il quadro
+        gara con inventario, controlli iniziali e registro.
+      </p>
+      <div className="mt-5 grid gap-2">
+        <Link className={cn(buttonVariants({ variant: "default" }), "w-full")} href="/tenders">
+          <FileText aria-hidden="true" size={16} />
+          Apri gare
+        </Link>
+        <Link className={cn(buttonVariants({ variant: "secondary" }), "w-full")} href={demoTendersHref}>
+          Apri dati dimostrativi
+          <ArrowRight aria-hidden="true" size={16} />
+        </Link>
+      </div>
+    </WorkspacePanel>
   );
 }
 

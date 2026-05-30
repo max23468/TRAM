@@ -15,7 +15,8 @@
     "test": "vitest run",
     "verify": "npm run lint && npm run typecheck && npm run test && npm run build",
     "postbuild": "node scripts/normalize-next-env.mjs",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "doctor": "npx react-doctor@latest"
   },
   "dependencies": {
     "class-variance-authority": "0.7.1",
@@ -37,7 +38,7 @@
     "eslint": "9.39.4",
     "eslint-config-next": "16.2.6",
     "patch-package": "8.0.1",
-    "react-doctor": "0.2.8",
+    "react-doctor": "^0.2.14",
     "tailwindcss": "4.3.0",
     "typescript": "6.0.3",
     "vitest": "4.1.7"
