@@ -8,9 +8,11 @@ Scope: intera cartella TRAM, salvo futuri `AGENTS.md` più specifici in sottocar
 
 1. Istruzioni di sistema/developer ricevute nella sessione corrente.
 2. Questo file `AGENTS.md`.
-3. Documentazione TRAM in `docs/` e guide operative in `data/`.
-4. Decisioni esplicite del maintainer in chat.
-5. Assunzioni dell’agente.
+3. Eventuali `AGENTS.md` più profondi nella cartella toccata.
+4. Documentazione TRAM in `docs/` e guide operative in `data/`.
+5. Decisioni esplicite del maintainer in chat.
+6. Convenzioni dedotte da codice, test e configurazioni vicine.
+7. Assunzioni dell'agente, solo per dettagli marginali.
 
 In caso di conflitto, seguire sempre il livello più alto. Se una decisione nuova cambia stabilmente perimetro, architettura, dati, AI, privacy, Git, VPS o roadmap, aggiornare i documenti rilevanti.
 
@@ -299,7 +301,7 @@ Queste regole sono state adattate da pattern già usati in Pratix, DocMolder, Fi
 Regole trasferibili:
 
 - da Pratix: piano scritto prima del codice per decisioni importanti; documentazione viva; attenzione a UI italiana, glossario, versioning, changelog e pubblicazione reale su GitHub;
-- da DocMolder: separare lavoro tra agenti solo con ownership chiara; non mescolare worktree sporchi; per VPS/deploy seguire runbook e verificare host, log e smoke, non solo stato attivo;
+- da DocMolder: separare filoni di lavoro solo con ownership chiara; non mescolare worktree sporchi; per VPS/deploy seguire runbook e verificare host, log e smoke, non solo stato attivo;
 - da FiscalBay: non dedurre dati assenti dalle fonti/API/documenti; deploy VPS solo su host esplicitamente confermato; in TRAM, “pubblica” include sempre il flusso operativo completo previsto dalla policy corrente e comprende anche le attività operative correlate quando richieste da quel flusso.
 - da SyncBay: non introdurre runtime, worker, integrazioni o workflow produttivi non decisi; per informazioni variabili usare fonti ufficiali aggiornate; documentare ADR per decisioni stabili; trattare dati reali come sensibili;
 - da SendChimp: mantenere una fase docs-first finché il perimetro non è deciso; non introdurre backend, frontend, worker, job queue, automazioni produttive, token persistenti, webhook o integrazioni reali senza richiesta esplicita e documentazione aggiornata; distinguere sempre automatismo e conferma manuale; prevedere check dedicati per documentazione, link, segreti, apostrofi e accenti;
@@ -307,15 +309,15 @@ Regole trasferibili:
 
 Non importare stack specifici di altri progetti come default TRAM. Pratix può usare Vercel/Supabase, DocMolder e FiscalBay possono essere Telegram/VPS-first, SyncBay può essere Shopify/eBay: TRAM ha il proprio perimetro.
 
-## Lavoro parallelo tra agenti
+## Lavoro parallelo e ownership
 
-Usare sub-agenti o agenti paralleli solo se il maintainer lo chiede esplicitamente o se il sistema lo autorizza nel contesto corrente.
+Separare il lavoro in più filoni solo se il maintainer lo chiede esplicitamente o se il sistema lo autorizza nel contesto corrente.
 
-Quando in futuro più agenti lavorano su TRAM:
+Quando in futuro più filoni lavorano su TRAM:
 
 - una chat principale coordina scope, decisioni e integrazione;
-- ogni agente ha ownership chiara su file o moduli;
-- evitare che due agenti modifichino gli stessi file;
+- ogni filone ha ownership chiara su file o moduli;
+- evitare che due filoni modifichino gli stessi file;
 - usare branch/worktree dedicati quando Git sarà attivo;
 - lasciare handoff sintetico con file toccati, verifiche, rischi e prossimi passi;
 - non delegare decisioni prodotto ambigue o task piccoli.
@@ -340,6 +342,7 @@ TRAM è una repository Git pubblicata come repository privata `max23468/TRAM`, c
 - prima di PR o merge fare self-review del diff;
 - non aggiungere workflow GitHub Actions, bot, release flow o deploy automation senza decisione esplicita;
 - controllare la `Codex feedback inbox` prima di merge non banali;
+- controllare la `Codex feedback inbox` anche prima di PR ready, pubblicazione, deploy o release;
 - dopo merge, pulire branch locali/remoti non più necessari;
 - non lasciare branch `codex/*` stale se il lavoro è stato assorbito.
 
@@ -348,6 +351,7 @@ Policy operativa corrente:
 - “pubblica” significa completare il flusso completo su GitHub (PR/merge, verifica, pulizia branch/worktree locali e remoti). Deploy o attivazione restano fuori da “pubblica” salvo richiesta esplicita o fase corrente già documentata con runbook e target confermati.
 - “deploya” significa deploy solo se esiste runbook e target confermato;
 - “rilascia” segue la policy versioning/release TRAM e include il rilascio operativo completo dove applicabile.
+- release e deploy vanno valutati insieme quando entrambi sono applicabili: non chiudere una release senza dichiarare lo stato del deploy, e non chiudere un deploy senza dichiarare se la release è necessaria o `N/A`.
 - “attiva”, “metti in produzione”, “manda”, “esegui su documenti reali” o formule simili richiedono di verificare prima policy dati, provider, costi, consenso operativo e rischi.
 
 Se il maintainer usa formule ambigue, chiedere conferma prima di azioni esterne o irreversibili.
@@ -391,6 +395,10 @@ Per modifiche documentali:
 - controllare link, riferimenti obsoleti, pattern di segreti e file vietati quando i documenti iniziano a crescere;
 - non inventare test applicativi;
 - dichiarare che la verifica è documentale.
+
+Usare la corsia `veloce` per docs/governance a basso rischio, `standard` per
+codice/config ordinari e `completa` per release, deploy, sicurezza, dati,
+provider AI, pipeline documentale o runtime.
 
 Per modifiche al codice:
 
@@ -445,6 +453,7 @@ Una modifica è pronta se:
 - non espone segreti o dati riservati;
 - non lascia processi, file temporanei o modifiche non correlate;
 - include verifiche eseguite o limiti noti quando rilevanti;
+- publish, release e deploy sono stati completati oppure dichiarati non applicabili con motivo;
 - propone prossimi passi concreti se resta un seguito operativo reale.
 
 ## Risposte finali
