@@ -16,6 +16,7 @@ Questo indice è il punto di ingresso per la documentazione viva di TRAM. I vecc
 10. [`docs/BRAND.md`](BRAND.md) - direzione visiva e tono.
 11. [`docs/DECISIONS.md`](DECISIONS.md) - decisioni stabili e indice ADR.
 12. [`docs/DECISIONS_PENDING.md`](DECISIONS_PENDING.md) - decisioni strutturali non ancora approvate.
+13. [`docs/doppler-setup.md`](doppler-setup.md) - integrazione Doppler, variabili GitHub e verifica segreti CI.
 
 ## Regole
 
@@ -36,6 +37,7 @@ I documenti storici sono stati assorbiti per famiglie, non copiati uno a uno. La
 - Strategia AI gratuita, provider, routing T1-T8, prompt schema, benchmark, normalizzazione, privacy, minimizzazione e audit delle chiamate: [`AI_AND_DOCUMENT_PIPELINE.md`](AI_AND_DOCUMENT_PIPELINE.md).
 - Wireframe funzionali, dashboard, review queue, indicatori, design degli stati, source inspector, UX mobile e visual audit widget: [`UX_REVIEW_WORKFLOW.md`](UX_REVIEW_WORKFLOW.md).
 - Toolchain documentale locale, sviluppo app, storage runtime, Git, segreti, OCI/VPS futuro e verifiche documentali: [`OPERATIONS.md`](OPERATIONS.md).
+- Integrazione Doppler e verifica segreti CI: [`doppler-setup.md`](doppler-setup.md).
 - Brand light, direzione visiva, pattern TPL, tono, componenti e accessibilità: [`BRAND.md`](BRAND.md).
 - Decisioni accettate, decisioni rinviate e debiti da recuperare: [`DECISIONS.md`](DECISIONS.md).
 
