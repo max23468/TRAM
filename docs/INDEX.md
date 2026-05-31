@@ -5,7 +5,7 @@ Questo indice è il punto di ingresso per la documentazione viva di TRAM. I vecc
 ## Ordine Di Lettura
 
 1. [`README.md`](../README.md) - orientamento rapido.
-2. [`docs/ROADMAP.md`](ROADMAP.md) - priorità, milestone e stato operativo.
+2. [`docs/ROADMAP.md`](ROADMAP.md) - direzione, priorità, milestone e prossimi passi.
 3. [`docs/BACKLOG.md`](BACKLOG.md) - debiti, idee e decisioni non ancora promosse.
 4. [`docs/CONTEXT.md`](CONTEXT.md) - prodotto, perimetro e principi.
 5. [`docs/TOOLCHAIN.md`](TOOLCHAIN.md) - runtime, package manager, comandi e verifiche.
@@ -17,6 +17,7 @@ Questo indice è il punto di ingresso per la documentazione viva di TRAM. I vecc
 11. [`docs/DECISIONS.md`](DECISIONS.md) - decisioni stabili e indice ADR.
 12. [`docs/DECISIONS_PENDING.md`](DECISIONS_PENDING.md) - decisioni strutturali non ancora approvate.
 13. [`docs/doppler-setup.md`](doppler-setup.md) - integrazione Doppler, variabili GitHub e verifica segreti CI.
+14. [`docs/ROADMAP_OPERATING_RECORD.md`](ROADMAP_OPERATING_RECORD.md) - storico operativo di pilot, feedback, rotte e verifiche assorbite fuori dalla roadmap canonica.
 
 ## Regole
 
@@ -30,7 +31,7 @@ Questo indice è il punto di ingresso per la documentazione viva di TRAM. I vecc
 I documenti storici sono stati assorbiti per famiglie, non copiati uno a uno. La copertura governante è questa:
 
 - Product brief, perimetro, benchmark package, procurement stage taxonomy e policy di ricerca dominio: [`CONTEXT.md`](CONTEXT.md).
-- Roadmap MVP, criteri di successo, criteri di fallimento, fasi 7-10 prima della V1, V2 e V3: [`ROADMAP.md`](ROADMAP.md).
+- Roadmap MVP, criteri di successo, criteri di fallimento, fasi 7-10 prima della V1, V2 e V3: [`ROADMAP.md`](ROADMAP.md) e [`ROADMAP_OPERATING_RECORD.md`](ROADMAP_OPERATING_RECORD.md).
 - Debiti, idee e decisioni non ancora promosse: [`BACKLOG.md`](BACKLOG.md).
 - Runtime, package manager, lockfile, comandi e verifiche: [`TOOLCHAIN.md`](TOOLCHAIN.md).
 - Architettura MVP, data model, data contract, ruoli, permessi, resolver di versioni documentali e ADR: [`ARCHITECTURE.md`](ARCHITECTURE.md), [`decisions/0001-normalizer-runtime-placement.md`](decisions/0001-normalizer-runtime-placement.md), [`decisions/0002-github-publishing-and-repo-governance.md`](decisions/0002-github-publishing-and-repo-governance.md) e [`decisions/0003-versioning-release-policy.md`](decisions/0003-versioning-release-policy.md).
@@ -51,7 +52,7 @@ Questa matrice collega le famiglie dei vecchi Markdown allo spazio governante at
 | Orientamento progetto | `tram-v1-product-brief.md`, `tram-brand-positioning-notes.md` | [`CONTEXT.md`](CONTEXT.md), [`BRAND.md`](BRAND.md), [`ROADMAP.md`](ROADMAP.md) | Obiettivo V1, cosa TRAM non è, funzioni candidate, posizionamento, V2/V3. |
 | Naming e governance docs | `tram-documentation-naming-conventions.md` | [`INDEX.md`](INDEX.md), [`../AGENTS.md`](../AGENTS.md), [`DECISIONS.md`](DECISIONS.md) | Nomi univoci, pochi documenti governanti, vecchi Markdown solo storico Git. |
 | Dominio e fonti | `tram-domain-research-policy.md`, `tram-procurement-stage-taxonomy.md`, `tram-v1-benchmark-packages.md`, `data/tram-data-packages-guide.md` | [`CONTEXT.md`](CONTEXT.md), [`OPERATIONS.md`](OPERATIONS.md) | Fonti autorevoli, procurement stage, pacchetti benchmark, trattamento dati reali/rappresentativi. |
-| Roadmap e criteri successo | `tram-v1-mvp-roadmap-and-success-criteria-v0-1.md`, `tram-v1-mvp-development-verification-checklist-v0-1.md`, `tram-v1-mvp-v0-slice-status-alignment-2026-05-13.md` | [`ROADMAP.md`](ROADMAP.md), [`OPERATIONS.md`](OPERATIONS.md), [`BACKLOG.md`](BACKLOG.md) | Fasi 0-6, Fase 4 corrente, slice operative assorbite nelle fasi, criteri successo/fallimento, gate, debiti. |
+| Roadmap e criteri successo | `tram-v1-mvp-roadmap-and-success-criteria-v0-1.md`, `tram-v1-mvp-development-verification-checklist-v0-1.md`, `tram-v1-mvp-v0-slice-status-alignment-2026-05-13.md` | [`ROADMAP.md`](ROADMAP.md), [`ROADMAP_OPERATING_RECORD.md`](ROADMAP_OPERATING_RECORD.md), [`OPERATIONS.md`](OPERATIONS.md), [`BACKLOG.md`](BACKLOG.md) | Direzione corrente in roadmap; storico operativo, slice, feedback e verifiche nel record dedicato; criteri successo/fallimento, gate e debiti governati. |
 | Roadmap futura | decisioni emerse nei documenti V1 e nei brief su V2/V3 | [`ROADMAP.md`](ROADMAP.md), [`CONTEXT.md`](CONTEXT.md), [`DECISIONS.md`](DECISIONS.md) | Fasi 7-10 prima della V1, V2 confronto offerta-gara, V3 memoria storica e benchmark cross-gara. |
 | Architettura MVP | `tram-v1-mvp-architecture.md`, `tram-v1-data-model.md`, `tram-v1-mvp-data-contract-v0-1.md`, `tram-v1-mvp-roles-permissions-v0-1.md` | [`ARCHITECTURE.md`](ARCHITECTURE.md), [`DECISIONS.md`](DECISIONS.md) | Componenti logici, data model, data contract, ruoli, permessi, stati, alternative e rischi. |
 | Resolver documentale | `tram-v1-document-family-version-currentness-resolver-v0-1.md` | [`ARCHITECTURE.md`](ARCHITECTURE.md), [`UX_REVIEW_WORKFLOW.md`](UX_REVIEW_WORKFLOW.md) | Famiglia, versione, vigente/superato/dubbio, addendum, redline, review per conflitti. |

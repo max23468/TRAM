@@ -452,6 +452,11 @@ Documenti da aggiornare o creare solo quando servono:
 - toolchain in `docs/TOOLCHAIN.md`;
 - `CHANGELOG.md` per release applicative secondo la policy versioning;
 - glossario prodotto in italiano;
+
+La roadmap deve restare una vista di direzione, priorità e prossimi passi.
+Sposta log di pilot, verifiche, rotte, fixture e storico completato nei documenti
+di area o in record operativi dedicati; non lasciare lunghe sezioni completate
+come archivio dentro `docs/ROADMAP.md`.
 - protocollo benchmark AI;
 - policy dati e privacy per provider esterni.
 
