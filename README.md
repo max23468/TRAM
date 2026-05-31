@@ -10,7 +10,7 @@ TRAM è in fase MVP iniziale, con roadmap viva fino a V1.4 e perimetro futuro V2
 
 Repository:
 
-- GitHub: `max23468/TRAM`, repository privata;
+- GitHub: `max23468/TRAM`, repository pubblica;
 - branch base: `main`;
 - lavori non banali: branch `codex/<tema>`;
 - pubblicazione GitHub governata da [`docs/decisions/0002-github-publishing-and-repo-governance.md`](docs/decisions/0002-github-publishing-and-repo-governance.md);

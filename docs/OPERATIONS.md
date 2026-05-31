@@ -64,13 +64,13 @@ Nel MVP locale, l’upload da `/tenders/intake` è ammesso solo verso il server 
 
 Repository GitHub:
 
-- repository privata: `max23468/TRAM`;
+- repository pubblica: `max23468/TRAM`;
 - branch predefinito: `main`;
 - GitHub è fonte primaria della documentazione e del codice pubblicati;
 - branch `codex/<tema>` per lavori non banali;
 - self-review del diff prima di PR o merge;
 - workflow ammessi: quality, repo hygiene, PR title e Dependabot per npm/GitHub Actions;
-- niente branch protection premium sulle repository private;
+- branch protection solo se esplicitamente decisa;
 - nessuna ulteriore GitHub Action, bot o release automation senza decisione esplicita;
 - pulizia branch `codex/*` assorbiti;
 - Conventional Commit coerente con l’impatto reale.
