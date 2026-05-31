@@ -31,7 +31,7 @@ Questo documento riassume runtime, package manager, lockfile, comandi e verifich
 | `npm test` | test Vitest |
 | `npm run build` | build Next.js |
 | `npm run verify` | lint, typecheck, test e build |
-| `npm run quality:react-doctor` | React Doctor latest via `npx react-doctor@latest`, completo con fail su errori |
+| `npm run quality:react-doctor` | React Doctor latest via `npx --yes react-doctor@latest`, completo con fail su errori e senza prompt interattivi |
 | `npm run demo:inventory` | inventario locale demo, senza committare working data |
 | `npm run demo:extract-text` | estrazione testo locale demo, senza contenuti riservati in Git |
 

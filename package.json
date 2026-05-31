@@ -15,13 +15,13 @@
     "lint": "eslint .",
     "demo:extract-text": "node scripts/build-demo-text-extracts.mjs",
     "demo:inventory": "node scripts/build-demo-inventory.mjs",
-    "quality:react-doctor": "npx react-doctor@latest --full --fail-on error .",
+    "quality:react-doctor": "npx --yes react-doctor@latest --full --fail-on error .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "verify": "npm run lint && npm run typecheck && npm run test && npm run build",
     "postbuild": "node scripts/normalize-next-env.mjs",
     "postinstall": "patch-package",
-    "doctor": "npx react-doctor@latest --full --fail-on error ."
+    "doctor": "npx --yes react-doctor@latest --full --fail-on error ."
   },
   "dependencies": {
     "class-variance-authority": "0.7.1",
