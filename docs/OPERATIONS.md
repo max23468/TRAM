@@ -202,7 +202,8 @@ Fino a nuova decisione:
 - “pubblica” significa portare il lavoro su GitHub/main con PR/merge e, in caso di
   pubblicazione completa, pulire branch/worktree locali e remoti assorbiti;
 - “deploya” richiede runbook e target confermato;
-- “rilascia” segue la policy SemVer/release e non implica deploy;
+- “rilascia” segue la policy SemVer/release, include tag Git `vX.Y.Z` e GitHub
+  Release per release applicative/prodotto reali, e non implica deploy;
 - VPS, backup, restore, migrazioni e cleanup remoto richiedono conferma o runbook approvato.
 
 ## OCI/VPS Futuro
