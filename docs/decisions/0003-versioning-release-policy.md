@@ -44,7 +44,7 @@ Una release TRAM richiede richiesta esplicita del maintainer e include:
 3. verifiche locali proporzionate allo scope;
 4. commit dedicato;
 5. tag Git `vX.Y.Z`;
-6. GitHub Release solo se utile e se non genera automazioni indesiderate.
+6. GitHub Release obbligatoria per ogni release applicativa/prodotto reale.
 
 Se GitHub Actions non è disponibile, la release resta sospesa finché non sono
 eseguite le verifiche locali equivalenti documentate e approvate nel runbook:

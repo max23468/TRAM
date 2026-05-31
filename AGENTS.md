@@ -385,6 +385,8 @@ Regole operative:
 - modifiche solo documentali, governance GitHub o pianificazione non richiedono
   bump versione, tag o GitHub Release;
 - una release richiede richiesta esplicita del maintainer;
+- ogni release applicativa/prodotto reale richiede tag Git `vX.Y.Z` e GitHub
+  Release;
 - per release applicative aggiornare anche `package-lock.json` e
   `CHANGELOG.md` quando previsto dalla policy;
 - per docs-only e piani interni, evitare release applicative;
