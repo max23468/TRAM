@@ -10,7 +10,7 @@ Accettata.
 
 ## Contesto
 
-TRAM è pubblicata come repository privata GitHub, ma GitHub non implica deploy,
+TRAM è pubblicata come repository pubblica GitHub, ma GitHub non implica deploy,
 hosting o release. Il progetto è ancora in MVP iniziale, ha una app Next.js
 locale e non ha un target produttivo approvato.
 

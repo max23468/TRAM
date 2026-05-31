@@ -328,7 +328,7 @@ Quando in futuro più filoni lavorano su TRAM:
 
 ## Git e GitHub
 
-TRAM è una repository Git pubblicata come repository privata `max23468/TRAM`, con branch base `main`.
+TRAM è una repository Git pubblicata come repository pubblica `max23468/TRAM`, con branch base `main`.
 
 - GitHub è la fonte primaria del codice e della documentazione pubblicata;
 - controllare sempre `git status --short` prima di editare;
