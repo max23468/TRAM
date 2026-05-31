@@ -9,7 +9,8 @@ Scope: intera cartella TRAM, salvo futuri `AGENTS.md` più specifici in sottocar
 1. Istruzioni di sistema/developer ricevute nella sessione corrente.
 2. Eventuali `AGENTS.md` più profondi nella cartella toccata, che prevalgono sulle regole root per il loro scope.
 3. Questo file `AGENTS.md`.
-4. Documentazione TRAM in `docs/` e guide operative in `data/`.
+4. Documentazione TRAM in `docs/` e configurazioni o fixture applicative in
+   `data/`.
 5. Decisioni esplicite del maintainer in chat.
 6. Convenzioni dedotte da codice, test e configurazioni vicine.
 7. Assunzioni dell'agente, solo per dettagli marginali.
@@ -420,6 +421,12 @@ Non inventare risultati di test o verifiche non eseguite.
 
 ## Documentazione e governance
 
+Il catalogo documentale canonico è `docs/INDEX.md`. La root resta per ingresso,
+regole agenti, manifest e configurazioni; `docs/` contiene governance,
+roadmap, backlog, contesto, toolchain, architettura, AI/pipeline documentale,
+UX, operations, brand e decisioni. `data/` non è un archivio documentale:
+contiene configurazioni, fixture e pacchetti di lavoro applicativi.
+
 Aggiornare la documentazione quando cambia:
 
 - perimetro V1/V2/V3;
@@ -436,17 +443,21 @@ Aggiornare la documentazione quando cambia:
 - brand, naming o “cosa TRAM non è”;
 - benchmark o criteri di successo.
 
-Documenti futuri consigliati quando servono:
+Documenti da aggiornare o creare solo quando servono:
 
 - ADR in `docs/decisions/` per decisioni permanenti;
 - runbook VPS dedicato quando servirà;
 - roadmap in `docs/ROADMAP.md`;
 - backlog in `docs/BACKLOG.md`;
 - toolchain in `docs/TOOLCHAIN.md`;
-- changelog quando inizia lo sviluppo applicativo;
+- `CHANGELOG.md` per release applicative secondo la policy versioning;
 - glossario prodotto in italiano;
 - protocollo benchmark AI;
 - policy dati e privacy per provider esterni.
+
+Non creare documenti doppi con stesso scopo o basename. Durante migrazioni,
+rinomini o merge documentali preserva contenuti utili, aggiorna link e indice,
+e dichiara nel riepilogo ciò che viene rimosso perché superato.
 
 ## Risposta finale
 
