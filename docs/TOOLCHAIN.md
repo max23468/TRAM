@@ -47,14 +47,15 @@ Questo documento riassume runtime, package manager, lockfile, comandi e verifich
 
 ## Verifiche Per Scope
 
-| Tipo modifica | Verifica minima |
-| --- | --- |
-| Documentazione | rilettura, `git diff --check`, basename Markdown univoci, accenti comuni, path sensibili |
-| GitHub metadata/workflow | controlli documentali più review dei workflow modificati |
-| Codice TypeScript/React | `npm run verify` |
-| UI sostanziale | `npm run verify` più browser desktop/mobile sulle route toccate |
-| React release minor o intervento React trasversale | `npm run quality:react-doctor` |
-| Pipeline documentale o dati | test mirati più verifica che non entrino in Git pacchetti, OCR, estratti o working data |
+| Tipo modifica | Corsia | Verifica minima |
+| --- | --- | --- |
+| Sola analisi | veloce | Nessun test applicativo; dichiarare fonti e limiti |
+| Documentazione | veloce | Rilettura, `git diff --check`, basename Markdown univoci, accenti comuni, path sensibili |
+| Documenti operativi critici o GitHub metadata/workflow | standard | Controlli documentali più review dei workflow o runbook modificati |
+| Test-only o codice TypeScript/React locale | standard | Test mirati o `npm run verify` quando il diff supera la patch locale |
+| UI sostanziale | completa | `npm run verify` più browser desktop/mobile sulle route toccate |
+| React release minor o intervento React trasversale | completa | `npm run quality:react-doctor` |
+| Pipeline documentale, dati, provider/API, deploy/config o release/versioning | completa | Test mirati più verifica che non entrino in Git pacchetti, OCR, estratti o working data |
 
 ## Guardrail
 
