@@ -2,7 +2,7 @@
 
 ## Stato
 
-Proposed.
+Proposta.
 
 ## Contesto
 

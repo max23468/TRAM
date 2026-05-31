@@ -86,4 +86,4 @@ Vecchi file non nominati singolarmente ma coperti dai pattern sopra restano nell
 
 - TRAM mantiene Markdown con basename univoco: non esiste `docs/decisions/README.md` perché duplicherebbe `README.md`.
 - `docs/DECISIONS.md` resta il registro decisionale e indice ADR.
-- `docs/decisions/0000-template.md` è il template ADR con nome base univoco.
+- `docs/decisions/template.md` è il template ADR.

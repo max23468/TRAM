@@ -1,7 +1,7 @@
-# TRAM ADR 001 - Sede runtime dei normalizzatori AI
+# ADR 0001 - Sede runtime dei normalizzatori AI
 
 Data: 2026-05-13
-Stato: accettata come default MVP, da rivalidare all’avvio del codice
+Stato: Accettata come default MVP, da rivalidare all’avvio del codice
 Ambito: normalizzatori AI, AI gateway, worker documentale, review queue
 
 ## Contesto
