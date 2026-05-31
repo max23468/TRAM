@@ -345,7 +345,7 @@ TRAM è una repository Git pubblicata come repository privata `max23468/TRAM`, c
   - `ci:` per workflow/CI.
 - prima di PR o merge fare self-review del diff;
 - non aggiungere workflow GitHub Actions, bot, release flow o deploy automation senza decisione esplicita;
-- controllare la `Codex feedback inbox` prima di merge non banali;
+- controllare la `Codex feedback inbox`, marcata dalla label `codex-feedback-inbox`, prima di merge non banali;
 - controllare la `Codex feedback inbox` anche prima di PR ready, pubblicazione, deploy o release;
 - dopo merge/pubblicazione controllare `git branch -vv` e `git worktree list`,
   poi pulire branch/worktree locali o remoti non più necessari;
