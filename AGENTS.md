@@ -448,6 +448,13 @@ Documenti futuri consigliati quando servono:
 - protocollo benchmark AI;
 - policy dati e privacy per provider esterni.
 
+## Risposta finale
+
+Chiudi ogni intervento con un riepilogo concreto: cosa è cambiato, file
+principali quando utili, verifiche eseguite o non eseguite con motivo, stato
+publish, release e deploy, branch/worktree residui, rischi residui e prossimo
+passo operativo se serve.
+
 ## Definizione di completamento
 
 Una modifica è pronta se:
