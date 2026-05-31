@@ -6,8 +6,8 @@ Questo documento riassume runtime, package manager, lockfile, comandi e verifich
 
 | Area | Versione o vincolo | Fonte |
 | --- | --- | --- |
-| Node.js | `24.x` in GitHub Actions; locale compatibile con Next.js 16 | `.github/workflows/quality.yml`, `docs/OPERATIONS.md` |
-| npm | package manager canonico | `package-lock.json`, `docs/OPERATIONS.md` |
+| Node.js | `24.x` | `.node-version`, `package.json`, `.github/workflows/quality.yml`, `docs/OPERATIONS.md` |
+| npm | `npm@11.14.1` | `package.json`, `package-lock.json`, `docs/OPERATIONS.md` |
 | TypeScript | `6.0.3` | `package.json` |
 | Next.js | `16.2.6` | `package.json` |
 | React | `19.2.6` | `package.json` |
