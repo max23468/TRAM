@@ -256,9 +256,10 @@ Vercel, Supabase e OpenAI restano fonti utili o alternative possibili, non defau
 
 L’architettura non deve cambiare da MVP a prodotto finito se non per scalare componenti. Evitare scelte che obblighino a riscrivere il cuore del prodotto.
 
-## UI e frontend futuri
+## UI e frontend
 
-Quando inizierà lo sviluppo UI:
+TRAM ha già una superficie Next.js/React in `src/app`. Quando tocchi UI, route,
+stati applicativi o workflow di review:
 
 - costruire l’esperienza applicativa vera, non una landing marketing;
 - UI in italiano;
@@ -273,7 +274,10 @@ Quando inizierà lo sviluppo UI:
 - usare card solo per item ripetuti, modali o tool realmente incorniciati;
 - rendere sempre visibile fonte, stato e rischio quando un dato è proposto o non validato.
 
-Per modifiche UI sostanziali future, prevedere verifica browser su desktop e mobile. Se Computer Use o Browser Use sono utili e non disponibili, segnalarlo al maintainer.
+Per modifiche UI sostanziali, esegui `npm run verify` e verifica in browser le
+route toccate su desktop e mobile, includendo stati vuoti, errore, caricamento e
+dati non validati quando sono coinvolti. Se Computer Use o Browser Use sono
+utili e non disponibili, segnalarlo al maintainer.
 
 ## Workflow operativo
 
