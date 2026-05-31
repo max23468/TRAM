@@ -55,7 +55,8 @@ Questo documento riassume runtime, package manager, lockfile, comandi e verifich
 | Test-only o codice TypeScript/React locale | standard | Test mirati o `npm run verify` quando il diff supera la patch locale |
 | UI sostanziale | completa | `npm run verify` più browser desktop/mobile sulle route toccate |
 | React release major/minor o intervento React trasversale | completa | `npm run quality:react-doctor` |
-| Pipeline documentale, dati, provider/API, deploy/config o release/versioning | completa | Test mirati più verifica che non entrino in Git pacchetti, OCR, estratti o working data |
+| Pipeline documentale, dati, provider/API o deploy/config | completa | Test mirati più verifica che non entrino in Git pacchetti, OCR, estratti o working data |
+| Release/versioning | completa | Seguire ADR 0003: `npm run verify`, React Doctor quando richiesto, self-review del diff, controllo file sensibili e commit/tag/GitHub Release per release applicative/prodotto reali |
 
 ## Guardrail
 
