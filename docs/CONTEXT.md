@@ -149,3 +149,40 @@ Q&A e chiarimenti non sono sinonimi generici: possono essere domande candidate, 
 - Parsing e regole prima di AI dove i dati sono critici, numerici, formali o verificabili deterministicamente.
 - Versioning documentale e currentness resolver come capacità core, non accessoria.
 - Predisposizione V2/V3 solo se non crea complessità o duplicazione nella V1.
+
+## Handoff per nuova chat
+
+Prima di procedere:
+
+1. leggere `AGENTS.md`;
+2. controllare `git status --short --branch`;
+3. leggere `README.md`, `docs/INDEX.md`, `docs/CONTEXT.md`,
+   `docs/ROADMAP.md`, `docs/BACKLOG.md`, `docs/TOOLCHAIN.md`,
+   `docs/ARCHITECTURE.md`, `docs/AI_AND_DOCUMENT_PIPELINE.md` e
+   `docs/OPERATIONS.md`;
+4. se il task tocca dominio, AI, provider, dati o benchmark, verificare anche
+   fonti aggiornate e policy privacy/costi prima di fissare decisioni;
+5. controllare Codex feedback inbox prima di PR ready, merge, publish, deploy o
+   release;
+6. applicare verifiche proporzionate: per docs-only review documentale, link,
+   naming Markdown, accenti/apostrofi e `git diff --check`.
+
+## Rischi aperti
+
+- Anticipare V2/V3 nel codice V1 invece di mantenerle come predisposizione
+  documentata.
+- Trasformare TRAM in chat generica con documenti invece che dashboard,
+  document map e review queue evidence-first.
+- Usare provider AI esterni senza minimizzazione input, verifica privacy/costi,
+  policy Tender e stato quota.
+- Consolidare estrazioni critiche senza fonte, stato e review umana.
+- Trattare pacchetti gara, benchmark o working extract come contenuti generici
+  non sensibili.
+- Inventare deploy, runtime produttivi o workflow operativi prima di target,
+  runbook e verifica post-deploy approvati.
+
+## Prossimo passo
+
+Seguire `docs/ROADMAP.md` per la priorità corrente della V1. In assenza di una
+richiesta prodotto esplicita, limitarsi a governance, audit read-only, contesto,
+decisioni e preparazione documentale.
