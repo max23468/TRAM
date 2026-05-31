@@ -2,7 +2,7 @@
 
 ## Stato
 
-Accepted.
+Accettata.
 
 ## Contesto
 
