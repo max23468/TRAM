@@ -60,7 +60,7 @@ Per release applicative:
 
 - `npm run verify`;
 - `npm run quality:react-doctor` quando cambia React in modo trasversale o dopo
-  una release minor che tocca superfici React;
+  una release major/minor applicativa;
 - self-review del diff;
 - controllo che non entrino in Git `.env`, chiavi, pacchetti gara, OCR,
   estratti, export o working data.

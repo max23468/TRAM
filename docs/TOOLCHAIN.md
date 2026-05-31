@@ -31,7 +31,7 @@ Questo documento riassume runtime, package manager, lockfile, comandi e verifich
 | `npm test` | test Vitest |
 | `npm run build` | build Next.js |
 | `npm run verify` | lint, typecheck, test e build |
-| `npm run quality:react-doctor` | React Doctor completo con fail su errori |
+| `npm run quality:react-doctor` | React Doctor latest via `npx react-doctor@latest`, completo con fail su errori |
 | `npm run demo:inventory` | inventario locale demo, senza committare working data |
 | `npm run demo:extract-text` | estrazione testo locale demo, senza contenuti riservati in Git |
 
@@ -54,7 +54,7 @@ Questo documento riassume runtime, package manager, lockfile, comandi e verifich
 | Documenti operativi critici o GitHub metadata/workflow | standard | Controlli documentali più review dei workflow o runbook modificati |
 | Test-only o codice TypeScript/React locale | standard | Test mirati o `npm run verify` quando il diff supera la patch locale |
 | UI sostanziale | completa | `npm run verify` più browser desktop/mobile sulle route toccate |
-| React release minor o intervento React trasversale | completa | `npm run quality:react-doctor` |
+| React release major/minor o intervento React trasversale | completa | `npm run quality:react-doctor` |
 | Pipeline documentale, dati, provider/API, deploy/config o release/versioning | completa | Test mirati più verifica che non entrino in Git pacchetti, OCR, estratti o working data |
 
 ## Guardrail
