@@ -302,6 +302,18 @@ Per task ampi:
 - annotare decisioni, debiti e step rimandati;
 - lavorare un passo alla volta, con prossimi passi chiari.
 
+## Skill operative
+
+Usa le skill Superpowers pertinenti per lavori non banali: pianificazione,
+debugging sistematico, worktree, esecuzione di piani, review e verifica finale.
+Le skill non sostituiscono la policy evidence-first, AI V1, privacy, dati di
+gara o fonti primarie di TRAM.
+
+Usa o proponi `grill-me` quando serve stressare architetture, data model,
+pipeline documentale, workflow AI, provider, refactor trasversali, roadmap o
+scope ambiguo. Non renderla obbligatoria per refusi, docs-only a basso rischio,
+cleanup o modifiche meccaniche già determinate.
+
 ## Regole importate dagli altri progetti
 
 Queste regole sono state adattate da pattern già usati in Pratix, DocMolder, FiscalBay, SyncBay e SendChimp.
