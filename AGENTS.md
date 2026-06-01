@@ -81,7 +81,7 @@ Se il task tocca una decisione stabile, aggiornare anche il documento che la gov
 
 ## Stato attuale del progetto
 
-- TRAM è in fase MVP iniziale, con app locale Next.js e documentazione consolidata in 12 Markdown governanti.
+- TRAM è in fase MVP locale iniziale, con app locale Next.js e documentazione consolidata in 12 Markdown governanti.
 - Non introdurre runtime, provider, deploy o pipeline produttive finché il piano e la relativa documentazione non sono sufficientemente chiari o finché il maintainer non lo chiede esplicitamente.
 - La cartella TRAM è una repo Git locale inizializzata.
 - Esiste una chiave locale `ssh-key-tram.key`: trattarla come segreto, non leggerla se non necessario, non copiarla, non committarla.
@@ -488,7 +488,11 @@ Una modifica è pronta se:
 - non espone segreti o dati riservati;
 - non lascia processi, file temporanei o modifiche non correlate;
 - include verifiche eseguite o limiti noti quando rilevanti;
+- la `Codex feedback inbox` è stata controllata quando il flusso prevede PR,
+  merge, publish, deploy o release;
 - publish, release e deploy sono stati completati oppure dichiarati non applicabili con motivo;
+- branch/worktree creati per il lavoro sono stati puliti oppure il residuo è
+  dichiarato esplicitamente;
 - propone prossimi passi concreti se resta un seguito operativo reale.
 
 ## Risposte finali
