@@ -326,7 +326,7 @@ Quando in futuro più filoni lavorano su TRAM:
 - una chat principale coordina scope, decisioni e integrazione;
 - ogni filone ha ownership chiara su file o moduli;
 - evitare che due filoni modifichino gli stessi file;
-- usare branch/worktree dedicati quando Git sarà attivo;
+- usare branch/worktree dedicati per filoni non banali o quando il checkout contiene modifiche non proprie;
 - lasciare handoff sintetico con file toccati, verifiche, rischi e prossimi passi;
 - non delegare decisioni prodotto ambigue o task piccoli.
 
@@ -336,6 +336,7 @@ TRAM è una repository Git pubblicata come repository pubblica `max23468/TRAM`, 
 
 - GitHub è la fonte primaria del codice e della documentazione pubblicata;
 - controllare sempre `git status --short` prima di editare;
+- se il worktree contiene modifiche non tue o non collegate alla richiesta, non spostarle su una nuova branch nello stesso checkout: separa il lavoro con un branch/worktree da base pulita oppure tocca solo file non sovrapposti e dichiaralo;
 - per lavori non banali usare branch `codex/<tema>`;
 - mantenere commit atomici;
 - usare Conventional Commit coerenti con l’impatto reale:
