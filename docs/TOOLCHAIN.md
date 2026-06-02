@@ -40,7 +40,7 @@ Questo documento riassume runtime, package manager, lockfile, comandi e verifich
 
 | Workflow | Scopo |
 | --- | --- |
-| `Quality` | `npm run verify`, audit dipendenze quando cambia manifest/lockfile |
+| `Quality` | `npm run verify`, `npm run test:coverage`, audit dipendenze quando cambia manifest/lockfile |
 | `Repo Hygiene` | whitespace, path sensibili, basename Markdown univoci, accenti italiani comuni |
 | `PR Title` | Conventional Commit nel titolo PR |
 | `Codex PR comments` | sincronizza la Codex feedback inbox |
