@@ -29,6 +29,7 @@ Questo documento riassume runtime, package manager, lockfile, comandi e verifich
 | `npm run lint` | ESLint |
 | `npm run typecheck` | TypeScript senza emit |
 | `npm test` | test Vitest |
+| `npm run test:coverage` | coverage Vitest limitata ai moduli core `src/lib/extractions` e `src/lib/ingestion` |
 | `npm run build` | build Next.js |
 | `npm run verify` | lint, typecheck, test e build |
 | `npm run quality:react-doctor` | React Doctor latest via `npx --yes react-doctor@latest`, completo con fail su errori e senza prompt interattivi |

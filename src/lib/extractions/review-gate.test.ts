@@ -80,4 +80,45 @@ describe("extraction review gate and quality metrics", () => {
     });
     expect(metrics.taskCoverage).toMatchObject({ T1: 1, T2: 1, T8: 1 });
   });
+
+  it("porta in gate anche i candidati con fonte mancante e li marca come info", () => {
+    const gate = buildReviewGate([
+      candidate({
+        id: "missing-source",
+        sourceReferenceId: "",
+        title: "Fonte assente",
+        route: "documents"
+      })
+    ]);
+
+    expect(gate).toEqual([
+      expect.objectContaining({
+        candidateId: "missing-source",
+        reason: "Fonte mancante: il candidato non può essere consolidato.",
+        severity: "info"
+      })
+    ]);
+  });
+
+  it("azzera source coverage e task coverage quando non ci sono candidati", () => {
+    const metrics = calculateExtractionQualityMetrics([]);
+
+    expect(metrics).toMatchObject({
+      blockedCount: 0,
+      candidateCount: 0,
+      reviewRequiredCount: 0,
+      sourceCoverageRatio: 0,
+      unsupportedClaimCount: 0
+    });
+    expect(metrics.taskCoverage).toEqual({
+      T1: 0,
+      T2: 0,
+      T3: 0,
+      T4: 0,
+      T5: 0,
+      T6: 0,
+      T7: 0,
+      T8: 0
+    });
+  });
 });
