@@ -22,6 +22,7 @@ npm run verify
 ```
 
 `npm run verify` esegue lint, typecheck, test e build. Le verifiche recenti vanno lette dai log della PR o rieseguite sul branch corrente: non usare vecchi branch come prova corrente.
+`npm run test:coverage` misura la coverage dei moduli core `src/lib/extractions` e `src/lib/ingestion` con soglie Atlas minime promosse in repo.
 
 ## Sviluppo App Locale
 

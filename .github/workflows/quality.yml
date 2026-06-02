@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   quality:
-    name: Lint, typecheck, test and build
+    name: Lint, typecheck, coverage, test and build
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -61,6 +61,9 @@ jobs:
 
       - name: Verify app
         run: npm run verify
+
+      - name: Run core coverage
+        run: npm run test:coverage
 
       - name: Detect dependency changes
         id: dependency-changes
