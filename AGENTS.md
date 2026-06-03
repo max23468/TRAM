@@ -360,6 +360,11 @@ TRAM è una repository Git pubblicata come repository pubblica `max23468/TRAM`, 
   - `test:` per soli test;
   - `chore:` per manutenzione interna;
   - `ci:` per workflow/CI.
+- quando Codex crea una PR, non usare il nome branch `codex/<tema>` come titolo:
+  passare sempre un titolo PR Conventional Commit esplicito, per esempio
+  `gh pr create --title "docs: update TRAM governance"`, oppure correggere subito
+  una PR già aperta con `gh pr edit --title "docs: ..."` prima di dichiararla
+  pronta o pubblicata;
 - prima di PR o merge fare self-review del diff;
 - non aggiungere workflow GitHub Actions, bot, release flow o deploy automation senza decisione esplicita;
 - controllare la `Codex feedback inbox`, marcata dalla label `codex-feedback-inbox`, prima di merge non banali;
